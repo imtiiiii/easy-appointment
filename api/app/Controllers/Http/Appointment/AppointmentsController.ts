@@ -25,6 +25,7 @@ export default class AppointmentsController {
         // console.log("end Time=", endTime[0].$attributes.endTime)
         let date = moment(data.date)
         let time = moment(endTime[0].$attributes.endTime, 'HH:mm:ss');
+        console.log("end time is ", time)
         date.set({
             hour: time.get('hour'),
             minute: time.get('minute'),

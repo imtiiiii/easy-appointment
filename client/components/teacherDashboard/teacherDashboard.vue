@@ -57,23 +57,20 @@
 						>
 							<Button
 								@click="addSlot"
-								:loading="isLoading"
-								:disabled="loading"
+								
 								type="success"
 								size="large"
 								long
-								>{{
-									isLoading ? "Please wait..." : "Add"
-								}}</Button
+								>Add</Button
 							>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- ********* AVAILABLE SLOTS ************ -->
-			<div style="background-color: #ffffff">
+			<!-- <div style="background-color: #ffffff">
 				<available-slot></available-slot>
-			</div>
+			</div> -->
 		</div>
 
 		<!-- If app user click appoinment request -->
@@ -90,6 +87,7 @@ import createdSlot from "./createdSlots.vue";
 import availableSlots from "./availableSlots.vue";
 import upcommingAppoinments from "./upcommingAppoinments.vue";
 import moment from "moment";
+moment().format();
 
 export default {
 	components: {
@@ -140,6 +138,31 @@ export default {
 			}
 		},
 	},
+    watch:{
+        seeTime:function(){}
+
+    },
+    computed:{
+        seeTime(){
+            // console.log("start time is ",this.startTime);
+            // console.log("end time is ",this.endTime);
+            let startTime=moment(this.startTime).format("HH:mm")
+            let time1=moment().format("DD-MM-YYYY");
+            let time2=moment().format("DD-MM-YYYY")
+            time1=moment(time1 +' '+this.startTime).format("DD-MM-YYYY HH:mm").valueOf();  
+            time2=moment(time2 +' '+this.endTime).format("DD-MM-YYYY HH:mm").valueOf();
+            let x=new Date(time1);
+            let y=new Date(time2);
+            console.log(x.valueOf());
+            console.log(y.valueOf());
+            let diff=Math.abs(x-y);
+             console.log("diff",diff)
+            diff=Math.floor(diff /60000);
+            console.log("diff min",diff)
+           
+            //  console.log("start time is ",startTime);
+        }
+    }
 };
 </script>
 
@@ -147,7 +170,7 @@ export default {
 .main-content {
 	height: 100%;
 	display: grid;
-	grid-template: 100% /1.3fr 1fr 1fr;
+	grid-template: 100% /1fr 1fr ;
 	gap: 30px;
 	padding: 50px 40px;
 }
