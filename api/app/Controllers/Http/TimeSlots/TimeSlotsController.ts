@@ -19,7 +19,7 @@ export default class TimeSlotsController {
         // console.log(one);
         // console.log(two);
         const data = ctx.request.all();
-        console.log("data is = ", data)
+        // console.log("data is = ", data)
         const { day_id } = data;
         const { teacher_id } = data;
         const { start_time } = data;

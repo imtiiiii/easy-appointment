@@ -167,10 +167,10 @@ export default {
 				let endTimeInH = Math.floor((mins + this.duration) / 60);
 				// console.log("end time in H = ",endTimeInH)
 				// console.log("end time in M = ",endTimeInM)
-				console.log(
-					`end time ${i} = `,
-					hours + endTimeInH + ":" + endTimeInM
-				);
+				// console.log(
+				// 	`end time ${i} = `,
+				// 	hours + endTimeInH + ":" + endTimeInM
+				// );
 
 				// ************* post to db ************
 				let tempM = endTimeInM;
