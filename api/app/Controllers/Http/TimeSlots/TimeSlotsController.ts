@@ -19,6 +19,7 @@ export default class TimeSlotsController {
         // console.log(one);
         // console.log(two);
         const data = ctx.request.all();
+        console.log("data is = ", data)
         const { day_id } = data;
         const { teacher_id } = data;
         const { start_time } = data;
@@ -28,24 +29,26 @@ export default class TimeSlotsController {
         // console.log("start_time = ", start_time)
         // console.log("end_time =", end_time)
         const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).orderBy("start_time", "desc").preload("user");
-        const newStartTime = moment(start_time, "HH:mm:ss").valueOf().toString();
-        const newEndTime = moment(end_time, "HH:mm:ss").valueOf().toString();
+        const newStartTime = moment(start_time, "HH:mm:ss")
+        const newEndTime = moment(end_time, "HH:mm:ss")
+        console.log(newStartTime.toString());
+        console.log(newEndTime.toString());
         for (let i of teacher) {
             // console.log("oldstartTime=", i)
             // console.log("endTime=", i.endTime)
-            const oldStartTime = moment(i.startTime, "HH:mm:ss").valueOf().toString();
-            const oldEndTime = moment(i.endTime, "HH:mm:ss").valueOf().toString();
+            const oldStartTime = moment(i.startTime, "HH:mm:ss")
+            const oldEndTime = moment(i.endTime, "HH:mm:ss")
             // *********** START TIME VALIDATION **********
-            if (newStartTime === oldStartTime || newStartTime === oldEndTime) {
-                // console.log("1")
+            if (newStartTime.isSame(oldStartTime) {
+                console.log("iam 1")
                 return {
                     msg: "not possible"
                 }
             }
-            if (newStartTime > oldStartTime) {
+            if (newStartTime.isAfter(oldStartTime)) {
                 // console.log("im her 1st if")
-                if (newStartTime < oldEndTime) {
-                    // console.log("2");
+                if (newStartTime.isBefore(oldEndTime)) {
+                    console.log("2");
                     return {
                         msg: "not possible"
                     }
@@ -53,16 +56,15 @@ export default class TimeSlotsController {
 
             }
             // ******* END TIME VALIDATION ********
-            if (newEndTime === oldStartTime || newEndTime === oldEndTime) {
-                // console.log("3")
+            if (newEndTime.isSame(oldStartTime) || newEndTime.isSame(oldEndTime)) {
+                console.log("3")
                 return {
                     msg: "not possible"
                 }
             }
-            if (newEndTime > oldStartTime) {
-
-                if (newEndTime < oldEndTime) {
-                    // console.log("4")
+            if (newEndTime.isAfter(oldStartTime)) {
+                if (newEndTime.isBefore(oldEndTime)) {
+                    console.log("4")
                     return {
                         msg: "not possible"
                     }
@@ -72,9 +74,9 @@ export default class TimeSlotsController {
             // ********** START AND END TIME BOTH **********
 
             // ********* WHEN NEW START TIME IS AVAILABLE BUT END TIME CONFLICT WITH OTHER TIME SLOT'S START OR END TIME  = NOT POSSIBLE *************
-            if (newStartTime < oldStartTime) {
-                if (newEndTime > oldStartTime) {
-                    // console.log("5")
+            if (newStartTime.isBefore(oldStartTime)) {
+                if (newEndTime.isAfter(oldStartTime)) {
+                    console.log("5")
                     return {
                         msg: "not possible"
                     }
@@ -83,8 +85,8 @@ export default class TimeSlotsController {
             }
             // ********** WHEN NEW START TIME MORE RECENT THAN OLD START TIMIE  **********
             // BUT NEW END TIME IS LESS RECENT THAN OLD END TIME . SO THE SLOT CONFLICTS=NOT POSSIBLE
-            if (newStartTime > oldStartTime && newEndTime < oldEndTime) {
-                // console.log("im 6")
+            if (newStartTime.isAfter(oldStartTime) && newEndTime.isBefore(oldEndTime)) {
+                console.log("im 6")
                 return {
                     msg: "not possible"
                 }
@@ -94,7 +96,7 @@ export default class TimeSlotsController {
         const saveToDb = await TimeSlot.create(data);
         return {
             saveToDb,
-            msg: "possible and added successfully"
+            msg: "possible"
         }
 
 

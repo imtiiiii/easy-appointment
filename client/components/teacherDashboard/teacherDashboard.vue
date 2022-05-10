@@ -51,16 +51,19 @@
 								v-model="endTime"
 							></vue-timepicker>
 						</div>
-                        <div>
-                            <input v-model="duration" type="text" placeholder="duration in minutes"/>
-                        </div>
+						<div>
+							<input
+								v-model="duration"
+								type="text"
+								placeholder="duration in minutes"
+							/>
+						</div>
 						<div
 							class="_log_button"
 							v-if="day && startTime && endTime && duration"
 						>
 							<Button
 								@click="addSlot"
-								
 								type="success"
 								size="large"
 								long
@@ -89,7 +92,7 @@ import "vue2-timepicker/dist/VueTimepicker.css";
 import createdSlot from "./createdSlots.vue";
 import availableSlots from "./availableSlots.vue";
 import upcommingAppoinments from "./upcommingAppoinments.vue";
-import moment, { duration } from "moment";
+import moment, { duration, min } from "moment";
 moment().format();
 
 export default {
@@ -105,7 +108,7 @@ export default {
 			startTime: "",
 			endTime: "",
 			user: null,
-            duration:null,
+			duration: null,
 			options: "index", // possible variable appoinment,index
 		};
 	},
@@ -115,55 +118,124 @@ export default {
 	},
 	methods: {
 		async addSlot() {
-            // let startTime=moment(this.startTime).format("HH:mm")
-            let time1=moment().format("DD-MM-YYYY");
-            let time2=moment().format("DD-MM-YYYY")
-            time1=moment(time1 +' '+this.startTime).format("DD-MM-YYYY HH:mm") 
-            time2=moment(time2 +' '+this.endTime).format("DD-MM-YYYY HH:mm")
-            let x=new Date(time1);
-            let y=new Date(time2);
-            // console.log(x.valueOf());
-            // console.log(y.valueOf());
-            let diffInMs=Math.abs(x-y);
-            //  console.log("diff",diff)
-            let diffInM=Math.floor(diffInMs /60000);
-            console.log("diff of  min",diffInM)
-            this.duration=parseInt(this.duration)
-            let slotsRequested=diffInM/this.duration
-            // console.log("slot requested =",Math.floor(slotsRequested))
+			// let startTime=moment(this.startTime).format("HH:mm")
+			let time1 = moment().format("DD-MM-YYYY");
+			let time2 = moment().format("DD-MM-YYYY");
+			time1 = moment(time1 + " " + this.startTime).format(
+				"DD-MM-YYYY HH:mm"
+			);
+			time2 = moment(time2 + " " + this.endTime).format(
+				"DD-MM-YYYY HH:mm"
+			);
+			let x = new Date(time1);
+			let y = new Date(time2);
+			// console.log(x.valueOf());
+			// console.log(y.valueOf());
 
-            let hours=x.getHours();
-            let mins=x.getMinutes();
-            console.log("hours=",hours)
-            console.log("minutes=",mins)
+			let diffInMs = y - x;
+			// console.log("diff in ms", diffInMs);
+			// *************************
+			if (diffInMs <= 0) {
+				return this.e("End time should be more than start time");
+			}
+			let diffInM = Math.floor(diffInMs / 60000);
+			// console.log("diff of  min", diffInM);
+			this.duration = parseInt(this.duration);
+			if (this.duration > diffInM) {
+				return this.e(
+					"lower your duration per meeting to create atleast one slot"
+				);
+			}
+			let slotsRequested = diffInM / this.duration;
+			// console.log("slot requested =",Math.floor(slotsRequested))
 
-            // loop and create slots dividing them by duration
-            for(let i =1 ;i<=slotsRequested;i++){
-                console.log("index=",i);
-                // **************start time ************* 
-                console.log(`start time ${i} `, hours+ ":" +mins)
-                // *********************ending minute
-                let endTimeInM=mins+this.duration;
-                console.log("total min=",endTimeInM)
-                endTimeInM%=60;
-                // *****************ending hour
-                 let endTimeInH=Math.floor((mins+this.duration)/60);
-                // console.log("end time in H = ",endTimeInH)
-                // console.log("end time in M = ",endTimeInM)
-                console.log(`end time ${i} = `,hours+endTimeInH+":"+endTimeInM)
+			let hours = x.getHours();
+			let mins = x.getMinutes();
+			// console.log("hours=", hours);
+			// console.log("minutes=", mins);
 
-                // ******* setting start time for the next slot *********
-                if(endTimeInM + 1 ===60){
-                   hours= hours+endTimeInH+1;
-                   mins=0;
-                }
-                else{
-                    mins=endTimeInM+1;
-                    hours=hours+endTimeInH
-                }
-            }
+			// loop and create slots dividing them by duration
+			for (let i = 1; i <= slotsRequested; i++) {
+				console.log("index=", i);
+				// **************start time *************
+				// console.log(`start time ${i} `, hours + ":" + mins);
+				// *********************ending minute*******************
+				let endTimeInM = mins + this.duration;
+				// console.log("total min=", endTimeInM);
+				endTimeInM %= 60;
+				// *****************ending hour
+				let endTimeInH = Math.floor((mins + this.duration) / 60);
+				// console.log("end time in H = ",endTimeInH)
+				// console.log("end time in M = ",endTimeInM)
+				console.log(
+					`end time ${i} = `,
+					hours + endTimeInH + ":" + endTimeInM
+				);
 
+				// ************* post to db ************
+				let tempM = endTimeInM;
+				let tempH = hours + endTimeInH;
+				console.log("temphE=", tempH);
+				if (tempM < 10) {
+					tempM = "0" + tempM;
+				}
+				if (tempH < 10) {
+					tempH = "0" + tempH;
+				}
+				// console.log("temphE2=", tempH);
+				const end_time = tempH + ":" + tempM;
+				// console.log("end time=", end_time);
+				tempM = mins;
+				tempH = hours;
+				if (mins < 10) {
+					tempM = "0" + mins;
+				}
+				if (hours < 10) {
+					tempH = "0" + hours;
+				}
+				const start_time = tempH + ":" + tempM;
+				// console.log("start time=", start_time);
 
+				const data = {
+					teacher_id: this.user.id,
+					start_time,
+					end_time,
+					day_id: this.day,
+				};
+				console.log("data is =", data);
+				const addToDb = await this.callApi(
+					"post",
+					"time-slots/add",
+					data
+				);
+				console.log(addToDb);
+				if (addToDb?.status === 200) {
+					if (addToDb.data.msg === "possible") {
+						this.s("created");
+					} else {
+						this.e("not possible");
+					}
+				} else {
+					this.w("something went wrong . Please try again");
+				}
+				// **********************************************
+
+				// const addToDb = await this.callApi("post", "time-slots/add", {
+				// 	teacher_id: this.user.id,
+				// 	start_time: this.startTime,
+				// 	end_time: this.endTime,
+				// 	day_id: this.day,
+				// });
+
+				// ******* setting start time for the next slot *********
+				if (endTimeInM === 59) {
+					hours = hours + endTimeInH + 1;
+					mins = 0;
+				} else {
+					mins = endTimeInM;
+					hours = hours + endTimeInH;
+				}
+			}
 
 			// this.isLoading = true;
 			// // console.log(this.day);
@@ -183,24 +255,22 @@ export default {
 			// 	this.e("Start Time and End time input is not valid");
 			// }
 			// this.isLoading = false;
-
-
 		},
 		chooseOption(value) {
-		    if (this.options === "index") {
+			if (this.options === "index") {
 				this.options = "appoinment";
 			} else {
 				this.options = "index";
 			}
 		},
 	},
-    // watch:{
-    //     seeTime:function(){}
+	// watch:{
+	//     seeTime:function(){}
 
-    // },
-    // computed:{
-       
-    // }
+	// },
+	// computed:{
+
+	// }
 };
 </script>
 
@@ -208,7 +278,7 @@ export default {
 .main-content {
 	height: 100%;
 	display: grid;
-	grid-template: 100% /1fr 1fr ;
+	grid-template: 100% /1fr 1fr;
 	gap: 30px;
 	padding: 50px 40px;
 }
