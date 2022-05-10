@@ -39,7 +39,7 @@ export default class TimeSlotsController {
             const oldStartTime = moment(i.startTime, "HH:mm:ss")
             const oldEndTime = moment(i.endTime, "HH:mm:ss")
             // *********** START TIME VALIDATION **********
-            if (newStartTime.isSame(oldStartTime) {
+            if (newStartTime.isSame(oldStartTime)) {
                 console.log("iam 1")
                 return {
                     msg: "not possible"

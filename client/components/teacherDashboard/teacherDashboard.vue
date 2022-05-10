@@ -56,6 +56,7 @@
 								v-model="duration"
 								type="text"
 								placeholder="duration in minutes"
+								style="padding: 15px 10px"
 							/>
 						</div>
 						<div
