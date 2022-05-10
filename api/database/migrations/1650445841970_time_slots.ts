@@ -9,10 +9,11 @@ export default class TimeSlots extends BaseSchema {
             table.integer("teacher_id").notNullable().unsigned().references("id").inTable("users")
                 .onDelete("CASCADE").onUpdate("CASCADE")
             // table.date("day_id").notNullable().unsigned().references('id').inTable('days');
-            table.time("start_time").notNullable();
-            table.time("end_time").notNullable();
+            table.string("start_time").notNullable();
+            table.string("end_time").notNullable();
             table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
             table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
+
         })
     }
 

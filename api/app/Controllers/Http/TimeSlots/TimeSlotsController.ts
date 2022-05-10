@@ -18,26 +18,22 @@ export default class TimeSlotsController {
         // console.log("data is = ", data)
         const { day_id } = data;
         const { teacher_id } = data;
-        const { start_time } = data;
-        const { end_time } = data;
+        let { start_time } = data;
+        let { end_time } = data;
         // console.log("day_id= ", day_id)
         // console.log("teacher_id= ", teacher_id)
-        // console.log("start_time = ", start_time)
-        // console.log("end_time =", end_time)
-        // let one = moment("16:00:00", "HH:mm:ss").valueOf().toString();
-        // let two = moment("16:00:00", "HH:mm:ss").valueOf().toString()
-        // // console.log(one);
-        // console.log(two);
+        const newStartTime = moment(start_time);
+        const newEndTime = moment(end_time)
+        console.log("front start_time = ", typeof (newStartTime.toString()));
+        console.log("front end_time =", typeof (newEndTime.toString()))
+
         const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).orderBy("start_time", "desc").preload("user");
-        const newStartTime = moment(start_time, "HH:mm:ss")
-        const newEndTime = moment(end_time, "HH:mm:ss")
-        console.log(newStartTime.toString());
-        console.log(newEndTime.toString());
+
         for (let i of teacher) {
             // console.log("oldstartTime=", i)
             // console.log("endTime=", i.endTime)
-            const oldStartTime = moment(i.startTime, "HH:mm:ss")
-            const oldEndTime = moment(i.endTime, "HH:mm:ss")
+            const oldStartTime = moment(i.startTime)
+            const oldEndTime = moment(i.endTime)
             // *********** START TIME VALIDATION **********
             if (newStartTime.isSame(oldStartTime)) {
                 console.log("iam 1")
@@ -93,6 +89,8 @@ export default class TimeSlotsController {
             }
 
         }
+        data.start_time = newStartTime.toString();
+        data.endTime = newEndTime.toString();
         const saveToDb = await TimeSlot.create(data);
         return {
             saveToDb,

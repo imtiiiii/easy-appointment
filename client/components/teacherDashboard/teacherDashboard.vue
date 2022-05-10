@@ -43,10 +43,12 @@
 							<vue-timepicker
 								placeholder="start-time"
 								v-model="startTime"
+								format="hh:mm: a"
 							></vue-timepicker>
 						</div>
 						<div class="_log_input_group">
 							<vue-timepicker
+								format="hh:mm: a"
 								placeholder="end-time"
 								v-model="endTime"
 							></vue-timepicker>
@@ -59,25 +61,13 @@
 								style="padding: 15px 10px"
 							/>
 						</div>
-						<div
-							class="_log_button"
-							v-if="
-								day &&
-								startTime.length === 5 &&
-								endTime.length === 5 &&
-								duration
-							"
-						>
+						<div class="_log_button">
 							<Button
 								@click="addSlot"
 								type="success"
 								size="large"
-								:loading="isLoading"
-								:disabled="loading"
 								long
-								>{{
-									isLoading ? "Please wait.." : "Add"
-								}}</Button
+								>Add</Button
 							>
 						</div>
 					</div>
@@ -128,32 +118,64 @@ export default {
 	},
 	methods: {
 		async addSlot() {
-			this.isLoading = true;
-			// let startTime=moment(this.startTime).format("HH:mm")
-			let time1 = moment().format("DD-MM-YYYY");
-			let time2 = moment().format("DD-MM-YYYY");
-			time1 = moment(time1 + " " + this.startTime).format(
-				"DD-MM-YYYY HH:mm"
-			);
-			time2 = moment(time2 + " " + this.endTime).format(
-				"DD-MM-YYYY HH:mm"
-			);
-			// ************* (x,y)and(time1,time2) both = start and end time   ********************
-			let x = new Date(time1);
-			let y = new Date(time2);
-			// console.log(x.valueOf());
-			// console.log(y.valueOf());
+			// this.isLoading = true;
+			// console.log("start time = ", this.startTime);
+			// console.log("start time = ", this.endTime);
 
-			let diffInMs = y - x;
-			// console.log("diff in ms", diffInMs);
-			// *********** if end time is before start time  **************
-			if (diffInMs <= 0) {
-				this.isLoading = false;
-				return this.e("End time should be more than start time");
+			let start = moment();
+			let end = moment();
+			let x = moment(this.startTime, "hh:mm a");
+			let y = moment(this.endTime, "hh:mm a");
+			console.log("hope", this.startTime);
+			start.set({
+				hours: x.get("hour"),
+				minutes: x.get("minute"),
+			});
+			end.set({
+				hours: y.get("hour"),
+				minutes: y.get("minute"),
+			});
+			console.log("start time = ", start.toString());
+			console.log("start time = ", end.toString());
+
+			// // start = moment(start + "" + this.startTime);
+			// console.log(
+			// 	"start holo finaal ",
+			// 	start.format("DD-MM-YYYY hh:mm a")
+			// );
+			// let end = moment();
+			// end = moment(end + " " + this.endTime);
+			// console.log("start holo ", end);
+
+			// console.log("start is ", start.toString());
+			// console.log("end is ", end.toString());
+			if (start.isSame(end) || end.isBefore(start)) {
+				console.log("hello guys");
+				this.e(
+					"Start and end time are same or end time is behind start time"
+				);
 			}
-			// ***********converting milliseconds to seconds***********
+			// let startTime=moment(this.startTime).format("HH:mm")
+			// let time1 = moment().format("DD-MM-YYYY");
+			// let time2 = moment().format("DD-MM-YYYY");
+			// time1 = moment(time1 + " " + this.startTime).format(
+			// 	"DD-MM-YYYY HH:mm"
+			// );
+			// time2 = moment(time2 + " " + this.endTime).format(
+			// 	"DD-MM-YYYY HH:mm"
+			// );
+			// // ************* (x,y)and(time1,time2) both = start and end time   ********************
+
+			// console.log(start.valueOf());
+			// console.log(end.valueOf());
+
+			let diffInMs = end - start;
+			// console.log("diff in ms", diffInMs);
+			// // ***********converting milliseconds to seconds***********
 			let diffInM = Math.floor(diffInMs / 60000);
+			// console.log("min difference ", diffInM);
 			this.duration = parseInt(this.duration);
+			// console.log("duration is", this.duration);
 			// ***********if single slot duration is greater than the whole start-end time duration *********
 			if (this.duration > diffInM) {
 				this.isLoading = false;
@@ -163,53 +185,48 @@ export default {
 			}
 			// number of slots will be allocated if this range of time are all available
 			const slotsRequested = Math.floor(diffInM / this.duration);
+			// console.log("slots requested", slotsRequested);
 			let cntOfSlotsCreated = 0;
-			// ************It will contain starting time's hour and minute ****************
-			// ************* (x,y)and(time1,time2) both = start and end time   ********************
-			let hours = x.getHours();
-			let mins = x.getMinutes();
+			// ************ It will contain starting time's hour and minute ****************
+
+			let hours = start.hour();
+			let mins = start.minute();
+			// console.log("hours = ", hours);
+			// console.log("hours = ", mins);
 
 			// *********** loop to see and allocate  slots considering slot requests and slots availibility *************
 			for (let i = 1; i <= slotsRequested; i++) {
 				console.log("index=", i);
-				// **************start time =hours and mins *************
-				// *********************ending minute*******************
+				// 	// **************start time =hours and mins *************
+				// 	// *********************ending minute*******************
 				// end time minute
 				let endTimeInM = mins + this.duration;
 				// separating hour and minutes from end time
 				// ***************ending minute
 				endTimeInM %= 60;
+				console.log(
+					"end time in  min= ",
+					typeof endTimeInM,
+					endTimeInM
+				);
 				// *****************ending hour
 				let endTimeInH = Math.floor((mins + this.duration) / 60);
+				end.set("hour", parseInt(endTimeInH + hours));
+				end.set("minute", parseInt(endTimeInM));
+				console.log("new start time = ", start.toString());
+				console.log("new end time is= ", end.toString());
 
 				// ************* post to db ************
-				let tempM = endTimeInM;
-				let tempH = hours + endTimeInH;
-				// formatting so we can compare time easily**************
-				if (tempM < 10) {
-					tempM = "0" + tempM;
-				}
-				if (tempH < 10) {
-					tempH = "0" + tempH;
-				}
-				const end_time = tempH + ":" + tempM;
-				// formatting so we can compare time easily**************
-				tempM = mins;
-				tempH = hours;
-				if (mins < 10) {
-					tempM = "0" + mins;
-				}
-				if (hours < 10) {
-					tempH = "0" + hours;
-				}
-				const start_time = tempH + ":" + tempM;
+
+				const start_time = start;
+				const end_time = end;
 				const data = {
 					teacher_id: this.user.id,
 					start_time,
 					end_time,
 					day_id: this.day,
 				};
-				// ********post to DB*******
+
 				const addToDb = await this.callApi(
 					"post",
 					"time-slots/add",
@@ -218,29 +235,29 @@ export default {
 				console.log(addToDb);
 				if (addToDb?.status === 200) {
 					if (addToDb.data.msg === "possible") {
-						// this.s("created");
+						this.s("created");
 						cntOfSlotsCreated++;
 					}
-				} else {
-					this.w("something went wrong . Please try again");
-					break;
 				}
+				// } else {
+				// 	this.w("something went wrong . Please try again");
+				// 	break;
+				// }
 				// **********************************************
 
-				// ******* setting start time for the next slot *********
-				if (i !== slotsRequested) {
-					if (endTimeInM === 59) {
-						hours = hours + endTimeInH + 1;
-						mins = 0;
-					} else {
-						mins = endTimeInM;
-						hours = hours + endTimeInH;
-					}
+				if (endTimeInM === 59) {
+					hours = endTimeInH + hours + 1;
+					mins = 0;
+				} else {
+					hours = endTimeInH + hours;
+					mins = parseInt(endTimeInM);
 				}
+				start.set("hour", parseInt(hours));
+				start.set("minute", parseInt(mins));
 			}
-			this.i(`${cntOfSlotsCreated} slots created`);
+			// this.i(`${cntOfSlotsCreated} slots created`);
 
-			this.isLoading = false;
+			// this.isLoading = false;
 		},
 		chooseOption(value) {
 			if (this.options === "index") {

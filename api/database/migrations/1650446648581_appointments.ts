@@ -10,7 +10,7 @@ export default class Appointments extends BaseSchema {
             table.integer("student_id").unsigned().references("id").inTable("users").onDelete("CASCADE").onUpdate("CASCADE")
             table.enum("status", ['0', '1', '2']).defaultTo('0')
             table.string("agenda").notNullable()
-            table.timestamp('date').notNullable()
+            table.string("date").notNullable();
             table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
             table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
         })
