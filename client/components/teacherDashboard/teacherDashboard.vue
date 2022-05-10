@@ -130,14 +130,38 @@ export default {
             console.log("diff of  min",diffInM)
             this.duration=parseInt(this.duration)
             let slotsRequested=diffInM/this.duration
-            console.log("slot requested =",Math.floor(slotsRequested))
+            // console.log("slot requested =",Math.floor(slotsRequested))
 
             let hours=x.getHours();
             let mins=x.getMinutes();
             console.log("hours=",hours)
             console.log("minutes=",mins)
 
-            
+            // loop and create slots dividing them by duration
+            for(let i =1 ;i<=slotsRequested;i++){
+                console.log("index=",i);
+                // **************start time ************* 
+                console.log(`start time ${i} `, hours+ ":" +mins)
+                // *********************ending minute
+                let endTimeInM=mins+this.duration;
+                console.log("total min=",endTimeInM)
+                endTimeInM%=60;
+                // *****************ending hour
+                 let endTimeInH=Math.floor((mins+this.duration)/60);
+                // console.log("end time in H = ",endTimeInH)
+                // console.log("end time in M = ",endTimeInM)
+                console.log(`end time ${i} = `,hours+endTimeInH+":"+endTimeInM)
+
+                // ******* setting start time for the next slot *********
+                if(endTimeInM + 1 ===60){
+                   hours= hours+endTimeInH+1;
+                   mins=0;
+                }
+                else{
+                    mins=endTimeInM+1;
+                    hours=hours+endTimeInH
+                }
+            }
 
 
 
@@ -163,7 +187,7 @@ export default {
 
 		},
 		chooseOption(value) {
-			if (this.options === "index") {
+		    if (this.options === "index") {
 				this.options = "appoinment";
 			} else {
 				this.options = "index";
