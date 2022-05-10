@@ -127,6 +127,7 @@ export default {
 			time2 = moment(time2 + " " + this.endTime).format(
 				"DD-MM-YYYY HH:mm"
 			);
+			// ************* (x,y)and(time1,time2) both = start and end time   ********************
 			let x = new Date(time1);
 			let y = new Date(time2);
 			// console.log(x.valueOf());
@@ -134,57 +135,51 @@ export default {
 
 			let diffInMs = y - x;
 			// console.log("diff in ms", diffInMs);
-			// *************************
+			// *********** if end time is before start time  **************
 			if (diffInMs <= 0) {
 				return this.e("End time should be more than start time");
 			}
+			// ***********converting milliseconds to seconds***********
 			let diffInM = Math.floor(diffInMs / 60000);
-			// console.log("diff of  min", diffInM);
 			this.duration = parseInt(this.duration);
+			// ***********if single slot duration is greater than the whole start-end time duration *********
 			if (this.duration > diffInM) {
 				return this.e(
 					"lower your duration per meeting to create atleast one slot"
 				);
 			}
-			let slotsRequested = diffInM / this.duration;
-			// console.log("slot requested =",Math.floor(slotsRequested))
-
+			// number of slots will be allocated if this range of time are all available
+			const slotsRequested = Math.floor(diffInM / this.duration);
+			// ************It will contain starting time's hour and minute ****************
+			// ************* (x,y)and(time1,time2) both = start and end time   ********************
 			let hours = x.getHours();
 			let mins = x.getMinutes();
-			// console.log("hours=", hours);
-			// console.log("minutes=", mins);
 
-			// loop and create slots dividing them by duration
+			// *********** loop to see and allocate  slots considering slot requests and slots availibility *************
 			for (let i = 1; i <= slotsRequested; i++) {
 				console.log("index=", i);
-				// **************start time *************
-				// console.log(`start time ${i} `, hours + ":" + mins);
+				// **************start time =hours and mins *************
 				// *********************ending minute*******************
+				// end time minute
 				let endTimeInM = mins + this.duration;
-				// console.log("total min=", endTimeInM);
+				// separating hour and minutes from end time
+				// ***************ending minute
 				endTimeInM %= 60;
 				// *****************ending hour
 				let endTimeInH = Math.floor((mins + this.duration) / 60);
-				// console.log("end time in H = ",endTimeInH)
-				// console.log("end time in M = ",endTimeInM)
-				// console.log(
-				// 	`end time ${i} = `,
-				// 	hours + endTimeInH + ":" + endTimeInM
-				// );
 
 				// ************* post to db ************
 				let tempM = endTimeInM;
 				let tempH = hours + endTimeInH;
-				console.log("temphE=", tempH);
+				// formatting so we can compare time easily**************
 				if (tempM < 10) {
 					tempM = "0" + tempM;
 				}
 				if (tempH < 10) {
 					tempH = "0" + tempH;
 				}
-				// console.log("temphE2=", tempH);
 				const end_time = tempH + ":" + tempM;
-				// console.log("end time=", end_time);
+				// formatting so we can compare time easily**************
 				tempM = mins;
 				tempH = hours;
 				if (mins < 10) {
@@ -194,15 +189,13 @@ export default {
 					tempH = "0" + hours;
 				}
 				const start_time = tempH + ":" + tempM;
-				// console.log("start time=", start_time);
-
 				const data = {
 					teacher_id: this.user.id,
 					start_time,
 					end_time,
 					day_id: this.day,
 				};
-				console.log("data is =", data);
+				// ********post to DB*******
 				const addToDb = await this.callApi(
 					"post",
 					"time-slots/add",
@@ -220,20 +213,15 @@ export default {
 				}
 				// **********************************************
 
-				// const addToDb = await this.callApi("post", "time-slots/add", {
-				// 	teacher_id: this.user.id,
-				// 	start_time: this.startTime,
-				// 	end_time: this.endTime,
-				// 	day_id: this.day,
-				// });
-
 				// ******* setting start time for the next slot *********
-				if (endTimeInM === 59) {
-					hours = hours + endTimeInH + 1;
-					mins = 0;
-				} else {
-					mins = endTimeInM;
-					hours = hours + endTimeInH;
+				if (i !== slotsRequested) {
+					if (endTimeInM === 59) {
+						hours = hours + endTimeInH + 1;
+						mins = 0;
+					} else {
+						mins = endTimeInM;
+						hours = hours + endTimeInH;
+					}
 				}
 			}
 
