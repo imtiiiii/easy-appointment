@@ -14,10 +14,6 @@ export default class TimeSlotsController {
         this.timeSlotValidator = new TimeSlotValidator()
     }
     public async add(ctx: HttpContextContract) {
-        let one = moment("16:00:00", "HH:mm:ss").valueOf().toString();
-        let two = moment("16:00:00", "HH:mm:ss").valueOf().toString()
-        // console.log(one);
-        // console.log(two);
         const data = ctx.request.all();
         // console.log("data is = ", data)
         const { day_id } = data;
@@ -28,6 +24,10 @@ export default class TimeSlotsController {
         // console.log("teacher_id= ", teacher_id)
         // console.log("start_time = ", start_time)
         // console.log("end_time =", end_time)
+        // let one = moment("16:00:00", "HH:mm:ss").valueOf().toString();
+        // let two = moment("16:00:00", "HH:mm:ss").valueOf().toString()
+        // // console.log(one);
+        // console.log(two);
         const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).orderBy("start_time", "desc").preload("user");
         const newStartTime = moment(start_time, "HH:mm:ss")
         const newEndTime = moment(end_time, "HH:mm:ss")

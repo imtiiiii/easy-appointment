@@ -60,14 +60,23 @@
 						</div>
 						<div
 							class="_log_button"
-							v-if="day && startTime && endTime && duration"
+							v-if="
+								day &&
+								startTime.length === 5 &&
+								endTime.length === 5 &&
+								duration
+							"
 						>
 							<Button
 								@click="addSlot"
 								type="success"
 								size="large"
+								:loading="isLoading"
+								:disabled="loading"
 								long
-								>Add</Button
+								>{{
+									isLoading ? "Please wait.." : "Add"
+								}}</Button
 							>
 						</div>
 					</div>
@@ -118,6 +127,7 @@ export default {
 	},
 	methods: {
 		async addSlot() {
+			this.isLoading = true;
 			// let startTime=moment(this.startTime).format("HH:mm")
 			let time1 = moment().format("DD-MM-YYYY");
 			let time2 = moment().format("DD-MM-YYYY");
@@ -137,6 +147,7 @@ export default {
 			// console.log("diff in ms", diffInMs);
 			// *********** if end time is before start time  **************
 			if (diffInMs <= 0) {
+				this.isLoading = false;
 				return this.e("End time should be more than start time");
 			}
 			// ***********converting milliseconds to seconds***********
@@ -144,12 +155,14 @@ export default {
 			this.duration = parseInt(this.duration);
 			// ***********if single slot duration is greater than the whole start-end time duration *********
 			if (this.duration > diffInM) {
+				this.isLoading = false;
 				return this.e(
 					"lower your duration per meeting to create atleast one slot"
 				);
 			}
 			// number of slots will be allocated if this range of time are all available
 			const slotsRequested = Math.floor(diffInM / this.duration);
+			let cntOfSlotsCreated = 0;
 			// ************It will contain starting time's hour and minute ****************
 			// ************* (x,y)and(time1,time2) both = start and end time   ********************
 			let hours = x.getHours();
@@ -204,12 +217,12 @@ export default {
 				console.log(addToDb);
 				if (addToDb?.status === 200) {
 					if (addToDb.data.msg === "possible") {
-						this.s("created");
-					} else {
-						this.e("not possible");
+						// this.s("created");
+						cntOfSlotsCreated++;
 					}
 				} else {
 					this.w("something went wrong . Please try again");
+					break;
 				}
 				// **********************************************
 
@@ -224,25 +237,9 @@ export default {
 					}
 				}
 			}
+			this.i(`${cntOfSlotsCreated} slots created`);
 
-			// this.isLoading = true;
-			// // console.log(this.day);
-			// const startTime = moment(this.startTime, "HH:mm");
-			// const endTime = moment(this.endTime, "HH:mm");
-			// if (endTime.diff(startTime).valueOf() > 0) {
-			// 	const addToDb = await this.callApi("post", "time-slots/add", {
-			// 		teacher_id: this.user.id,
-			// 		start_time: this.startTime,
-			// 		end_time: this.endTime,
-			// 		day_id: this.day,
-			// 	});
-
-			// 	// console.log(addToDb.data.msg);
-			// 	this.i(addToDb.data.msg);
-			// } else {
-			// 	this.e("Start Time and End time input is not valid");
-			// }
-			// this.isLoading = false;
+			this.isLoading = false;
 		},
 		chooseOption(value) {
 			if (this.options === "index") {
@@ -252,13 +249,6 @@ export default {
 			}
 		},
 	},
-	// watch:{
-	//     seeTime:function(){}
-
-	// },
-	// computed:{
-
-	// }
 };
 </script>
 

@@ -96,6 +96,11 @@ export default {
     ** See https://nuxtjs.org/api/configuration-build/
     */
     build: {
+        babel: {
+            plugins: [
+                '@babel/plugin-proposal-optional-chaining'
+            ]
+        }
     },
     server: {
         port: 3000, // default: 3000
