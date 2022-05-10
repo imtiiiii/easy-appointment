@@ -51,9 +51,12 @@
 								v-model="endTime"
 							></vue-timepicker>
 						</div>
+                        <div>
+                            <input v-model="duration" type="text" placeholder="duration in minutes"/>
+                        </div>
 						<div
 							class="_log_button"
-							v-if="day && startTime && endTime"
+							v-if="day && startTime && endTime && duration"
 						>
 							<Button
 								@click="addSlot"
@@ -86,7 +89,7 @@ import "vue2-timepicker/dist/VueTimepicker.css";
 import createdSlot from "./createdSlots.vue";
 import availableSlots from "./availableSlots.vue";
 import upcommingAppoinments from "./upcommingAppoinments.vue";
-import moment from "moment";
+import moment, { duration } from "moment";
 moment().format();
 
 export default {
@@ -102,6 +105,7 @@ export default {
 			startTime: "",
 			endTime: "",
 			user: null,
+            duration:null,
 			options: "index", // possible variable appoinment,index
 		};
 	},
@@ -111,24 +115,52 @@ export default {
 	},
 	methods: {
 		async addSlot() {
-			this.isLoading = true;
-			// console.log(this.day);
-			const startTime = moment(this.startTime, "HH:mm");
-			const endTime = moment(this.endTime, "HH:mm");
-			if (endTime.diff(startTime).valueOf() > 0) {
-				const addToDb = await this.callApi("post", "time-slots/add", {
-					teacher_id: this.user.id,
-					start_time: this.startTime,
-					end_time: this.endTime,
-					day_id: this.day,
-				});
+            // let startTime=moment(this.startTime).format("HH:mm")
+            let time1=moment().format("DD-MM-YYYY");
+            let time2=moment().format("DD-MM-YYYY")
+            time1=moment(time1 +' '+this.startTime).format("DD-MM-YYYY HH:mm") 
+            time2=moment(time2 +' '+this.endTime).format("DD-MM-YYYY HH:mm")
+            let x=new Date(time1);
+            let y=new Date(time2);
+            // console.log(x.valueOf());
+            // console.log(y.valueOf());
+            let diffInMs=Math.abs(x-y);
+            //  console.log("diff",diff)
+            let diffInM=Math.floor(diffInMs /60000);
+            console.log("diff of  min",diffInM)
+            this.duration=parseInt(this.duration)
+            let slotsRequested=diffInM/this.duration
+            console.log("slot requested =",Math.floor(slotsRequested))
 
-				// console.log(addToDb.data.msg);
-				this.i(addToDb.data.msg);
-			} else {
-				this.e("Start Time and End time input is not valid");
-			}
-			this.isLoading = false;
+            let hours=x.getHours();
+            let mins=x.getMinutes();
+            console.log("hours=",hours)
+            console.log("minutes=",mins)
+
+            
+
+
+
+			// this.isLoading = true;
+			// // console.log(this.day);
+			// const startTime = moment(this.startTime, "HH:mm");
+			// const endTime = moment(this.endTime, "HH:mm");
+			// if (endTime.diff(startTime).valueOf() > 0) {
+			// 	const addToDb = await this.callApi("post", "time-slots/add", {
+			// 		teacher_id: this.user.id,
+			// 		start_time: this.startTime,
+			// 		end_time: this.endTime,
+			// 		day_id: this.day,
+			// 	});
+
+			// 	// console.log(addToDb.data.msg);
+			// 	this.i(addToDb.data.msg);
+			// } else {
+			// 	this.e("Start Time and End time input is not valid");
+			// }
+			// this.isLoading = false;
+
+
 		},
 		chooseOption(value) {
 			if (this.options === "index") {
@@ -138,31 +170,13 @@ export default {
 			}
 		},
 	},
-    watch:{
-        seeTime:function(){}
+    // watch:{
+    //     seeTime:function(){}
 
-    },
-    computed:{
-        seeTime(){
-            // console.log("start time is ",this.startTime);
-            // console.log("end time is ",this.endTime);
-            let startTime=moment(this.startTime).format("HH:mm")
-            let time1=moment().format("DD-MM-YYYY");
-            let time2=moment().format("DD-MM-YYYY")
-            time1=moment(time1 +' '+this.startTime).format("DD-MM-YYYY HH:mm").valueOf();  
-            time2=moment(time2 +' '+this.endTime).format("DD-MM-YYYY HH:mm").valueOf();
-            let x=new Date(time1);
-            let y=new Date(time2);
-            console.log(x.valueOf());
-            console.log(y.valueOf());
-            let diff=Math.abs(x-y);
-             console.log("diff",diff)
-            diff=Math.floor(diff /60000);
-            console.log("diff min",diff)
-           
-            //  console.log("start time is ",startTime);
-        }
-    }
+    // },
+    // computed:{
+       
+    // }
 };
 </script>
 
