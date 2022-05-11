@@ -88,6 +88,7 @@ export default {
 			const { data } = await this.callApi("post", "/time-slots/created", {
 				day: newValue,
 			});
+			console.log("data is ", data);
 			this.createdSlots = data;
 		},
 	},

@@ -61,7 +61,15 @@
 								style="padding: 15px 10px"
 							/>
 						</div>
-						<div class="_log_button">
+						<div
+							class="_log_button"
+							v-if="
+								day &&
+								startTime.length === 9 &&
+								endTime.length === 9 &&
+								duration
+							"
+						>
 							<Button
 								@click="addSlot"
 								type="success"
@@ -186,6 +194,7 @@ export default {
 			// number of slots will be allocated if this range of time are all available
 			const slotsRequested = Math.floor(diffInM / this.duration);
 			// console.log("slots requested", slotsRequested);
+			// NUMBER OF SLOTS THAT ARE MADE CONSIDERING TIME AND PREVIOUS CREATED SLOTS
 			let cntOfSlotsCreated = 0;
 			// ************ It will contain starting time's hour and minute ****************
 
@@ -197,8 +206,8 @@ export default {
 			// *********** loop to see and allocate  slots considering slot requests and slots availibility *************
 			for (let i = 1; i <= slotsRequested; i++) {
 				console.log("index=", i);
-				// 	// **************start time =hours and mins *************
-				// 	// *********************ending minute*******************
+				// **************start time =hours and mins *************
+				// *********************ending minute*******************
 				// end time minute
 				let endTimeInM = mins + this.duration;
 				// separating hour and minutes from end time
@@ -235,9 +244,12 @@ export default {
 				console.log(addToDb);
 				if (addToDb?.status === 200) {
 					if (addToDb.data.msg === "possible") {
-						this.s("created");
+						// this.s("created");
 						cntOfSlotsCreated++;
 					}
+				} else {
+					this.w("something went wrong . Please try again");
+					break;
 				}
 				// } else {
 				// 	this.w("something went wrong . Please try again");
@@ -252,10 +264,11 @@ export default {
 					hours = endTimeInH + hours;
 					mins = parseInt(endTimeInM);
 				}
+				// ******SETTING NEW START TIME ********
 				start.set("hour", parseInt(hours));
 				start.set("minute", parseInt(mins));
 			}
-			// this.i(`${cntOfSlotsCreated} slots created`);
+			this.i(`${cntOfSlotsCreated} slots created`);
 
 			// this.isLoading = false;
 		},

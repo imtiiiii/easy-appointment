@@ -24,8 +24,8 @@ export default class TimeSlotsController {
         // console.log("teacher_id= ", teacher_id)
         const newStartTime = moment(start_time);
         const newEndTime = moment(end_time)
-        console.log("front start_time = ", typeof (newStartTime.toString()));
-        console.log("front end_time =", typeof (newEndTime.toString()))
+        // console.log("front start_time = ", (newStartTime.toString()));
+        // console.log("front end_time =", (newEndTime.toString()))
 
         const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).orderBy("start_time", "desc").preload("user");
 
@@ -91,6 +91,7 @@ export default class TimeSlotsController {
         }
         data.start_time = newStartTime.toString();
         data.endTime = newEndTime.toString();
+        console.log("data= ", data)
         const saveToDb = await TimeSlot.create(data);
         return {
             saveToDb,
