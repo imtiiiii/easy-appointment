@@ -154,19 +154,42 @@ export default {
 	computed: {
 		async timings() {
 			if (this.date_today !== null) {
-				let date = moment(this.date_today).format("DD MMM YYYY");
-				let day = moment(this.date_today).isoWeekday();
+				let date = moment(this.date_today);
+				console.log("choosed date ", date.toString());
+				let day = moment(this.date_today).isoWeekday().toString();
 				// console.log(date.toString());
 				// console.log(day.toString());
 				const data = {
 					teacher_id: this.id,
-					day_id: day,
+					day_id: parseInt(day),
 				};
+				console.log("sent data is ", data);
 				const slots = await this.callApi(
 					"get",
 					`time-slots?teacher_id=${this.id}&day_id=${day}`
 				);
-				this.slots = slots.data;
+				// console.log("response data = ", slots.data);
+				for (let i of slots.data) {
+					// store end time to variable
+					let endTime = moment(i.end_time);
+					console.log("end time = ", endTime);
+					// convert end_time string to moment object
+
+					// get only date from choosed date
+					let choosedDate = date.get("date");
+					let choosedDay = date.get("day");
+					let choosedYear = date.get("year");
+					// console.log("choosed date 2 = ", choosedDate);
+					// console.log("choosed day 2 = ", choosedDay);
+					// console.log("choosed day 2 = ", choosedYear);
+
+					// set correct  date of end_time
+					endTime.date(choosedDate);
+					endTime.day(choosedDay);
+					endTime.year(choosedYear);
+					console.log("end time = ", endTime.toString());
+				}
+				// this.slots = slots.data;
 				// console.log(this.slots);
 				// console.log(this.choosedSlotId);
 			}

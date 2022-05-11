@@ -25,7 +25,7 @@ Vue.mixin({
     },
     methods: {
         timeConvert(time) {
-            console.log("time conver called");
+            // console.log("time conver called");
             let newTime = moment(time).format("hh:mm a").toString();
             return newTime;
 
