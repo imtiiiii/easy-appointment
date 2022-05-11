@@ -2,7 +2,8 @@ import Vue from 'vue'
 import ViewUI from 'view-design'
 import locale from 'view-design/dist/locale/en-US' // Change locale, check node_modules/iview/dist/locale
 import { mapGetters } from 'vuex';
-
+import moment from "moment";
+moment().format();
 Vue.use(ViewUI, {
     locale
 })
@@ -23,6 +24,13 @@ Vue.mixin({
         }
     },
     methods: {
+        timeConvert(time) {
+            console.log("time conver called");
+            let newTime = moment(time).format("hh:mm a").toString();
+            return newTime;
+
+            // this.convertedEndTime = endTime.format("hh:mm a");
+        },
         i(msg, i = 'Hey!') {
             this.$Notice.info({
                 title: i,

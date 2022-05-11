@@ -85,13 +85,6 @@ export default {
 		},
 	},
 	methods: {
-		timeConvert(time) {
-			console.log("time conver called");
-			let newTime = moment(time).format("hh:mm a").toString();
-			return newTime;
-
-			// this.convertedEndTime = endTime.format("hh:mm a");
-		},
 		async deleteSlot(slotId, index) {
 			const resData = await this.callApi(
 				"delete",

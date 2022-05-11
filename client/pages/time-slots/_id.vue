@@ -105,13 +105,6 @@ export default {
 		// console.log("created", this.date_today);
 	},
 	methods: {
-		timeConvert(time) {
-			console.log("time conver called");
-			let newTime = moment(time).format("hh:mm a").toString();
-			return newTime;
-
-			// this.convertedEndTime = endTime.format("hh:mm a");
-		},
 		slotId(id) {
 			this.choosedSlotId = id;
 			// console.log("slot id called", this.choosedSlotId);
