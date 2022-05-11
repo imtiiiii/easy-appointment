@@ -42,7 +42,8 @@
 							padding: 15px 0px;
 						"
 					>
-						{{ slot.start_time }} - {{ slot.end_time }}
+						{{ timeConvert(slot.start_time) }} -
+						{{ timeConvert(slot.end_time) }}
 					</button>
 					<div
 						style="margin: 20px 0px"
@@ -104,6 +105,13 @@ export default {
 		// console.log("created", this.date_today);
 	},
 	methods: {
+		timeConvert(time) {
+			console.log("time conver called");
+			let newTime = moment(time).format("hh:mm a").toString();
+			return newTime;
+
+			// this.convertedEndTime = endTime.format("hh:mm a");
+		},
 		slotId(id) {
 			this.choosedSlotId = id;
 			// console.log("slot id called", this.choosedSlotId);
