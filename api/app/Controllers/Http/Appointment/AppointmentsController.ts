@@ -96,7 +96,7 @@ export default class AppointmentsController {
         //     console.log("mili geseeeeeeeeeeeee")
         // }
 
-        const check = await Appointment.query().where("date", '=', endTime)
+        const check = await Appointment.query().where("date", '=', endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
         return check.length
     }
     async appointments(ctx: HttpContextContract) {
