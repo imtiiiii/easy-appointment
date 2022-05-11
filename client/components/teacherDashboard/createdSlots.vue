@@ -11,33 +11,22 @@
 					<th>Options</th>
 				</tr>
 				<tr v-for="(item, index) in createdSlots" :key="index">
-					<td v-if="editFor !== item.id">{{ item.start_time }}</td>
-					<td v-if="editFor === item.id">
-						<vue-timepicker
-							placeholder="start-time"
-							v-model="startTime"
-							style="width: 100%"
-						></vue-timepicker>
+					<td v-if="editFor !== item.id">
+						{{ timeConvert(item.start_time) }}
 					</td>
-					<td v-if="editFor !== item.id">{{ item.end_time }}</td>
-					<td v-if="editFor === item.id">
-						<vue-timepicker
-							placeholder="end-time"
-							v-model="endTime"
-							style="width: 100%"
-						></vue-timepicker>
+
+					<td v-if="editFor !== item.id">
+						{{ timeConvert(item.end_time) }}
 					</td>
+
 					<td style="width: 100%">
-						<button v-on:click="edit(item.id)">
-							{{ editFor === item.id ? "Undo" : "Edit" }}
-						</button>
 						<button
-							v-if="startTime && endTime && editFor === item.id"
-							v-on:click="update(item.id)"
+							style="
+								background-color: #ff0000;
+								padding: 10px 20px;
+							"
+							v-on:click="deleteSlot(item.id, index)"
 						>
-							Update
-						</button>
-						<button v-on:click="deleteSlot(item.id, index)">
 							Delete
 						</button>
 					</td>
@@ -64,6 +53,7 @@
 <script>
 import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 import "vue2-timepicker/dist/VueTimepicker.css";
+import moment from "moment";
 export default {
 	components: {
 		"vue-timepicker": VueTimepicker,
@@ -75,6 +65,8 @@ export default {
 			endTime: "",
 			createdSlots: [],
 			editFor: -1,
+			convertedStartTime: null,
+			convertedEndTime: null,
 		};
 	},
 	async created() {
@@ -88,11 +80,18 @@ export default {
 			const { data } = await this.callApi("post", "/time-slots/created", {
 				day: newValue,
 			});
-			console.log("data is ", data);
+			// console.log("data is ", data);
 			this.createdSlots = data;
 		},
 	},
 	methods: {
+		timeConvert(time) {
+			console.log("time conver called");
+			let newTime = moment(time).format("hh:mm a").toString();
+			return newTime;
+
+			// this.convertedEndTime = endTime.format("hh:mm a");
+		},
 		async deleteSlot(slotId, index) {
 			const resData = await this.callApi(
 				"delete",
@@ -131,13 +130,16 @@ export default {
 table {
 	font-family: arial, sans-serif;
 	border-collapse: collapse;
+	column-gap: 40px;
 }
 
 td,
 th {
 	border: 1px solid #dddddd;
 	text-align: left;
-	padding: 8px;
+	padding: 25px;
+	column-gap: 40px;
+	font-weight: bold;
 }
 
 tr:nth-child(even) {
