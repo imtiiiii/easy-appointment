@@ -153,6 +153,7 @@ export default {
 	},
 	computed: {
 		async timings() {
+			this.slots = [];
 			if (this.date_today !== null) {
 				let date = moment(this.date_today);
 				console.log("choosed date ", date.toString());
@@ -166,6 +167,7 @@ export default {
 					"get",
 					`time-slots?teacher_id=${this.id}&day_id=${day}`
 				);
+				console.log("slots=", slots.data);
 				for (let i of slots.data) {
 					// store end time to  a variable
 					// convert end_time string to moment object
@@ -183,13 +185,18 @@ export default {
 					endTime.date(choosedDate);
 					endTime.day(choosedDay);
 					endTime.year(choosedYear);
-					console.log("end time = ", endTime.toString());
-					const checkForBooked = this.callApi(
+					console.log("end time = ", endTime.toDate().toString());
+					const checkForBooked = await this.callApi(
 						"get",
-						`/appointments/booked?endTime=${endTime.toString()}&teacher_id=${
-							this.id
-						}`
+						`/appointments/booked?endTime=${endTime
+							.toDate()
+							.toString()}&teacher_id=${this.id}`
 					);
+					// console.log(checkForBooked?.data);
+					// this.i(`${checkForBooked.data}`);
+					if (checkForBooked.data === 0) {
+						this.slots.push(i);
+					}
 				}
 				// this.slots = slots.data;
 				// console.log(this.slots);

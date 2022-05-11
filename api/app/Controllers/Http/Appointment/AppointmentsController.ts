@@ -88,7 +88,16 @@ export default class AppointmentsController {
     }
     async alreadyBooked(ctx: HttpContextContract) {
         const data = ctx.request.qs();
-        console.log("data of already booked= ", data)
+        data.teacher_id = parseInt(data.teacher_id)
+        console.log("date hobe ", data.endTime)
+        let tempDate = moment(data.endTime).subtract("06:00:00");
+        let endTime = tempDate.toString()
+        // if (endTime === "Sat May 28 2022 11:00:45 GMT+0600") {
+        //     console.log("mili geseeeeeeeeeeeee")
+        // }
+
+        const check = await Appointment.query().where("date", '=', endTime)
+        return check.length
     }
     async appointments(ctx: HttpContextContract) {
         const data = ctx.request.all();
