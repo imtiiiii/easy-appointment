@@ -86,6 +86,10 @@ export default class AppointmentsController {
         // }
 
     }
+    async alreadyBooked(ctx: HttpContextContract) {
+        const data = ctx.request.qs();
+        console.log("data of already booked= ", data)
+    }
     async appointments(ctx: HttpContextContract) {
         const data = ctx.request.all();
         console.log(data)

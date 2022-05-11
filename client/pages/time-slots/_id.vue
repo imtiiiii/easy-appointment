@@ -157,8 +157,6 @@ export default {
 				let date = moment(this.date_today);
 				console.log("choosed date ", date.toString());
 				let day = moment(this.date_today).isoWeekday().toString();
-				// console.log(date.toString());
-				// console.log(day.toString());
 				const data = {
 					teacher_id: this.id,
 					day_id: parseInt(day),
@@ -168,14 +166,12 @@ export default {
 					"get",
 					`time-slots?teacher_id=${this.id}&day_id=${day}`
 				);
-				// console.log("response data = ", slots.data);
 				for (let i of slots.data) {
-					// store end time to variable
-					let endTime = moment(i.end_time);
-					console.log("end time = ", endTime);
+					// store end time to  a variable
 					// convert end_time string to moment object
-
-					// get only date from choosed date
+					let endTime = moment(i.end_time);
+					// console.log("end time = ", endTime);
+					// get only date from choosed date keeping the time same
 					let choosedDate = date.get("date");
 					let choosedDay = date.get("day");
 					let choosedYear = date.get("year");
@@ -188,6 +184,12 @@ export default {
 					endTime.day(choosedDay);
 					endTime.year(choosedYear);
 					console.log("end time = ", endTime.toString());
+					const checkForBooked = this.callApi(
+						"get",
+						`/appointments/booked?endTime=${endTime.toString()}&teacher_id=${
+							this.id
+						}`
+					);
 				}
 				// this.slots = slots.data;
 				// console.log(this.slots);
