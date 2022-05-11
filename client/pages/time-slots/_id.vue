@@ -58,7 +58,13 @@
 							></Input>
 							<!-- *********** -->
 							<button
-								v-on:click="sendReq(choosedSlotId, id)"
+								v-on:click="
+									sendReq(
+										choosedSlotId,
+										id,
+										timeConvert(slot.end_time)
+									)
+								"
 								:loading="isLoading"
 								:disabled="isLoading"
 								class="update"
@@ -105,40 +111,48 @@ export default {
 		// console.log("created", this.date_today);
 	},
 	methods: {
+		formatTime(time) {
+			console.log("time is ", time);
+			let date = moment(this.date_today);
+			let endTime = moment(time);
+			let choosedDate = date.get("date");
+			let choosedDay = date.get("day");
+			let choosedYear = date.get("year");
+			endTime.date(choosedDate);
+			endTime.day(choosedDay);
+			endTime.year(choosedYear);
+			return endTime.toDate().toString();
+		},
 		slotId(id) {
 			this.choosedSlotId = id;
 			// console.log("slot id called", this.choosedSlotId);
 		},
-		async sendReq(timeSlotId, teacherId) {
-			this.isLoading = true;
-			let date = moment(this.date_today).toString();
-			let day = moment(this.date_today).isoWeekday();
+		async sendReq(timeSlotId, teacherId, end_time) {
+			const currDate = moment(end_time, "HH:mm");
+			let date = this.formatTime(currDate);
+			console.log("end time faisi", date);
+
 			const data = {
 				timeSlotId,
 				date,
 				studentId: this.$store.state.authUser.id,
 				agenda: this.agenda,
+				teacherId,
 			};
+			// console.log("data =====", data);
 			if (this.agenda === null || this.agenda === "") {
 				this.isLoading = false;
 				return this.e("Mention your agenda for meeting");
 			}
 			const req = await this.callApi("post", "/appointments/request", {
 				data,
-				teacherId,
 			});
 
 			// console.log("req is ", req);
 			if (req.status === 200) {
 				this.agenda = "";
 				this.choosedSlotId = -1;
-				if (req.data.msg === "booked") {
-					this.e("This slot is already booked");
-				} else if (req.data.msg === "already requested") {
-					this.e("You have already requested for that slot once");
-				} else if (req.data.msg === "sucessfull") {
-					this.s("Request sent");
-				}
+				this.i(`${req.data.msg}`);
 			} else {
 				this.e("Something went wrong, try again");
 			}
@@ -169,40 +183,20 @@ export default {
 				);
 				console.log("slots=", slots.data);
 				for (let i of slots.data) {
-					// store end time to  a variable
-					// convert end_time string to moment object
-					let endTime = moment(i.end_time);
-					// console.log("end time = ", endTime);
-					// get only date from choosed date keeping the time same
-					let choosedDate = date.get("date");
-					let choosedDay = date.get("day");
-					let choosedYear = date.get("year");
-					// console.log("choosed date 2 = ", choosedDate);
-					// console.log("choosed day 2 = ", choosedDay);
-					// console.log("choosed day 2 = ", choosedYear);
-
-					// set correct  date of end_time
-					endTime.date(choosedDate);
-					endTime.day(choosedDay);
-					endTime.year(choosedYear);
-					console.log("end time = ", endTime.toDate().toString());
+					const endTime = this.formatTime(i.end_time);
+					// console.log("end time fatairam = ", i.end_time);
 					const checkForBooked = await this.callApi(
 						"get",
-						`/appointments/booked?endTime=${endTime
-							.toDate()
-							.toString()}&teacher_id=${this.id}`
+						`/appointments/booked?endTime=${endTime}&teacher_id=${this.id}`
 					);
-					// console.log(checkForBooked?.data);
-					// this.i(`${checkForBooked.data}`);
 					if (checkForBooked.data === 0) {
 						this.slots.push(i);
+						console.log("i is = ", i);
 					}
 				}
-				// this.slots = slots.data;
-				// console.log(this.slots);
-				// console.log(this.choosedSlotId);
 			}
 		},
+
 		disableDates() {
 			let fullDate = moment(); //get the full date
 			let dateOfAmonth = fullDate.get("date"); //date of the month

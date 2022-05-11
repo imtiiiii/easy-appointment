@@ -17,73 +17,27 @@ export default class AppointmentsController {
 
     }
     async request(ctx: HttpContextContract) {
-        let msg = "try again"
-        const all = ctx.request.all();
-        const data = all.data;
-
-        const endTime = await TimeSlot.query().where("id", data.timeSlotId).select("end_time")
-        // console.log("end Time=", endTime[0].$attributes.endTime)
-        let date = moment(data.date)
-        let time = moment(endTime[0].$attributes.endTime, 'HH:mm:ss');
-        console.log("end time is ", time)
-        date.set({
-            hour: time.get('hour'),
-            minute: time.get('minute'),
-            second: time.get('second')
-        });
-        data.date = date.toString();
-        let dateTime = (date + ' ' + time)
-        // console.log("date is= ", data.date)
-        // console.log("all data = ", all)
-        console.log(" data = ", data)
-        const isAvailable = await Appointment.query().preload("forWhichTimeSlot", query => {
-            query.andWhere("teacher_id", all.teacherId)
-        }).andWhere("date", data.date).andWhere("status", "1")
-
-        // console.log("isAvailable size is ", isAvailable.length)
-        for (let i of isAvailable) {
-
-            if (i.forWhichTimeSlot !== null) {
-                return {
-                    msg: "booked"
-                }
+        const data = ctx.request.all().data;
+        console.log("data request = ", data)
+        let tempDate = moment(data.date)
+        let endTime = tempDate.toString()
+        console.log("end time= ", endTime)
+        const check = await Appointment.query().where("student_id", data.studentId).andWhere("teacher_id", data.teacherId)
+            .andWhere("date", "=", endTime)
+        console.log(check.length);
+        if (check.length === 0) {
+            data.date = endTime;
+            const reqSent = await Appointment.create(data);
+            return {
+                reqSent,
+                msg: "request sent"
             }
         }
-        // ******* if already not booked by students ******
-
-        const isAlreadyrequested = await Appointment.query()
-            .where("student_id", data.studentId).andWhere("date", data.date).preload("forWhichTimeSlot").preload("forWhichTimeSlot", query => {
-                query.andWhere("teacher_id", all.teacherId)
-            })
-        console.log("isalready size is ", isAlreadyrequested.length)
-        for (let i of isAlreadyrequested) {
-            console.log("i is = ", i.forWhichTimeSlot)
-            if (i.forWhichTimeSlot !== null) {
-                return {
-                    msg: "already requested"
-                }
+        else {
+            return {
+                msg: "Be paitent! You already requested for that slot once "
             }
         }
-        const req = await Appointment.create(data)
-        return {
-            msg: "sucessfull",
-            req
-        }
-        // console.log("already requested", isAlreadyrequested.length)
-
-
-        // if (isAlreadyrequested.length === 0) {
-        //     const req = await Appointment.create(data)
-        //     return {
-        //         msg: "sucessfull",
-        //         req
-        //     }
-        // }
-        // else {
-        //     return {
-        //         msg: "already requested"
-        //     }
-        // }
 
     }
     async alreadyBooked(ctx: HttpContextContract) {
