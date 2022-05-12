@@ -125,11 +125,21 @@ export default {
 		// console.log(this.user);
 	},
 	methods: {
+		clearData() {
+			this.startTime = "";
+			this.endTime = "";
+			this.duration = "";
+			this.day = "";
+		},
 		async addSlot() {
-			// this.isLoading = true;
+			this.isLoading = true;
 			// console.log("start time = ", this.startTime);
 			// console.log("start time = ", this.endTime);
-
+			this.duration = parseInt(this.duration);
+			if (this.duration === NaN) {
+				this.isLoading = false;
+				return this.e("provide duration properly");
+			}
 			let start = moment();
 			let end = moment();
 			let x = moment(this.startTime, "hh:mm a");
@@ -158,7 +168,7 @@ export default {
 			// console.log("start is ", start.toString());
 			// console.log("end is ", end.toString());
 			if (start.isSame(end) || end.isBefore(start)) {
-				console.log("hello guys");
+				// console.log("hello guys");
 				this.e(
 					"Start and end time are same or end time is behind start time"
 				);
@@ -182,7 +192,7 @@ export default {
 			// // ***********converting milliseconds to seconds***********
 			let diffInM = Math.floor(diffInMs / 60000);
 			// console.log("min difference ", diffInM);
-			this.duration = parseInt(this.duration);
+
 			// console.log("duration is", this.duration);
 			// ***********if single slot duration is greater than the whole start-end time duration *********
 			if (this.duration > diffInM) {
@@ -205,7 +215,7 @@ export default {
 
 			// *********** loop to see and allocate  slots considering slot requests and slots availibility *************
 			for (let i = 1; i <= slotsRequested; i++) {
-				console.log("index=", i);
+				// console.log("index=", i);
 				// **************start time =hours and mins *************
 				// *********************ending minute*******************
 				// end time minute
@@ -213,17 +223,17 @@ export default {
 				// separating hour and minutes from end time
 				// ***************ending minute
 				endTimeInM %= 60;
-				console.log(
-					"end time in  min= ",
-					typeof endTimeInM,
-					endTimeInM
-				);
+				// console.log(
+				// 	"end time in  min= ",
+				// 	typeof endTimeInM,
+				// 	endTimeInM
+				// );
 				// *****************ending hour
 				let endTimeInH = Math.floor((mins + this.duration) / 60);
 				end.set("hour", parseInt(endTimeInH + hours));
 				end.set("minute", parseInt(endTimeInM));
-				console.log("new start time = ", start.toString());
-				console.log("new end time is= ", end.toString());
+				// console.log("new start time = ", start.toString());
+				// console.log("new end time is= ", end.toString());
 
 				// ************* post to db ************
 
@@ -241,7 +251,7 @@ export default {
 					"time-slots/add",
 					data
 				);
-				console.log(addToDb);
+				// console.log(addToDb);
 				if (addToDb?.status === 200) {
 					if (addToDb.data.msg === "possible") {
 						// this.s("created");
@@ -249,6 +259,7 @@ export default {
 					}
 				} else {
 					this.w("something went wrong . Please try again");
+					this.isLoading = false;
 					break;
 				}
 				// } else {
@@ -270,7 +281,7 @@ export default {
 			}
 			this.i(`${cntOfSlotsCreated} slots created`);
 
-			// this.isLoading = false;
+			this.isLoading = false;
 		},
 		chooseOption(value) {
 			if (this.options === "index") {
