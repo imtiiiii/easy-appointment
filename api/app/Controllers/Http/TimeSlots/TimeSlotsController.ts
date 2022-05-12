@@ -89,8 +89,8 @@ export default class TimeSlotsController {
             }
 
         }
-        data.start_time = newStartTime.toString();
-        data.endTime = newEndTime.toString();
+        data.start_time = newStartTime.format("DD-MM-YYYY HH:mm")
+        data.endTime = newEndTime.format("DD-MM-YYYY HH:mm")
         console.log("data= ", data)
         const saveToDb = await TimeSlot.create(data);
         return {

@@ -44,13 +44,9 @@ export default class AppointmentsController {
         const data = ctx.request.qs();
         data.teacher_id = parseInt(data.teacher_id)
         console.log("date hobe ", data.endTime)
-        let tempDate = moment(data.endTime).subtract("06:00:00");
-        let endTime = tempDate.toString()
-        // if (endTime === "Sat May 28 2022 11:00:45 GMT+0600") {
-        //     console.log("mili geseeeeeeeeeeeee")
-        // }
 
-        const check = await Appointment.query().where("date", '=', endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
+
+        const check = await Appointment.query().where("date", '=', data.endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
         return check.length
     }
     async appointments(ctx: HttpContextContract) {

@@ -112,16 +112,22 @@ export default {
 	},
 	methods: {
 		formatTime(time) {
-			console.log("time is ", time);
+			// console.log("time is ", time);
 			let date = moment(this.date_today);
 			let endTime = moment(time);
+			// console.log("end moment", endTime);
 			let choosedDate = date.get("date");
 			let choosedDay = date.get("day");
 			let choosedYear = date.get("year");
-			endTime.date(choosedDate);
-			endTime.day(choosedDay);
-			endTime.year(choosedYear);
-			return endTime.toDate().toString();
+			endTime.set({
+				date: date.get("date"),
+				month: date.get("month"),
+			});
+			// endTime.date(choosedDate);
+			// endTime.day(choosedDay);
+			// endTime.year(choosedYear);
+			// console.log("sending", endTime);
+			return endTime.format("DD-MM-YYYY HH:mm");
 		},
 		slotId(id) {
 			this.choosedSlotId = id;
@@ -184,7 +190,7 @@ export default {
 				console.log("slots=", slots.data);
 				for (let i of slots.data) {
 					const endTime = this.formatTime(i.end_time);
-					// console.log("end time fatairam = ", i.end_time);
+					// console.log("end time failam = ", endTime);
 					const checkForBooked = await this.callApi(
 						"get",
 						`/appointments/booked?endTime=${endTime}&teacher_id=${this.id}`

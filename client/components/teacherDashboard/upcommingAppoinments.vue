@@ -1,107 +1,160 @@
 <template>
-  <div>
-    <div style="display: flex; margin-left: 35%">
-      <div v-if="upCommingAppoinments.length > 0">
-        <table>
-          <tr>
-            <th>Date</th>
-            <th>Day</th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Dept</th>
-            <th>Course</th>
-            <th>Agenda</th>
-            <th>Options</th>
-          </tr>
-          <tr v-for="(item, index) in upCommingAppoinments" :key="index">
-            <th>{{ item.date }}</th>
-            <th>{{ item.forWhichTimeSlot.day.day_name }}</th>
-            <th><button id="link" v-on:click="jumpToProfile(item.byWhichStudent.id)">{{item.byWhichStudent.user_name}}</button> </th>
-            <th>{{ item.byWhichStudent.email }}</th>
-            <th>{{ item.byWhichStudent.dept }}</th>
-            <th>{{ item.byWhichStudent.course }}</th>
-            <th>{{ item.agenda }}</th>
-            <th>
-              <!-- acceptAppointment(item.id,index,1) here 1 means enum value of status accept -->
-              <Button v-on:click="changeStatus(item.id, index, '1')"
-                >Accept</Button
-              >
-              <!-- acceptAppointment(item.id,index,1) here 2 means enum value of status rejection -->
-              <Button v-on:click="changeStatus(item.id, index, '2')"
-                >Reject</Button
-              >
-            </th>
-          </tr>
-        </table>
-      </div>
-      <div v-else style="margin: 50% 130%">
-        <h4 class="_log_form_title">No Upcomming Appoinments Request</h4>
-      </div>
-    </div>
-  </div>
+	<div
+		style="
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			margin: 100px;
+		"
+	>
+		<div>
+			<div v-if="upCommingAppoinments.length > 0">
+				<table>
+					<tr>
+						<th>Date</th>
+						<th>Day</th>
+						<th>User Name</th>
+						<th>Email</th>
+						<th>Dept</th>
+
+						<th>Agenda</th>
+						<th>Options</th>
+					</tr>
+					<tr
+						v-for="(item, index) in upCommingAppoinments"
+						:key="index"
+					>
+						<th style="padding: 0px 40px">
+							<h6 style="width: 100%">
+								{{
+									formatDate(
+										item.date,
+										item.forWhichTimeSlot.start_time,
+										item.forWhichTimeSlot.end_time
+									)
+								}}
+							</h6>
+						</th>
+						<th>{{ item.forWhichTimeSlot.day.day_name }}</th>
+						<th>
+							<button
+								id="link"
+								v-on:click="
+									jumpToProfile(item.byWhichStudent.id)
+								"
+							>
+								{{ item.byWhichStudent.user_name }}
+							</button>
+						</th>
+						<th>{{ item.byWhichStudent.email }}</th>
+						<th>{{ item.byWhichStudent.dept }}</th>
+
+						<th>{{ item.agenda }}</th>
+						<th>
+							<!-- acceptAppointment(item.id,index,1) here 1 means enum value of status accept -->
+							<Button
+								v-on:click="changeStatus(item.id, index, '1')"
+								>Accept</Button
+							>
+							<!-- acceptAppointment(item.id,index,1) here 2 means enum value of status rejection -->
+							<Button
+								v-on:click="changeStatus(item.id, index, '2')"
+								>Reject</Button
+							>
+						</th>
+					</tr>
+				</table>
+			</div>
+			<div v-else style="margin: 50% 130%">
+				<h4 class="_log_form_title">
+					No Upcomming Appoinments Request
+				</h4>
+			</div>
+		</div>
+	</div>
 </template>
 <script>
+import moment from "moment";
+moment().format();
 export default {
-  data() {
-    return {
-      upCommingAppoinments: [],
-    };
-  },
-  async created() {
-    const res = await this.callApi("get", "/appointments/upCommingAppoinments");
-    const data = res.data;
-    this.upCommingAppoinments = data;
-    // console.log(res);
-    // console.log(this.upCommingAppoinments);
-  },
-  methods: {
-    async changeStatus(itemId, index, status) {
-      try {
-        const data = await this.callApi("put", "/appointments/status", {
-          appointmentId: itemId,
-          status: status,
-        });
-        this.upCommingAppoinments.splice(index, 1);
-        const messageBody =
-          status == "1" ? "Appointment Accepted" : "Appointment Rejected";
-        this.i(messageBody);
-      } catch (error) {
-        this.swr();
-      }
-    },
-    jumpToProfile(profileId) {
-      this.$router.push(`profile/${profileId}`);
-    },
-  },
+	data() {
+		return {
+			upCommingAppoinments: [],
+		};
+	},
+	async created() {
+		const res = await this.callApi(
+			"get",
+			"/appointments/upCommingAppoinments"
+		);
+		const data = res.data;
+		console.log("up coming data = ", data);
+		this.upCommingAppoinments = data;
+		// console.log(res);
+		// console.log(this.upCommingAppoinments);
+	},
+	methods: {
+		async changeStatus(itemId, index, status) {
+			try {
+				const data = await this.callApi("put", "/appointments/status", {
+					appointmentId: itemId,
+					status: status,
+				});
+				this.upCommingAppoinments.splice(index, 1);
+				const messageBody =
+					status == "1"
+						? "Appointment Accepted"
+						: "Appointment Rejected";
+				this.i(messageBody);
+			} catch (error) {
+				this.swr();
+			}
+		},
+		jumpToProfile(profileId) {
+			this.$router.push(`profile/${profileId}`);
+		},
+		formatDate(date, startTime, endTime) {
+			console.log(startTime);
+			console.log(endTime);
+			const newDay = moment(date).format("DD-MM-YYYY");
+			const newStartTime = moment(startTime).format("hh:mm a");
+			const newEndTime = moment(endTime).format("hh:mm a");
+			console.log(newStartTime);
+			console.log(newEndTime);
+			const newTime =
+				newDay + " " + newStartTime + " - " + " " + newEndTime;
+			return newTime;
+		},
+	},
 };
 </script>
 
 <style>
 table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	padding: 100px;
 }
 
-td,
 th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
+	border: 3px solid #dddddd;
+}
+td {
+	padding: 10px 30px;
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+	background-color: #dddddd;
 }
 button#link {
-  background: none !important;
-  border: none;
-  padding: 0 !important;
-  /*optional*/
-  font-family: arial, sans-serif;
-  /*input has OS specific font-family*/
-  color: #069;
-  text-decoration: underline;
-  cursor: pointer;
+	background: none !important;
+	border: none;
+	padding: 0 !important;
+	/*optional*/
+	font-family: arial, sans-serif;
+	/*input has OS specific font-family*/
+	color: #069;
+	text-decoration: underline;
+	cursor: pointer;
 }
 </style>
