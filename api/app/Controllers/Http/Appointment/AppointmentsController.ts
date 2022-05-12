@@ -19,14 +19,11 @@ export default class AppointmentsController {
     async request(ctx: HttpContextContract) {
         const data = ctx.request.all().data;
         console.log("data request = ", data)
-        let tempDate = moment(data.date)
-        let endTime = tempDate.toString()
-        console.log("end time= ", endTime)
         const check = await Appointment.query().where("student_id", data.studentId).andWhere("teacher_id", data.teacherId)
-            .andWhere("date", "=", endTime)
+            .andWhere("date", "=", data.date)
         console.log(check.length);
         if (check.length === 0) {
-            data.date = endTime;
+
             const reqSent = await Appointment.create(data);
             return {
                 reqSent,
