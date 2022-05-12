@@ -4,7 +4,7 @@
 			background-color: #9cb0ba;
 			margin: 10px 20px;
 			padding: 20px 10px;
-			height: 200vh;
+			height: 400vh;
 		"
 	>
 		<div>
@@ -174,8 +174,11 @@ export default {
 			this.slots = [];
 			if (this.date_today !== null) {
 				let date = moment(this.date_today);
+				// console.log("today date= ", date);
 				console.log("choosed date ", date.toString());
 				let day = moment(this.date_today).isoWeekday().toString();
+				const selectedDate = date.format("DD-MM-YYYY");
+				console.log("selected date = ", selectedDate);
 				const data = {
 					teacher_id: this.id,
 					day_id: parseInt(day),
@@ -183,20 +186,12 @@ export default {
 				console.log("sent data is ", data);
 				const slots = await this.callApi(
 					"get",
-					`time-slots?teacher_id=${this.id}&day_id=${day}`
+					`time-slots?teacher_id=${this.id}&day_id=${day}&date=${selectedDate}`
 				);
-				console.log("slots=", slots.data);
-				for (let i of slots.data) {
-					const endTime = this.formatTime(i.end_time);
-					// console.log("end time failam = ", endTime);
-					const checkForBooked = await this.callApi(
-						"get",
-						`/appointments/booked?endTime=${endTime}&teacher_id=${this.id}`
-					);
-					if (checkForBooked.data === 0) {
-						this.slots.push(i);
-						console.log("i is = ", i);
-					}
+				if (slots?.status === 200) {
+					this.slots = slots.data;
+				} else {
+					this.e("something went wrong");
 				}
 			}
 		},

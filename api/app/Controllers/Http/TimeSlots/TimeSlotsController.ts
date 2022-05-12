@@ -103,9 +103,40 @@ export default class TimeSlotsController {
     }
 
     public async slots(ctx: HttpContextContract) {
-        const { teacher_id, day_id } = ctx.request.qs();
-        const all = await TimeSlot.query().where("teacherId", teacher_id).andWhere("dayId", day_id).orderBy("start_time", "asc")
-        return all;
+        const availableSlots = new Array();
+        const { teacher_id, day_id, date } = ctx.request.qs();
+        console.log("selected date = ", date)
+        const all = await TimeSlot.query().where("teacherId", teacher_id).andWhere("dayId", day_id).orderBy("start_time", "asc").preload("allAppointment", (appointmentQuery) => {
+
+        })
+        for (let i of all) {
+            if (i.allAppointment.length === 0) {
+                console.log("im here ", i.id)
+                availableSlots.push(i);
+            }
+            else {
+                for (let x of i.allAppointment) {
+                    // console.log(x.$attributes.timeSlotId)
+                    const checkBookedDate = (x.$attributes.date);
+                    // console.log("booked date ", checkBookedDate)
+                    let tempDate = moment(checkBookedDate, "DD-MM-YYYY")
+                    // console.log("moment = ", tempDate.format("DD-MM-YYYY").toString())
+                    const bookedDate = tempDate.format("DD-MM-YYYY").toString()
+                    console.log("booked date ", bookedDate)
+                    if (date === bookedDate && x.$attributes.status === "0") {
+                        console.log("bookedDate= ", bookedDate)
+                        availableSlots.push(i);
+                        console.log("appoint", x.$attributes.timeSlotId)
+                        console.log("status", typeof x.$attributes.status)
+                    }
+                    else if (date !== bookedDate) {
+                        availableSlots.push(i);
+                    }
+                }
+            }
+        }
+        // return all;
+        return availableSlots
     }
 
     //TODO: This Controller only accessable by teacher type user
