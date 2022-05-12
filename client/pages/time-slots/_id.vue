@@ -59,11 +59,7 @@
 							<!-- *********** -->
 							<button
 								v-on:click="
-									sendReq(
-										choosedSlotId,
-										id,
-										timeConvert(slot.end_time)
-									)
+									sendReq(choosedSlotId, id, slot.end_time)
 								"
 								:loading="isLoading"
 								:disabled="isLoading"
@@ -134,9 +130,11 @@ export default {
 			// console.log("slot id called", this.choosedSlotId);
 		},
 		async sendReq(timeSlotId, teacherId, end_time) {
-			const currDate = moment(end_time, "HH:mm");
+			const currDate = moment(end_time);
+
+			// console.log("currDate", currDate);
 			let date = this.formatTime(currDate);
-			console.log("end time faisi", date);
+			// console.log("end time faisilissss", date);
 
 			const data = {
 				timeSlotId,
