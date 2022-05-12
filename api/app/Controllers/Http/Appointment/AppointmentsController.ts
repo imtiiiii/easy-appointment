@@ -80,4 +80,10 @@ export default class AppointmentsController {
         }
         return await this.appoinmentService.status(ctx);
     }
+    public async accepted(ctx: HttpContextContract) {
+        const data = ctx.request.qs()
+        console.log(data)
+        const appointments = await Appointment.query().where("teacher_id", data.id).andWhere("status", "1").preload("byWhichStudent").preload("forWhichTimeSlot")
+        return appointments
+    }
 }

@@ -65,10 +65,8 @@
 					</tr>
 				</table>
 			</div>
-			<div v-else style="margin: 50% 130%">
-				<h4 class="_log_form_title">
-					No Upcomming Appoinments Request
-				</h4>
+			<div v-else style="">
+				<h4 class="">No Upcomming Appoinments Request</h4>
 			</div>
 		</div>
 	</div>

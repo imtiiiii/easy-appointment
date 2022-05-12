@@ -5,4 +5,5 @@ Route.group(() => {
     Route.get("/", "Appointment/AppointmentsController.appointments") //By teacher
     Route.put("/status", "Appointment/AppointmentsController.status") // By teacher
     Route.get("/booked", "Appointment/AppointmentsController.alreadyBooked")
+    Route.get("/accepted", "Appointment/AppointmentsController.accepted")//by teacher
 }).prefix("appointments")

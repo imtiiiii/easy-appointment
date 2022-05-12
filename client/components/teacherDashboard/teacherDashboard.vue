@@ -13,6 +13,9 @@
 						: "Appoinments Request"
 				}}
 			</button>
+			<button v-on:click="jumptoAcceptedRequest">
+				See accepted appoinments
+			</button>
 		</div>
 		<!-- ***********CREATED SLOT ********* -->
 		<div class="main-content" v-if="options === 'index'">
@@ -125,6 +128,9 @@ export default {
 		// console.log(this.user);
 	},
 	methods: {
+		jumptoAcceptedRequest() {
+			this.$router.push(`/accepted-appointments/${this.user.id}`);
+		},
 		clearData() {
 			this.startTime = "";
 			this.endTime = "";
@@ -235,7 +241,7 @@ export default {
 				// console.log("new start time = ", start.toString());
 				// console.log("new end time is= ", end.toString());
 
-				// ************* post to db ************
+				// ************* POST TO DB ****************
 
 				const start_time = start;
 				const end_time = end;
@@ -262,10 +268,7 @@ export default {
 					this.isLoading = false;
 					break;
 				}
-				// } else {
-				// 	this.w("something went wrong . Please try again");
-				// 	break;
-				// }
+
 				// **********************************************
 
 				if (endTimeInM === 59) {
