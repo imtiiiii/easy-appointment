@@ -13,7 +13,11 @@
 						: "Appoinments Request"
 				}}
 			</button>
-			<button v-on:click="jumptoAcceptedRequest">
+			<button
+				style="marging: 50px 20px"
+				class="_log_btn _2menu_long"
+				v-on:click="jumptoAcceptedRequest"
+			>
 				See accepted appoinments
 			</button>
 		</div>

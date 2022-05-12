@@ -1,18 +1,37 @@
 <template>
 	<div style="margin: 100px 0px">
-		<div>
+		<div
+			style="
+				height: 100%;
+				background-color: #b8caff;
+				width: 70%;
+				margin: 30px auto;
+				padding-top: 1px;
+				box-shadow: 10px 10px 5px #888888;
+			"
+		>
 			<div class="slot">
 				<h6>Date</h6>
 				<h6>Agenda</h6>
-				<h6>Time</h6>
 				<h6>Student</h6>
 				<h6>Depertment</h6>
 			</div>
 			<div class="slot" v-for="(data, index) of data" :key="index">
-				<h4>data</h4>
-				<h4>{{ data.agenda }}</h4>
-				<h4>time</h4>
 				<h4>
+					{{
+						formatDate(
+							data.date,
+							data.forWhichTimeSlot.start_time,
+							data.forWhichTimeSlot.end_time
+						)
+					}}
+				</h4>
+				<h4>{{ data.agenda }}</h4>
+
+				<h4
+					v-on:click="jumpToProfile(data.byWhichStudent.id)"
+					style="color: blue; cursor: pointer"
+				>
 					{{
 						data.byWhichStudent.first_name +
 						" " +
@@ -43,6 +62,11 @@ export default {
 		}
 		console.log("hello", this.data);
 	},
+	methods: {
+		jumpToProfile(id) {
+			this.$router.push(`/profile/${id}`);
+		},
+	},
 };
 </script>
 
@@ -50,7 +74,7 @@ export default {
 .slot {
 	text-align: center;
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	/* grid-row-gap: 100px; */
 	grid-column-gap: 60px;
 	margin: 10px 0px 100px 0px;

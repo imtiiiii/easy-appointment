@@ -31,6 +31,21 @@ Vue.mixin({
 
             // this.convertedEndTime = endTime.format("hh:mm a");
         },
+        formatDate(date, startTime, endTime) {
+            console.log(date);
+            console.log(startTime);
+            console.log(endTime);
+            const tempDay = moment(date, "DD-MM-YYYY");
+            const newDate = moment(tempDay).format("DD-MM-YYYY");
+            console.log("newDay= ", newDate);
+            const newStartTime = moment(startTime).format("hh:mm a");
+            const newEndTime = moment(endTime).format("hh:mm a");
+            // console.log(newStartTime);
+            // console.log(newEndTime);
+            const newTime =
+                newDate + " " + newStartTime + " - " + " " + newEndTime;
+            return newTime;
+        },
         i(msg, i = 'Hey!') {
             this.$Notice.info({
                 title: i,
