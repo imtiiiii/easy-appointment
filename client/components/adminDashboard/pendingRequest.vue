@@ -23,7 +23,7 @@
 
 				<div style="margin: 30px 0px">
 					<button
-						v-on:click.once="accept(request.id)"
+						v-on:click.once="accept(request.id, index)"
 						class="accept"
 						style="
 							background-color: #42cc8c;
@@ -36,7 +36,7 @@
 						Accept
 					</button>
 					<button
-						v-on:click.once="reject(request.id)"
+						v-on:click.once="reject(request.id, index)"
 						class="reject"
 						style="
 							background-color: #ff531d;
@@ -58,7 +58,7 @@
 export default {
 	data() {
 		return {
-			requests: null,
+			requests: [],
 		};
 	},
 	async created() {
@@ -69,7 +69,7 @@ export default {
 		// console.log("requests=>", this.requests);
 	},
 	methods: {
-		async accept(id) {
+		async accept(id, index) {
 			this.isLoading = true;
 			const accept = await this.callApi(
 				"put",
@@ -82,12 +82,13 @@ export default {
 			this.isLoading = false;
 			// console.log("accept is = ", accept.status);
 			if (accept.status === 200) {
+				this.requests.splice(index, 1);
 				this.s("Request accepted successfully");
 			} else {
 				this.e("Try again");
 			}
 		},
-		async reject(id) {
+		async reject(id, index) {
 			this.isLoading = true;
 			const reject = await this.callApi(
 				"put",
@@ -99,6 +100,7 @@ export default {
 			);
 			this.isLoading = false;
 			if (reject.status === 200) {
+				this.requests.splice(index, 1);
 				this.s("Rejected");
 			} else {
 				this.e("Try again");

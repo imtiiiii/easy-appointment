@@ -41,6 +41,7 @@
 					<div style="margin: 30px 0px">
 						<button
 							v-on:click.once="update(teacher.id)"
+							:disabled="isLoading"
 							class="update"
 							style="
 								background-color: #42cc8c;
@@ -48,18 +49,17 @@
 								padding: 15px 0px;
 							"
 						>
-							Update
+							{{ isLoading ? "Please wait..." : "Update" }}
 						</button>
 						<button
-							v-on:click.once="erase(teacher.id)"
+							v-on:click="erase(teacher.id, index)"
+							:disabled="isLoading"
 							class="reject"
 							style="
 								background-color: #ff531d;
 								width: 100px;
 								padding: 15px 0px;
 							"
-							:loading="isLoading"
-							:disabled="loading"
 						>
 							{{ isLoading ? "Please wait..." : "Delete" }}
 						</button>
@@ -88,7 +88,7 @@
 export default {
 	data() {
 		return {
-			teachers: null,
+			teachers: [],
 			user: null,
 			searchInput: "",
 		};
@@ -98,15 +98,18 @@ export default {
 	},
 
 	methods: {
-		async erase(id) {
+		async erase(id, index) {
+			console.log("erase called =", id);
 			this.isLoading = true;
 			const dlt = await this.callApi("delete", "/auth/delete", {
 				id,
 			});
+
 			this.isLoading = false;
 			if (dlt.status !== 200) {
 				this.e("Something went wrong.Try again");
 			} else {
+				this.teachers.splice(index, 1);
 				this.s("Successfull");
 			}
 		},
@@ -133,7 +136,7 @@ export default {
 					// console.log(this.teachers);
 				}
 			} else {
-				this.teachers = null;
+				this.teachers = [];
 				const teachers = await this.callApi(
 					"get",
 					`/dashboard/teacher-list/search?value=${this.searchInput}`
