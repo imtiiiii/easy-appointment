@@ -80,30 +80,32 @@ export default {
 				"get",
 				`/appointments?id=${this.$store.state.authUser.id}&type=${this.type}`
 			);
+			console.log("res= ", res);
 			// this.appointments = res.data;
 			// console.log(res.data);
-			for (let i of res.data) {
-				// console.log("type= ", this.type);
-				if (this.type == "upcoming") {
-					let slot = moment(i.date);
-					let currDate = moment();
-					const compare = slot.isBefore(currDate);
-					// console.log("??=", slot.isBefore(currDate));
-					if (compare === false) {
-						i.date = moment(i.date).format("DD-MM-YYYY");
-						this.appointments.push(i);
-					}
-				} else if (this.type == "history") {
-					let slot = moment(i.date);
-					let currDate = moment();
-					const compare = slot.isBefore(currDate);
-					// console.log("??=", slot.isBefore(currDate));
-					if (compare === true) {
-						i.date = moment(i.date).format("DD-MM-YYYY");
-						this.appointments.push(i);
-					}
-				}
-			}
+			// for (let i of res.data) {
+			// 	console.log("i=", i);
+			// 	// console.log("type= ", this.type);
+			// 	if (this.type == "upcoming") {
+			// 		let slot = moment(i.date);
+			// 		let currDate = moment();
+			// 		const compare = slot.isBefore(currDate);
+			// 		// console.log("??=", slot.isBefore(currDate));
+			// 		if (compare === false) {
+			// 			i.date = moment(i.date).format("DD-MM-YYYY");
+			// 			this.appointments.push(i);
+			// 		}
+			// 	} else if (this.type == "history") {
+			// 		let slot = moment(i.date);
+			// 		let currDate = moment();
+			// 		const compare = slot.isBefore(currDate);
+			// 		// console.log("??=", slot.isBefore(currDate));
+			// 		if (compare === true) {
+			// 			i.date = moment(i.date).format("DD-MM-YYYY");
+			// 			this.appointments.push(i);
+			// 		}
+			// 	}
+			// }
 			// console.log("final", this.appointments);
 		},
 	},

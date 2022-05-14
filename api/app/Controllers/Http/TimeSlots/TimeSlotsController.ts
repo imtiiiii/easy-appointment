@@ -15,7 +15,7 @@ export default class TimeSlotsController {
     }
     public async add(ctx: HttpContextContract) {
         const data = ctx.request.all();
-        // console.log("data is = ", data)
+        console.log("data is = ", data)
         const { day_id } = data;
         const { teacher_id } = data;
         let { start_time } = data;

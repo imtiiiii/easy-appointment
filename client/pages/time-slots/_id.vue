@@ -108,32 +108,38 @@ export default {
 	},
 	methods: {
 		formatTime(time) {
-			// console.log("time is ", time);
+			console.log("fun time is 222222222", time);
 			let date = moment(this.date_today);
-			let endTime = moment(time);
-			// console.log("end moment", endTime);
-			let choosedDate = date.get("date");
-			let choosedDay = date.get("day");
-			let choosedYear = date.get("year");
-			endTime.set({
-				date: date.get("date"),
-				month: date.get("month"),
-			});
-			// endTime.date(choosedDate);
-			// endTime.day(choosedDay);
-			// endTime.year(choosedYear);
-			// console.log("sending", endTime);
-			return endTime.format("DD-MM-YYYY HH:mm");
+			console.log("date today = ", date.toString());
+			let endTime = moment(`${time}`);
+			console.log("end moment", endTime.toString());
+			// let choosedDate = date.get("date");
+			// let choosedDay = date.get("day");
+			// let choosedYear = date.get("year");
+			let hour = endTime.get("hour");
+			let min = endTime.get("minute");
+			// console.log("choose date ", choosedDate);
+			// console.log("choose day ", choosedDay);
+			// console.log("choose year ", choosedYear);
+			console.log("choose hour ", hour);
+			console.log("min ", min);
+			date.set({ hour: hour, minute: min });
+			console.log("getting = ", date.toString());
+			const sendDate = date.format("DD-MM-YYYY HH:mm").toString();
+			// console.log(sendDate.toString());
+			return sendDate;
 		},
 		slotId(id) {
 			this.choosedSlotId = id;
 			// console.log("slot id called", this.choosedSlotId);
 		},
 		async sendReq(timeSlotId, teacherId, end_time) {
-			const currDate = moment(end_time);
-
-			// console.log("currDate", currDate);
-			let date = this.formatTime(currDate);
+			// console.log("end_time = ", end_time);
+			// let x = new Date(end_time);
+			// console.log("xxx", x);
+			let currDate = moment(`${end_time}`, `DD-MM-YYYY HH:mm`);
+			console.log("end time = ", currDate.toString());
+			let date = this.formatTime(currDate.toString());
 			// console.log("end time faisilissss", date);
 
 			const data = {
@@ -143,7 +149,7 @@ export default {
 				agenda: this.agenda,
 				teacherId,
 			};
-			// console.log("data =====", data);
+			console.log("data =====", data);
 			if (this.agenda === null || this.agenda === "") {
 				this.isLoading = false;
 				return this.e("Mention your agenda for meeting");
@@ -152,8 +158,8 @@ export default {
 				data,
 			});
 
-			// console.log("req is ", req);
-			if (req.status === 200) {
+			console.log("req is ", req);
+			if (req?.status === 200) {
 				this.agenda = "";
 				this.choosedSlotId = -1;
 				this.i(`${req.data.msg}`);

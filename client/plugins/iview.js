@@ -25,19 +25,21 @@ Vue.mixin({
     },
     methods: {
         timeConvert(time) {
-            // console.log("time conver called");
-            let newTime = moment(time).format("hh:mm a").toString();
-            return newTime;
+            // console.log("time conver called", time);
 
+            let newTime = moment(time, "DD-MM-YYYY HH:mm")
+            const sendTime = newTime.format("hh:mm a").toString();
+            // console.log("new time plugin ", sendTime.toString())
+            return sendTime
             // this.convertedEndTime = endTime.format("hh:mm a");
         },
         formatDate(date, startTime, endTime) {
-            console.log(date);
-            console.log(startTime);
-            console.log(endTime);
+            console.log("format date ", date);
+            console.log("format start time ", startTime);
+            console.log("format end time ", endTime);
             const tempDay = moment(date, "DD-MM-YYYY");
             const newDate = moment(tempDay).format("DD-MM-YYYY");
-            console.log("newDay= ", newDate);
+            // console.log("newDay= ", newDate);
             const newStartTime = moment(startTime).format("hh:mm a");
             const newEndTime = moment(endTime).format("hh:mm a");
             // console.log(newStartTime);
