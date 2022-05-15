@@ -22,8 +22,12 @@ export default class TimeSlotsController {
         const { teacher_id } = data;
         let { start_time } = data;
         let { end_time } = data;
-        start_time = moment(start_time).format("DD-MM-YYYY HH:mm")
-        end_time = moment(end_time).format("DD-MM-YYYY HH:mm")
+        start_time = moment(start_time).format("HH:mm")
+        end_time = moment(end_time).format("HH:mm")
+        console.log("start_time", start_time)
+        console.log("end_time", end_time)
+        const query = await TimeSlot.query().where("day_id", day_id).andWhere("start_time", start_time).orWhere("end_time", end_time)
+        console.log(query);
 
         const newStartTime = moment(start_time, "DD-MM-YYYY HH:mm");
         const newEndTime = moment(end_time, "DD-MM-YYYY HH:mm")
@@ -84,9 +88,9 @@ export default class TimeSlotsController {
         }
         data.startTime = newStartTime.format(" HH:mm").toString();
         data.endTime = newEndTime.format("HH:mm").toString();
-        const saveToDb = await TimeSlot.create(data);
+        // const saveToDb = await TimeSlot.create(data);
         return {
-            saveToDb,
+            // saveToDb,
             msg: "possible"
         }
     }
