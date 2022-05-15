@@ -11,6 +11,8 @@ export default class Appointments extends BaseSchema {
             table.enum("status", ['0', '1', '2']).defaultTo('0')
             table.string("agenda").notNullable()
             table.string("date").notNullable();
+            table.string("start_time").notNullable();
+            table.string("end_time").notNullable();
             table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
             table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
         })
