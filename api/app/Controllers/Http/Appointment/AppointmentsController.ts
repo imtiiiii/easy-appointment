@@ -23,7 +23,6 @@ export default class AppointmentsController {
             .andWhere("date", "=", data.date).andWhere("start_time", data.startTime).andWhere("end_time", data.endTime)
         console.log(check.length);
         if (check.length === 0) {
-
             const reqSent = await Appointment.create(data);
             return {
                 reqSent,
@@ -37,15 +36,15 @@ export default class AppointmentsController {
         }
 
     }
-    async alreadyBooked(ctx: HttpContextContract) {
-        const data = ctx.request.qs();
-        data.teacher_id = parseInt(data.teacher_id)
-        console.log("date hobe ", data.endTime)
+    // async alreadyBooked(ctx: HttpContextContract) {
+    //     const data = ctx.request.qs();
+    //     data.teacher_id = parseInt(data.teacher_id)
+    //     console.log("date hobe ", data.endTime)
 
 
-        const check = await Appointment.query().where("date", '=', data.endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
-        return check.length
-    }
+    //     const check = await Appointment.query().where("date", '=', data.endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
+    //     return check.length
+    // }
     async appointments(ctx: HttpContextContract) {
         const data = ctx.request.all();
         // console.log(data)

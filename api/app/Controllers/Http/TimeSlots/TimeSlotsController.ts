@@ -3,6 +3,8 @@ import TimeSlot from '../../../Models/TimeSlot'
 import TimeSlotValidator from './TimeSlotValidator';
 import TimeSlotService from './TimeSlotService';
 import moment from 'moment';
+import { DateTime } from 'luxon';
+import Day from 'App/Models/Day';
 moment().format();
 // import User from 'App/Models/User';
 export default class TimeSlotsController {
@@ -32,13 +34,9 @@ export default class TimeSlotsController {
         const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).preload("user");
         console.log("teacher length = ", teacher.length)
         for (let i of teacher) {
-            // console.log("oldstartTime=", i.startTime)
-            // console.log("endTime=", i.endTime)
+
             const oldStartTime = moment(i.startTime, "DD-MM-YYYY HH:mm")
             const oldEndTime = moment(i.endTime, "DD-MM-YYYY HH:mm")
-            // console.log("old start time ", oldStartTime.toString())
-            // console.log("old end time ", oldEndTime.toString())
-            // *********** START TIME VALIDATION **********
             if (newStartTime.isSame(oldStartTime)) {
                 console.log("iam 1")
                 return {
@@ -53,7 +51,6 @@ export default class TimeSlotsController {
                         msg: "not possible"
                     }
                 }
-
             }
             // ******* END TIME VALIDATION ********
             if (newEndTime.isSame(oldStartTime) || newEndTime.isSame(oldEndTime)) {
@@ -69,10 +66,8 @@ export default class TimeSlotsController {
                         msg: "not possible"
                     }
                 }
-
             }
             // ********** START AND END TIME BOTH **********
-
             // ********* WHEN NEW START TIME IS AVAILABLE BUT END TIME CONFLICT WITH OTHER TIME SLOT'S START OR END TIME  = NOT POSSIBLE *************
             if (newStartTime.isBefore(oldStartTime)) {
                 if (newEndTime.isAfter(oldStartTime)) {
@@ -81,7 +76,6 @@ export default class TimeSlotsController {
                         msg: "not possible"
                     }
                 }
-
             }
             // ********** WHEN NEW START TIME MORE RECENT THAN OLD START TIMIE  **********
             // BUT NEW END TIME IS LESS RECENT THAN OLD END TIME . SO THE SLOT CONFLICTS=NOT POSSIBLE
@@ -91,56 +85,24 @@ export default class TimeSlotsController {
                     msg: "not possible"
                 }
             }
-
         }
         data.startTime = newStartTime.format(" HH:mm").toString();
         data.endTime = newEndTime.format("HH:mm").toString();
-        console.log("data= ", data)
         const saveToDb = await TimeSlot.create(data);
         return {
             saveToDb,
             msg: "possible"
         }
-
-
-
     }
 
     public async slots(ctx: HttpContextContract) {
-        const availableSlots = new Array();
         const { teacher_id, day_id, date } = ctx.request.qs();
-        console.log("selected date = ", date)
-        const all = await TimeSlot.query().where("teacherId", teacher_id).andWhere("dayId", day_id).orderBy("start_time", "asc").preload("allAppointment", (appointmentQuery) => {
-
+        console.log("date= ", date)
+        const slots = await TimeSlot.query().where("teacher_id", teacher_id).andWhere("day_id", day_id).whereDoesntHave("allAppointment", query => {
+            query.where("status", "1")
+                .andWhere("date", date)
         })
-        for (let i of all) {
-            if (i.allAppointment.length === 0) {
-                console.log("im here ", i.id)
-                availableSlots.push(i);
-            }
-            else {
-                for (let x of i.allAppointment) {
-                    // console.log(x.$attributes.timeSlotId)
-                    const checkBookedDate = (x.$attributes.date);
-                    // console.log("booked date ", checkBookedDate)
-                    let tempDate = moment(checkBookedDate, "DD-MM-YYYY")
-                    // console.log("moment = ", tempDate.format("DD-MM-YYYY").toString())
-                    const bookedDate = tempDate.format("DD-MM-YYYY").toString()
-                    console.log("booked date ", bookedDate)
-                    if (date === bookedDate && x.$attributes.status === "0") {
-                        console.log("bookedDate= ", bookedDate)
-                        availableSlots.push(i);
-                        console.log("appoint", x.$attributes.timeSlotId)
-                        console.log("status", typeof x.$attributes.status)
-                    }
-                    else if (date !== bookedDate) {
-                        availableSlots.push(i);
-                    }
-                }
-            }
-        }
-        // return all;
-        return availableSlots
+        return slots
     }
 
     //TODO: This Controller only accessable by teacher type user
