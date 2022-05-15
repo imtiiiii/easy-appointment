@@ -30,7 +30,7 @@ Vue.mixin({
             let newTime = moment(`${time}`, "HH:mm:ss")
             // console.log("new time = ", newTime.toString())
             const sendTime = newTime.format("hh:mm a").toString();
-            console.log("new time plugin ", sendTime)
+            // console.log("new time plugin ", sendTime)
             return sendTime
             // this.convertedEndTime = endTime.format("hh:mm a");
         },

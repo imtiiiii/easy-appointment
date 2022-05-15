@@ -59,7 +59,12 @@
 							<!-- *********** -->
 							<button
 								v-on:click="
-									sendReq(choosedSlotId, id, slot.end_time)
+									sendReq(
+										choosedSlotId,
+										id,
+										slot.start_time,
+										slot.end_time
+									)
 								"
 								:loading="isLoading"
 								:disabled="isLoading"
@@ -121,10 +126,10 @@ export default {
 			// console.log("choose date ", choosedDate);
 			// console.log("choose day ", choosedDay);
 			// console.log("choose year ", choosedYear);
-			console.log("choose hour ", hour);
-			console.log("min ", min);
+			// console.log("choose hour ", hour);
+			// console.log("min ", min);
 			date.set({ hour: hour, minute: min });
-			console.log("getting = ", date.toString());
+			// console.log("getting = ", date.toString());
 			const sendDate = date.format("DD-MM-YYYY HH:mm").toString();
 			// console.log(sendDate.toString());
 			return sendDate;
@@ -133,21 +138,18 @@ export default {
 			this.choosedSlotId = id;
 			// console.log("slot id called", this.choosedSlotId);
 		},
-		async sendReq(timeSlotId, teacherId, end_time) {
-			// console.log("end_time = ", end_time);
-			// let x = new Date(end_time);
-			// console.log("xxx", x);
-			let currDate = moment(`${end_time}`, `DD-MM-YYYY HH:mm`);
-			console.log("end time = ", currDate.toString());
-			let date = this.formatTime(currDate.toString());
-			// console.log("end time faisilissss", date);
+		async sendReq(timeSlotId, teacherId, startTime, endTime) {
+			let date = moment(this.date_today);
+			const selectedDate = date.format("DD-MM-YYYY");
 
 			const data = {
 				timeSlotId,
-				date,
+				startTime,
+				endTime,
+				date: selectedDate,
 				studentId: this.$store.state.authUser.id,
 				agenda: this.agenda,
-				teacherId,
+				teacherId: parseInt(teacherId),
 			};
 			console.log("data =====", data);
 			if (this.agenda === null || this.agenda === "") {
@@ -189,14 +191,14 @@ export default {
 					teacher_id: parseInt(this.id),
 					day_id: parseInt(day),
 				};
-				console.log("sent data is ", data);
+				// console.log("sent data is ", data);
 				const slots = await this.callApi(
 					"get",
 					`time-slots?teacher_id=${this.id}&day_id=${day}&date=${selectedDate}`
 				);
 				if (slots?.status === 200) {
 					this.slots = slots.data;
-					console.log("got data", slots.data);
+					// console.log("got data", slots.data);
 				} else {
 					this.e("something went wrong");
 				}

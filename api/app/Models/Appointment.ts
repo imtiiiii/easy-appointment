@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column,scope } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, scope } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import TimeSlot from './TimeSlot'
 import moment from 'moment'
@@ -25,7 +25,11 @@ export default class Appointment extends BaseModel {
     @column()
     public agenda: string
     @column()
-    public date: DateTime
+    public date: string
+    @column()
+    public startTime: string
+    @column()
+    public endTime: string
 
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime
@@ -39,7 +43,7 @@ export default class Appointment extends BaseModel {
      */
     @belongsTo(() => User, {
         localKey: 'id',
-        foreignKey:'studentId'
+        foreignKey: 'studentId'
     })
     public byWhichStudent: BelongsTo<typeof User>
 
@@ -49,6 +53,6 @@ export default class Appointment extends BaseModel {
     })
     public forWhichTimeSlot: BelongsTo<typeof TimeSlot>
 
-   
+
 
 }
