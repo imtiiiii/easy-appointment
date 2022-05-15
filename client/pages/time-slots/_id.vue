@@ -108,7 +108,7 @@ export default {
 	},
 	methods: {
 		formatTime(time) {
-			console.log("fun time is 222222222", time);
+			console.log("format time is called", time);
 			let date = moment(this.date_today);
 			console.log("date today = ", date.toString());
 			let endTime = moment(`${time}`);
@@ -186,7 +186,7 @@ export default {
 				const selectedDate = date.format("DD-MM-YYYY");
 				console.log("selected date = ", selectedDate);
 				const data = {
-					teacher_id: this.id,
+					teacher_id: parseInt(this.id),
 					day_id: parseInt(day),
 				};
 				console.log("sent data is ", data);
@@ -196,6 +196,7 @@ export default {
 				);
 				if (slots?.status === 200) {
 					this.slots = slots.data;
+					console.log("got data", slots.data);
 				} else {
 					this.e("something went wrong");
 				}
