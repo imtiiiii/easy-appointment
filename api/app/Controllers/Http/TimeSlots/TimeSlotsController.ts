@@ -15,7 +15,7 @@ export default class TimeSlotsController {
     }
     public async add(ctx: HttpContextContract) {
         const data = ctx.request.all();
-        console.log("data is = ", data)
+        // console.log("data is = ", data)
         const { day_id } = data;
         const { teacher_id } = data;
         let { start_time } = data;
@@ -93,9 +93,9 @@ export default class TimeSlotsController {
             }
 
         }
-        data.start_time = newStartTime.format("DD-MM-YYYY HH:mm")
-        data.endTime = newEndTime.format("DD-MM-YYYY HH:mm")
-        // console.log("data= ", data)
+        data.startTime = newStartTime.format(" HH:mm").toString();
+        data.endTime = newEndTime.format("HH:mm").toString();
+        console.log("data= ", data)
         const saveToDb = await TimeSlot.create(data);
         return {
             saveToDb,

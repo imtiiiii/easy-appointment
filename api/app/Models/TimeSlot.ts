@@ -8,9 +8,6 @@ import Appointment from '../Models/Appointment'
 export default class TimeSlot extends BaseModel {
     @column({ isPrimary: true })
     public id: number
-
-    // @column()
-    // public teacher_id: number
     @column()
     public teacherId: number
 
@@ -18,10 +15,10 @@ export default class TimeSlot extends BaseModel {
     public dayId: number
 
     @column()
-    public startTime: DateInput
+    public startTime: string
 
     @column()
-    public endTime: DateInput
+    public endTime: string
 
 
     @column.dateTime({ autoCreate: true })
