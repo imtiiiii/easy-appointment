@@ -17,24 +17,20 @@ export default class TimeSlotsController {
     }
     public async add(ctx: HttpContextContract) {
         const data = ctx.request.all();
-        // console.log("data is = ", data)
+
         const { day_id } = data;
         const { teacher_id } = data;
         let { start_time } = data;
         let { end_time } = data;
         start_time = moment(start_time).format("DD-MM-YYYY HH:mm")
         end_time = moment(end_time).format("DD-MM-YYYY HH:mm")
-        // console.log(start_time);
-        // console.log(end_time);
+
         const newStartTime = moment(start_time, "DD-MM-YYYY HH:mm");
         const newEndTime = moment(end_time, "DD-MM-YYYY HH:mm")
-        // console.log("front start_time = ", (newStartTime.toString()));
-        // console.log("front end_time =", (newEndTime.toString()))
+
 
         const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).preload("user");
-        console.log("teacher length = ", teacher.length)
         for (let i of teacher) {
-
             const oldStartTime = moment(i.startTime, "DD-MM-YYYY HH:mm")
             const oldEndTime = moment(i.endTime, "DD-MM-YYYY HH:mm")
             if (newStartTime.isSame(oldStartTime)) {
@@ -44,7 +40,7 @@ export default class TimeSlotsController {
                 }
             }
             if (newStartTime.isAfter(oldStartTime)) {
-                // console.log("im her 1st if")
+
                 if (newStartTime.isBefore(oldEndTime)) {
                     console.log(" i am 2");
                     return {
@@ -97,7 +93,7 @@ export default class TimeSlotsController {
 
     public async slots(ctx: HttpContextContract) {
         const { teacher_id, day_id, date } = ctx.request.qs();
-        console.log("date= ", date)
+
         const slots = await TimeSlot.query().where("teacher_id", teacher_id).andWhere("day_id", day_id).whereDoesntHave("allAppointment", query => {
             query.where("status", "1")
                 .andWhere("date", date)

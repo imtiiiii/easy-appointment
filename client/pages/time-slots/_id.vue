@@ -117,21 +117,14 @@ export default {
 			let date = moment(this.date_today);
 			console.log("date today = ", date.toString());
 			let endTime = moment(`${time}`);
-			console.log("end moment", endTime.toString());
-			// let choosedDate = date.get("date");
-			// let choosedDay = date.get("day");
-			// let choosedYear = date.get("year");
+
 			let hour = endTime.get("hour");
 			let min = endTime.get("minute");
-			// console.log("choose date ", choosedDate);
-			// console.log("choose day ", choosedDay);
-			// console.log("choose year ", choosedYear);
-			// console.log("choose hour ", hour);
-			// console.log("min ", min);
+
 			date.set({ hour: hour, minute: min });
-			// console.log("getting = ", date.toString());
+
 			const sendDate = date.format("DD-MM-YYYY HH:mm").toString();
-			// console.log(sendDate.toString());
+
 			return sendDate;
 		},
 		slotId(id) {
@@ -172,9 +165,7 @@ export default {
 		},
 	},
 	watch: {
-		timings: function () {
-			// console.log(" im from watch date  = ", this.date_today);
-		},
+		timings: function () {},
 		disableDates: function () {},
 	},
 	computed: {
@@ -182,7 +173,7 @@ export default {
 			this.slots = [];
 			if (this.date_today !== null) {
 				let date = moment(this.date_today);
-				// console.log("today date= ", date);
+
 				console.log("choosed date ", date.toString());
 				let day = moment(this.date_today).isoWeekday().toString();
 				const selectedDate = date.format("DD-MM-YYYY");
@@ -191,7 +182,7 @@ export default {
 					teacher_id: parseInt(this.id),
 					day_id: parseInt(day),
 				};
-				// console.log("sent data is ", data);
+
 				const slots = await this.callApi(
 					"get",
 					`time-slots?teacher_id=${this.id}&day_id=${day}&date=${selectedDate}`
