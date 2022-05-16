@@ -27,22 +27,22 @@ export default class TimeSlotsController {
         console.log("start_time", start_time)
         console.log("end_time", end_time)
         const query = await TimeSlot.query().where("day_id", day_id).andWhere("start_time", start_time).orWhere("end_time", end_time)
-        console.log(query);
+        if (query.length) {
+            return;
+        }
 
-        const newStartTime = moment(start_time, "DD-MM-YYYY HH:mm");
-        const newEndTime = moment(end_time, "DD-MM-YYYY HH:mm")
+        const newStartTime = moment(start_time, "HH:mm");
+        const newEndTime = moment(end_time, "HH:mm")
+        // console.log(newStartTime);
+        // console.log(newEndTime);
 
-
-        const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id).preload("user");
+        const teacher = await TimeSlot.query().where("teacherId", teacher_id).where("dayId", day_id)
         for (let i of teacher) {
-            const oldStartTime = moment(i.startTime, "DD-MM-YYYY HH:mm")
-            const oldEndTime = moment(i.endTime, "DD-MM-YYYY HH:mm")
-            if (newStartTime.isSame(oldStartTime)) {
-                console.log("iam 1")
-                return {
-                    msg: "not possible"
-                }
-            }
+
+            const oldStartTime = moment(i.startTime, "HH:mm")
+            const oldEndTime = moment(i.endTime, "HH:mm")
+            // console.log(oldStartTime)
+            // console.log(oldEndTime)
             if (newStartTime.isAfter(oldStartTime)) {
 
                 if (newStartTime.isBefore(oldEndTime)) {
@@ -53,12 +53,7 @@ export default class TimeSlotsController {
                 }
             }
             // ******* END TIME VALIDATION ********
-            if (newEndTime.isSame(oldStartTime) || newEndTime.isSame(oldEndTime)) {
-                console.log(" i am 3")
-                return {
-                    msg: "not possible"
-                }
-            }
+
             if (newEndTime.isAfter(oldStartTime)) {
                 if (newEndTime.isBefore(oldEndTime)) {
                     console.log(" i am 4")
@@ -88,13 +83,13 @@ export default class TimeSlotsController {
         }
         data.startTime = newStartTime.format(" HH:mm").toString();
         data.endTime = newEndTime.format("HH:mm").toString();
-        // const saveToDb = await TimeSlot.create(data);
+        console.log("last data is ", data);
+        const saveToDb = await TimeSlot.create(data);
         return {
-            // saveToDb,
+            saveToDb,
             msg: "possible"
         }
     }
-
     public async slots(ctx: HttpContextContract) {
         const { teacher_id, day_id, date } = ctx.request.qs();
 
@@ -104,7 +99,6 @@ export default class TimeSlotsController {
         })
         return slots
     }
-
     //TODO: This Controller only accessable by teacher type user
     public async created(ctx: HttpContextContract) {
         try {
@@ -123,7 +117,6 @@ export default class TimeSlotsController {
     public async available(ctx: HttpContextContract) {
         return this.timeSlotService.available(ctx);
     }
-
     //TODO: This controller only accessable by teacher
     public async update(ctx: HttpContextContract) {
         try {
@@ -138,7 +131,6 @@ export default class TimeSlotsController {
         }
         return this.timeSlotService.update(ctx);
     }
-
     //TODO: This controller only accessable by teacher
     public async delete(ctx: HttpContextContract) {
         return this.timeSlotService.delete(ctx);
