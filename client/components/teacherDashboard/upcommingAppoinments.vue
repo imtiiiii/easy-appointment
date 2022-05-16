@@ -27,11 +27,11 @@
 						<th style="padding: 0px 40px">
 							<h6 style="width: 100%">
 								{{
-									formatDate(
-										item.date,
-										item.forWhichTimeSlot.start_time,
-										item.forWhichTimeSlot.end_time
-									)
+									item.date +
+									" " +
+									item.start_time +
+									" - " +
+									item.end_time
 								}}
 							</h6>
 						</th>

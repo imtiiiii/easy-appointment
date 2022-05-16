@@ -2,12 +2,11 @@
 	<div style="margin: 100px 0px">
 		<div
 			style="
-				height: 100%;
-				background-color: #b8caff;
-				width: 70%;
-				margin: 30px auto;
-				padding-top: 1px;
-				box-shadow: 10px 10px 5px #888888;
+				border: 2px solid red;
+				width: 60%;
+				margin: 0 auto;
+				background-color: white;
+				box-shadow: 5px 5px 5px grey;
 			"
 		>
 			<div class="slot">
@@ -19,11 +18,11 @@
 			<div class="slot" v-for="(data, index) of data" :key="index">
 				<h4>
 					{{
-						formatDate(
-							data.date,
-							data.forWhichTimeSlot.start_time,
-							data.forWhichTimeSlot.end_time
-						)
+						data.date +
+						" " +
+						data.start_time +
+						" - " +
+						data.end_time
 					}}
 				</h4>
 				<h4>{{ data.agenda }}</h4>
