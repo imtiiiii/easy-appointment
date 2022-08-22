@@ -18,22 +18,27 @@ export default class AppointmentsController {
     }
     async request(ctx: HttpContextContract) {
         const data = ctx.request.all().data;
-        console.log("data request = ", data)
-        const check = await Appointment.query().where("studentId", data.studentId).andWhere("teacherId", data.teacherId)
-            .andWhere("date", "=", data.date).andWhere("start_time", data.startTime).andWhere("end_time", data.endTime)
-        console.log(check.length);
-        if (check.length === 0) {
-            const reqSent = await Appointment.create(data);
-            return {
-                reqSent,
-                msg: "request sent"
-            }
+        console.log(data);
+        const isAlreadyBooked: any = await Appointment.query().where("timeSlotId", data.timeSlotId).where("date", data.date).where("status", 1);
+        console.log(isAlreadyBooked);
+        if ((isAlreadyBooked.length)) {
+            return ctx.response.status(422).send({ msg: "This slot is already booked " })
         }
-        else {
-            return {
-                msg: "Be paitent! You already requested for that slot once "
-            }
+        const check: any = await Appointment.query().where("studentId", data.studentId).andWhere("timeSlotId", data.timeSlotId)
+            .andWhere("date", "=", data.date)
+
+        if ((check.length)) {
+            return ctx.response.status(422).send({ msg: "Be paitent! You already requested for that slot once " })
         }
+
+
+        const reqSent = await Appointment.create(data);
+        return {
+            reqSent,
+            msg: "request sent"
+        }
+
+
 
     }
     // async alreadyBooked(ctx: HttpContextContract) {
