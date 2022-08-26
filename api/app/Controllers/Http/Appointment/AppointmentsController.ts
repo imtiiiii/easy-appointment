@@ -5,7 +5,7 @@ moment().format()
 
 import AppointmentsValidator from './AppoinmentsValidator';
 import AppoinmentsService from './AppoinmentsService';
-import TimeSlot from 'App/Models/TimeSlot';
+// import TimeSlot from 'App/Models/TimeSlot';
 
 export default class AppointmentsController {
     private appoinmentValidator: AppointmentsValidator
@@ -17,39 +17,23 @@ export default class AppointmentsController {
 
     }
     async request(ctx: HttpContextContract) {
-        const data = ctx.request.all().data;
-        console.log(data);
-        const isAlreadyBooked: any = await Appointment.query().where("timeSlotId", data.timeSlotId).where("date", data.date).where("status", 1);
-        console.log(isAlreadyBooked);
-        if ((isAlreadyBooked.length)) {
-            return ctx.response.status(422).send({ msg: "This slot is already booked " })
+
+
+        try {
+            const payload = await this.appoinmentValidator.validateBookingReq(ctx);
+
+
+            const validateOverLapping = await this.appoinmentValidator.checkBooking(payload);
+
+            if (validateOverLapping.validated) {
+                return await this.appoinmentService.bookingReqService(payload)
+            }
+            else return ctx.response.status(500).send(validateOverLapping.msg)
+        } catch (error) {
+
         }
-        const check: any = await Appointment.query().where("studentId", data.studentId).andWhere("timeSlotId", data.timeSlotId)
-            .andWhere("date", "=", data.date)
-
-        if ((check.length)) {
-            return ctx.response.status(422).send({ msg: "Be paitent! You already requested for that slot once " })
-        }
-
-
-        const reqSent = await Appointment.create(data);
-        return {
-            reqSent,
-            msg: "request sent"
-        }
-
-
-
     }
-    // async alreadyBooked(ctx: HttpContextContract) {
-    //     const data = ctx.request.qs();
-    //     data.teacher_id = parseInt(data.teacher_id)
-    //     console.log("date hobe ", data.endTime)
 
-
-    //     const check = await Appointment.query().where("date", '=', data.endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
-    //     return check.length
-    // }
     async appointments(ctx: HttpContextContract) {
         const data = ctx.request.all();
         // console.log(data)

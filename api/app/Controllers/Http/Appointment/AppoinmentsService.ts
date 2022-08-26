@@ -21,4 +21,7 @@ export default class AppoinmentService {
         }
         return await this.appoinmentQuery.status(changeStatusFor);
     }
+    public async bookingReqService(payload){
+        return await this.appoinmentQuery.bookingReqQuery(payload);
+    }
 }
