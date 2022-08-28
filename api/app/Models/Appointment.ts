@@ -9,12 +9,12 @@ export default class Appointment extends BaseModel {
     public id: number
 
     @column()
-    public timeSlotId: number
+    public time_slot_id: number
     @column()
-    public teacherId: number
+    public teacher_id: number
 
     @column()
-    public studentId: number
+    public student_id: number
 
     @column()
     public status: number
@@ -27,9 +27,7 @@ export default class Appointment extends BaseModel {
     @column()
     public date: string
     @column()
-    public startTime: string
-    @column()
-    public endTime: string
+   
 
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime

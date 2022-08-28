@@ -9,16 +9,16 @@ export default class TimeSlot extends BaseModel {
     @column({ isPrimary: true })
     public id: number
     @column()
-    public teacherId: number
+    public teacher_id: number
 
     @column()
-    public dayId: number
+    public day_id: number
 
     @column()
-    public startTime: string
+    public start_time: DateTime
 
     @column()
-    public endTime: string
+    public end_time: DateTime
 
 
     @column.dateTime({ autoCreate: true })
