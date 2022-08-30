@@ -68,11 +68,13 @@ export default class TimeSlotService {
           const endTime = startTime.plus({ minutes: payload.duration });
           initStartTime = endTime;
           const saveToSlots = {
-              start_time: startTime.toString(),
-              end_time:endTime.toString()
-          }
-          slots.push(saveToSlots)
+            start_time: startTime.toFormat("HH:mm"),
+            end_time: endTime.toFormat("HH:mm"),
+            teacher_id: teacherId,
+            day_id: 1,
+          };
+        slots.push(saveToSlots)
       }
-      console.log(slots);
+     return await this.timeSlotQuery.validateSlotsQuery(slots,teacherId);
   }
 }
