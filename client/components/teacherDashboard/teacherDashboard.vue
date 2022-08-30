@@ -37,13 +37,13 @@
                     size="large"
                     v-model="timeSlotForm.dayNo"
                   >
-                    <Option value="0">sunday</Option>
-                    <Option value="1">monday</Option>
-                    <Option value="2">tuesday</Option>
-                    <Option value="3">wednesday</Option>
-                    <Option value="4">thursday</Option>
-                    <Option value="5">friday</Option>
-                    <Option value="6">satarday</Option>
+                    <Option value=0>sunday</Option>
+                    <Option value=1>monday</Option>
+                    <Option value=2>tuesday</Option>
+                    <Option value=3>wednesday</Option>
+                    <Option value=4>thursday</Option>
+                    <Option value=5>friday</Option>
+                    <Option value=6>saturday</Option>
                   </Select>
                 </FormItem>
               </div>

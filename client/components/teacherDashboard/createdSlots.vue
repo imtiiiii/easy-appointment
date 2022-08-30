@@ -43,7 +43,7 @@
 			<Option value="3">wednesday</Option>
 			<Option value="4">thursday</Option>
 			<Option value="5">friday</Option>
-			<Option value="6">satarday</Option>
+			<Option value="6">saturday</Option>
 			<Option value="7">sunday</Option>
 		</Select>
 		<!-- {{day}} -->

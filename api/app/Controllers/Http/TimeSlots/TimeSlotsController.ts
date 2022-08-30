@@ -19,8 +19,8 @@ export default class TimeSlotsController {
   public async addTimeSlots(ctx: HttpContextContract) {
     const payload = await this.timeSlotValidator
       .validateAddingTimeSlots(ctx)
-      .catch((err) => console.log("err", err));
-    
+      .catch((err) => {return ctx.response.status(422).send(err.messages) });
+    return await this.timeSlotService.timeSlotService(payload,ctx?.auth?.user?.id)
   }
   // public async add(ctx: HttpContextContract) {
   //     const data = ctx.request.all();
