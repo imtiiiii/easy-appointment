@@ -5,7 +5,7 @@ moment().format()
 
 import AppointmentsValidator from './AppoinmentsValidator';
 import AppoinmentsService from './AppoinmentsService';
-import TimeSlot from 'App/Models/TimeSlot';
+// import TimeSlot from 'App/Models/TimeSlot';
 
 export default class AppointmentsController {
     private appoinmentValidator: AppointmentsValidator
@@ -17,34 +17,23 @@ export default class AppointmentsController {
 
     }
     async request(ctx: HttpContextContract) {
-        const data = ctx.request.all().data;
-        console.log("data request = ", data)
-        const check = await Appointment.query().where("studentId", data.studentId).andWhere("teacherId", data.teacherId)
-            .andWhere("date", "=", data.date).andWhere("start_time", data.startTime).andWhere("end_time", data.endTime)
-        console.log(check.length);
-        if (check.length === 0) {
-            const reqSent = await Appointment.create(data);
-            return {
-                reqSent,
-                msg: "request sent"
-            }
-        }
-        else {
-            return {
-                msg: "Be paitent! You already requested for that slot once "
-            }
-        }
 
+
+        try {
+            const payload = await this.appoinmentValidator.validateBookingReq(ctx);
+
+
+            const validateOverLapping = await this.appoinmentValidator.checkBooking(payload);
+
+            if (validateOverLapping.validated) {
+                return await this.appoinmentService.bookingReqService(payload)
+            }
+            else return ctx.response.status(500).send(validateOverLapping.msg)
+        } catch (error) {
+
+        }
     }
-    // async alreadyBooked(ctx: HttpContextContract) {
-    //     const data = ctx.request.qs();
-    //     data.teacher_id = parseInt(data.teacher_id)
-    //     console.log("date hobe ", data.endTime)
 
-
-    //     const check = await Appointment.query().where("date", '=', data.endTime).andWhere("status", "1").andWhere("teacher_id", data.teacher_id)
-    //     return check.length
-    // }
     async appointments(ctx: HttpContextContract) {
         const data = ctx.request.all();
         // console.log(data)

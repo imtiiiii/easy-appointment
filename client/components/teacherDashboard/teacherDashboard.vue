@@ -27,67 +27,68 @@
 				<created-slot></created-slot>
 			</div>
 			<!-- *********ADD TIME SLOT ********** -->
-			<div style="background-color: #ffffff">
-				<div class="add-time-slot">
-					<h2 class="_log_form_title">Add available time slots</h2>
-					<div class="_log_form">
-						<div class="_log_input_group">
-							<Select
-								placeholder="Select Day"
-								size="large"
-								v-model="day"
-							>
-								<Option value="1">monday</Option>
-								<Option value="2">tuesday</Option>
-								<Option value="3">wednesday</Option>
-								<Option value="4">thursday</Option>
-								<Option value="5">friday</Option>
-								<Option value="6">satarday</Option>
-								<Option value="7">sunday</Option>
-							</Select>
-						</div>
-						<div class="_log_input_group">
-							<vue-timepicker
-								placeholder="start-time"
-								v-model="startTime"
-								format="hh:mm: a"
-							></vue-timepicker>
-						</div>
-						<div class="_log_input_group">
-							<vue-timepicker
-								format="hh:mm: a"
-								placeholder="end-time"
-								v-model="endTime"
-							></vue-timepicker>
-						</div>
-						<div>
-							<input
-								v-model="duration"
-								type="text"
-								placeholder="duration in minutes"
-								style="padding: 15px 10px"
-							/>
-						</div>
-						<div
-							class="_log_button"
-							v-if="
-								day &&
-								startTime.length === 9 &&
-								endTime.length === 9 &&
-								duration
-							"
-						>
-							<Button
-								@click="addSlot"
-								type="success"
-								size="large"
-								long
-								>Add</Button
-							>
+			<Form
+				:model="timeSlotForm"
+				ref="timeSlotForm"
+				:rules="ruleValidate"
+			>
+				<div style="background-color: #ffffff">
+					<div class="add-time-slot">
+						<h2 class="_log_form_title">
+							Add available time slots
+						</h2>
+						<div class="_log_form">
+							<div class="_log_input_group">
+								<FormItem prop="dayNo">
+									<Select
+										placeholder="Select Day"
+										size="large"
+										v-model="timeSlotForm.dayNo"
+									>
+										<Option value="0">sunday</Option>
+										<Option value="1">monday</Option>
+										<Option value="2">tuesday</Option>
+										<Option value="3">wednesday</Option>
+										<Option value="4">thursday</Option>
+										<Option value="5">friday</Option>
+										<Option value="6">satarday</Option>
+									</Select>
+								</FormItem>
+							</div>
+							<div class="_log_input_group">
+								<FormItem prop="timerange">
+									<TimePicker
+										type="timerange"
+										placeholder="Select date"
+										v-model="timeSlotForm.timerange"
+									></TimePicker>
+								</FormItem>
+							</div>
+
+							<div>
+								<FormItem prop="duration">
+									<Input
+										type="text"
+										v-model="timeSlotForm.duration"
+										number
+										placeholder="duration in minutes"
+									></Input>
+								</FormItem>
+							</div>
+							<div class="_log_button">
+								<FormItem>
+									<Button
+										type="primary"
+										style="font-weight: bold"
+										@click="handleSubmit('timeSlotForm')"
+										>Add</Button
+									>
+								</FormItem>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</Form>
 			<!-- ********* AVAILABLE SLOTS ************ -->
 			<!-- <div style="background-color: #ffffff">
 				<available-slot></available-slot>
@@ -124,7 +125,21 @@ export default {
 			endTime: "",
 			user: null,
 			duration: null,
-			options: "index", // possible variable appoinment,index
+			options: "index", // possible variable appoinment,inde
+			timeSlotForm: {
+				dayNo: null,
+				duration: null,
+				timerange: "",
+			},
+			ruleValidate: {
+				timerange: [
+					{
+						required: true,
+						message: "Start and End time required",
+						
+					},
+				],
+			},
 		};
 	},
 	created() {
@@ -296,6 +311,18 @@ export default {
 			} else {
 				this.options = "index";
 			}
+		},
+		handleSubmit(name) {
+			this.$refs[name].validate((valid) => {
+				if (valid) {
+					this.s();
+				} else {
+					this.$Message.error("Fail!");
+
+					return;
+				}
+			});
+			console.log("im here", this.timeSlotForm);
 		},
 	},
 };

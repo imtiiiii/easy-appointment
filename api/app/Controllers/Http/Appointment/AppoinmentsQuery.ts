@@ -39,4 +39,7 @@ export default class AppoinmentQuery {
         await appointment.save();
 
     }
+    public async bookingReqQuery(payload){
+        return await Appointment.create(payload);
+    }
 }

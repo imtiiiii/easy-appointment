@@ -137,8 +137,6 @@ export default {
 
 			const data = {
 				timeSlotId,
-				startTime,
-				endTime,
 				date: selectedDate,
 				studentId: this.$store.state.authUser.id,
 				agenda: this.agenda,
@@ -149,9 +147,7 @@ export default {
 				this.isLoading = false;
 				return this.e("Mention your agenda for meeting");
 			}
-			const req = await this.callApi("post", "/appointments/request", {
-				data,
-			});
+			const req = await this.callApi("post", "/appointments/request",data);
 
 			console.log("req is ", req);
 			if (req?.status === 200) {
