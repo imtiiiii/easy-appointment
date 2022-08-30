@@ -1,17 +1,22 @@
 import User from '../../../Models/User'
 import Database from '@ioc:Adonis/Lucid/Database'
+import { Response } from '@adonisjs/core/build/standalone';
 
-export default class AuthQuery{
-  
-  searchUsername(userName){
-    return Database.from('users').where('user_name','like', `${userName}%`).count('* as total')
+export default class AuthQuery {
+
+  searchUsername(userName) {
+    return Database.from('users').where('user_name', 'like', `${userName}%`).count('* as total')
   }
-  
-  register(data){
-    return User.create(data);
+
+  async register(data) {
+    const user = await User.create(data);
+    if (user) {
+      return user
+    }
+
   }
-  
-  updateUser(column, value, data){
+
+  updateUser(column, value, data) {
     return User.query().where(column, value).update(data)
   }
 
@@ -21,7 +26,7 @@ export default class AuthQuery{
   getSingleUserInfo(column, value) {
     return User.query().where(column, value).first()
   }
-  updateOnline(uid, isOnline){
-    return User.query().where('id', uid).update({is_online : isOnline})
+  updateOnline(uid, isOnline) {
+    return User.query().where('id', uid).update({ is_online: isOnline })
   }
 }

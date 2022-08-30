@@ -15,13 +15,10 @@ export default class User extends BaseModel {
     public id: number
 
     @column()
-    public firstName: string
+    public first_name: string
 
     @column()
-    public lastName: string
-
-    @column()
-    public userName: string
+    public last_name: string
 
     @column()
     public email: string
@@ -30,13 +27,10 @@ export default class User extends BaseModel {
     public password: string
 
     @column()
-    public userType: string
+    public user_type: string
 
     @column()
-    public studentId: number
-
-    @column()
-    public course: string
+    public student_id: number
 
     @column()
     public dept: string

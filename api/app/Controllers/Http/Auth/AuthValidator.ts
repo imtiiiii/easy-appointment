@@ -1,29 +1,31 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+
+const msg = {
+    'email.required': 'Email is required',
+    'email.unique': 'Email is already in use',
+    'email.email': 'Invalid email address',
+    'first_name.required': 'First name is required',
+    'last_name.required': 'Last name is required',
+    'password.required': 'Password is required',
+    'password.minLength': 'Password must be at least 6 charecters long',
+    'password_confirmation.confirmed': "Password and confirm password doesn't match",
+    'user_type.enum':"unknown user type",
+    'student_id.number':"student id is not a number"
+}
 export default class AuthValidator {
 
     public async validateSignupSchema(ctx: HttpContextContract) {
         const userSchema = schema.create({
-            firstName: schema.string({
+            first_name: schema.string({
                 escape: true,
                 trim: true
             }),
-            lastName: schema.string({
+            last_name: schema.string({
                 escape: true,
                 trim: true
             }),
-            email: schema.string({
-                escape: true,
-                trim: true
-            },
-                [
-                    rules.email({
-                        sanitize: true,
-                        ignoreMaxLength: false,
-                        //domainSpecificValidation: true,
-                    }),
-                    rules.unique({ table: 'users', column: 'email' }),
-                ]),
+            email: schema.string([rules.email(), rules.unique({ table: 'users', column: 'email' })]),
             password: schema.string({
                 escape: true,
                 trim: true
@@ -31,22 +33,13 @@ export default class AuthValidator {
                 rules.minLength(6),
                 rules.confirmed()
             ]),
-            userType: schema.enum(['student', 'teacher', 'admin'] as const),
-            studentId: schema.number.optional(),
+            user_type: schema.enum(['student', 'teacher', 'admin'] as const),
+            student_id: schema.number.optional(),
             dept: schema.string.optional({ trim: true })
 
 
         })
-        const msg = {
-            'email.required': 'Email is required',
-            'email.unique': 'Email is already in use',
-            'email.email': 'Invalid email address',
-            'first_name.required': 'Firstname is required',
-            'last_name.required': 'Lastname is required',
-            'password.required': 'Password is required',
-            'password.minLength': 'Password must be at least 6 charecters long',
-            'password_confirmation.confirmed': "Password and confirm password doesn't match",
-        }
+
         // return await ctx.request.validate({ schema: userSchema, messages : msg })
         try {
             const payload = await ctx.request.validate({ schema: userSchema, messages: msg })

@@ -8,7 +8,7 @@
 				<!-- ********** FIRST NAME ***************** -->
 				<div class="_log_input_group">
 					<Input
-						v-model="form.firstName"
+						v-model="form.first_name"
 						placeholder="First name"
 						size="large"
 						type="text"
@@ -17,7 +17,7 @@
 				<!-- ********* LAST NAME ********** -->
 				<div class="_log_input_group">
 					<Input
-						v-model="form.lastName"
+						v-model="form.last_name"
 						placeholder="Last name"
 						size="large"
 						type="text"
@@ -71,7 +71,7 @@
 						placeholder="STUDENT ID"
 						size="large"
 						type="text"
-						v-model="form.studentId"
+						v-model="form.student_id"
 					></Input>
 				</div>
 				<!-- *******DEPT.********* -->
@@ -107,13 +107,13 @@ export default {
 		return {
 			user: null,
 			form: {
-				firstName: "",
-				lastName: "",
+				first_name:"",
+				last_name: "",
 				email: "",
 				password: "",
 				password_confirmation: "",
-				userType: "",
-				studentId: null,
+				user_type: "",
+				student_id: null,
 				dept: null,
 			},
 			reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
@@ -125,11 +125,11 @@ export default {
 			// ************FRONT END VALIDATION**************
 
 			this.form.email = this.form.email.toLowerCase();
-			if (this.form.firstName == "") {
-				return this.i("Firstname is requied");
+			if (this.form.first_name == "") {
+				return this.e("Firstname is requied");
 			}
-			if (this.form.lastName == "") return this.i("Lastname is requied");
-			// console.log(this.form.user_type);
+			if (this.form.last_name == "") return this.e("Lastname is requied");
+			
 			if (this.form.email == "") return this.i("Email is requied");
 			if (this.form.email && !this.reg.test(this.form.email))
 				return this.e("Invalid email format!");
@@ -142,44 +142,30 @@ export default {
 			if (this.form.userType === "") {
 				return this.i("Please choose your identity");
 			}
-			// if (this.form.dept === "" || this.form.dept === null) {
-			// 	return this.i("Please choose your Depertment");
-			// }
+			
 			if (
 				(this.form.userType === "student" &&
-					this.form.studentId === null) ||
-				this.form.studentId === ""
+					this.form.student_id === null) ||
+				this.form.student_id === ""
 			) {
 				return this.e("Provide your student ID");
 			}
 			// *******  IF VALIDATION PASSES **********
 			// ********** COVERING CORNER CASES*********
-			if (this.form.userType === "teacher") this.form.studentId = null;
+			if (this.form.userType === "teacher") this.form.student_id = null;
 			if (this.form.dept === "") this.form.dept = null;
 			this.isLoading = true;
-			// regReq means registration request
-			// const regReq = await this.callApi(
-			// 	"post",
-			// 	"http://localhost:3333/auth/register",
-			// 	this.form
-			// );
-			// this.isLoading = false;
-			// if (regReq.status === 200) {
-			// 	this.clearData();
-			// 	return this.s("Your registration requested submitted");
-			// } else {
-			// 	return this.e("something went wrong please try again");
-			// }
-			// // console.log(this.form);
+			
 			try {
-				const regReq = await this.$axios.$post(
-					"http://localhost:3333/auth/register",
-					this.form
-				);
-				this.isLoading = false;
-				this.i("Registration is successfully done.");
-				this.i("Account will be active after admin approval");
-				this.clearData();
+				console.log(this.form);
+				// const regReq = await this.$axios.$post(
+				// 	"http://localhost:3333/auth/register",
+				// 	this.form
+				// );
+				// this.isLoading = false;
+				// this.i("Registration is successfully done.");
+				// this.i("Account will be active after admin approval");
+				// this.clearData();
 			} catch (error) {
 				const err = error.response.data.message;
 				Object.keys(err).forEach((value) => {
@@ -191,13 +177,13 @@ export default {
 
 		clearData() {
 			this.form = {
-				firstName: "",
-				lastName: "",
+				first_name: "",
+				last_name: "",
 				email: "",
 				password: "",
 				password_confirmation: "",
 				userType: "",
-				studentId: null,
+				student_id: null,
 				dept: null,
 			};
 		},
