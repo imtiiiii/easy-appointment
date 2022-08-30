@@ -6,6 +6,8 @@ const msg = {
   "duration.required": "Duration is required",
   "duration.number": "Duration should be a number",
   "start_time.required": "Start time is required",
+  "start_time.date.format": "Invalid start time format",
+  "end_time.date.format": "Invalid end time format",
   "start_time.date": "Start time is not a valid time",
   "end_time.required": "End time is required",
   "end_time.date": "End time is not a valid time",
