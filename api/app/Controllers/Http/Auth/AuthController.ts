@@ -136,20 +136,11 @@ export default class AuthController {
       result: [],
     });
   }
-  async login(ctx: HttpContextContract) {
-    try {
-      await this.authValidator.validateLoginSchema(ctx);
-    } catch (error) {
-      const errorObject = JSON.parse(error);
-      return ctx.response.status(422).send({
-        status: "BAD",
-        message: errorObject,
-        result: [],
-      });
-    }
-    const data = ctx.request.all();
-      let loginInfo = await ctx.auth.use("web").attempt(data.uid, data.password);
-      return loginInfo
+    async login(ctx: HttpContextContract) {
+        const data = ctx.request.all();
+        console.log(data);
+        const logininfo = ctx.auth.use('web').attempt(data.email, data.password)
+        return logininfo
   }
 
   async delete(ctx: HttpContextContract) {
