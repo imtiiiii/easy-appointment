@@ -104,11 +104,10 @@ export default class TimeSlotsController {
   public async slots(ctx: HttpContextContract) {
     try {
       const payload = await this.timeSlotValidator
-        .validateShowSlots(ctx)
-        
+        .validateShowSlots(ctx) 
       return await this.timeSlotService.showSlotsService(payload);
     } catch (error) {
-      console.log("stuck in error",error);
+     return ctx.response.status(422).send(error.messages);
     }
   }
   //TODO: This Controller only accessable by teacher type user

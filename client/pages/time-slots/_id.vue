@@ -144,12 +144,19 @@ export default {
       this.isLoading = false;
     },
     async getDate(data) {
-      console.log("got time data", typeof data);
-      console.log(this.$route.params.id);
+     
       const date = moment(data);
       this.day_no_id = date.day();
       console.log(this.day_no_id);
-      const res = await this.callApi("get", `/time-slots/?day_no_id=${this.day_no_id}&date=${date.format('YYYY-MM-DD')}&teacher_id=${this.id}`);
+      try {
+        const res = await this.callApi(
+          "get",
+          `/time-slots/?day_no_id=${this.day_no_id}&date=${date.format(
+            "YYYY-MM-DD"
+          )}&teacher_id=${this.id}`
+        );
+        this.slots=res.data
+      } catch (error) {}
     },
   },
   watch: {

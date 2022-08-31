@@ -193,7 +193,8 @@ export default class TimeSlotQuery {
     const getSlots = await TimeSlot.query()
       .where('teacher_id', `${data.teacher_id}`)
       .where('day_no_id', `${data.day_no_id}`)
-      .whereDoesntHave('teacherAppointments', (q) => { q.where('date', `${data.date}`)})
+      .whereDoesntHave('teacherAppointments', (q) => { q.where('date', `${data.date}`) })
+    .orderBy('start_time','asc')
     return getSlots;
   }
   

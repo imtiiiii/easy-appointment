@@ -95,10 +95,10 @@ export default class TimeSlotValidator {
     });
     try {
        const payload= ctx.request
-        .validate({ schema: validateSlot, messages: msg })
+         .validate({ schema: validateSlot, messages: {...msg} })
       return payload
     } catch (error) {
-      
+      return ctx.response.status(422).send(error.messages)
     }
    
   }
