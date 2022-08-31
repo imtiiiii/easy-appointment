@@ -60,21 +60,24 @@ export default class TimeSlotService {
     const differenceInMin = payload.end_time
       .diff(payload.start_time, "minutes")
       .toObject().minutes;
-      const numOfSlots = Math.floor(differenceInMin / parseInt(payload.duration));
-      let slots=new Array();
-      let initStartTime = payload.start_time;
-      for  (let i = 1; i <= numOfSlots; i++){
-          const startTime = initStartTime;
-          const endTime = startTime.plus({ minutes: payload.duration });
-          initStartTime = endTime;
-          const saveToSlots = {
-            start_time: startTime.toFormat("HH:mm:ss"),
-            end_time: endTime.toFormat("HH:mm:ss"),
-            teacher_id: teacherId,
-            day_id: 1,
-          };
-        slots.push(saveToSlots)
-      }
-     return await this.timeSlotQuery.validateSlotsQuery(slots,teacherId);
+    const numOfSlots = Math.floor(differenceInMin / parseInt(payload.duration));
+    let slots = new Array();
+    let initStartTime = payload.start_time;
+    for (let i = 1; i <= numOfSlots; i++) {
+      const startTime = initStartTime;
+      const endTime = startTime.plus({ minutes: payload.duration });
+      initStartTime = endTime;
+      const saveToSlots = {
+        start_time: startTime.toFormat("HH:mm:ss"),
+        end_time: endTime.toFormat("HH:mm:ss"),
+        teacher_id: teacherId,
+        day_no_id: payload.day_no,
+      };
+      slots.push(saveToSlots);
+    }
+    const validSlots = await this.timeSlotQuery.validateSlotsQuery(slots);
+    return await this.timeSlotQuery
+      .saveTimeSlotQuery(validSlots)
+      .catch((err) => console.log("err is ", err));
   }
 }

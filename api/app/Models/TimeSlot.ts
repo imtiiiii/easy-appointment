@@ -12,7 +12,7 @@ export default class TimeSlot extends BaseModel {
     public teacher_id: number
 
     @column()
-    public day_id: number
+    public day_no_id: number
 
     @column()
     public start_time: DateTime
@@ -44,7 +44,8 @@ export default class TimeSlot extends BaseModel {
     })
     public user: BelongsTo<typeof User>
     @belongsTo(() => Day, {
-        localKey: 'id'
+        localKey: 'day_no_id',
+        foreignKey:'day_no'
     })
     public day: BelongsTo<typeof Day>
 

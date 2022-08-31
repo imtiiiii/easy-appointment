@@ -155,13 +155,14 @@ export default class TimeSlotQuery {
   public async saveTimeSlotQuery(data) {
     return await TimeSlot.createMany(data);
   }
-  public async validateSlotsQuery(data, teacherId) {
+  public async validateSlotsQuery(data) {
+    console.log(data)
     const validatedSlots = new Array()
     await Promise.all(
       await data.map(async (el) => {
         const query =await TimeSlot.query()
-          .where("day_id", 1)
-          .where("teacher_id", teacherId)
+          .where("day_no_id", el.day_no_id)
+          .where("teacher_id", el.teacher_id)
           .where((q1) => {
             q1.where("start_time", "<=", `${el.start_time}`).andWhere(
               "end_time",
@@ -171,8 +172,8 @@ export default class TimeSlotQuery {
           })
           .orWhere("start_time", "<", `${el.end_time}`) 
           .first();
-        console.log(query)
-        if (query == null) { 
+        if (query == null) {
+          console.log("cre")
           validatedSlots.push(el)
         }
       })
