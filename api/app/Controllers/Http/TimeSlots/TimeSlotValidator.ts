@@ -12,6 +12,10 @@ const msg = {
   "end_time.required": "End time is required",
   "end_time.date": "End time is not a valid time",
   "end_time.afterField": "End time should be after the start time",
+  "day_no_id.required": "Day number is missing",
+  "day_no_id.range": "Day number should be from 0 to 6 when 0 is sunday",
+  "teacher_id.required": "Teacher id  is missing",
+  "teacher_id.exists": "Teacher not found",
 };
 export default class TimeSlotValidator {
   public async created(ctx: HttpContextContract) {
@@ -77,5 +81,25 @@ export default class TimeSlotValidator {
         return ctx.response.status(422).send(err.messages);
       });
     return payload;
+  }
+  public async validateShowSlots(ctx: HttpContextContract) {
+    const validateSlot = schema.create({
+      day_no_id: schema.number([rules.range(0, 6)]),
+      date: schema.date({ format: "yyyy-MM-dd" }),
+      teacher_id: schema.number([
+        rules.exists({
+          table: "users",
+          column: "id",
+        }),
+      ]),
+    });
+    try {
+       const payload= ctx.request
+        .validate({ schema: validateSlot, messages: msg })
+      return payload
+    } catch (error) {
+      
+    }
+   
   }
 }

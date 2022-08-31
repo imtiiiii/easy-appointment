@@ -25,8 +25,8 @@ export default class Appointment extends BaseModel {
     @column()
     public agenda: string
     @column()
-    public date: string
-    @column()
+    public date: DateTime
+    =>
    
 
     @column.dateTime({ autoCreate: true })

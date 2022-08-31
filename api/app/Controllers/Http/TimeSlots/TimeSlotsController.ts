@@ -6,8 +6,7 @@ import moment from "moment";
 import { DateTime } from "luxon";
 import Day from "App/Models/Day";
 moment().format();
-// import User from 'App/Models/User';
-import HttpExceptionHandler from "@ioc:Adonis/Core/HttpExceptionHandler";
+
 export default class TimeSlotsController {
   private timeSlotValidator: TimeSlotValidator;
   private timeSlotService: TimeSlotService;
@@ -19,8 +18,13 @@ export default class TimeSlotsController {
   public async addTimeSlots(ctx: HttpContextContract) {
     const payload = await this.timeSlotValidator
       .validateAddingTimeSlots(ctx)
-      .catch((err) => {return ctx.response.status(422).send(err.messages) });
-    return await this.timeSlotService.timeSlotService(payload,ctx?.auth?.user?.id)
+      .catch((err) => {
+        return ctx.response.status(422).send(err.messages);
+      });
+    return await this.timeSlotService.timeSlotService(
+      payload,
+      ctx?.auth?.user?.id
+    );
   }
   // public async add(ctx: HttpContextContract) {
   //     const data = ctx.request.all();
@@ -98,15 +102,14 @@ export default class TimeSlotsController {
   //     }
   // }
   public async slots(ctx: HttpContextContract) {
-    const { teacher_id, day_id, date } = ctx.request.qs();
-
-    const slots = await TimeSlot.query()
-      .where("teacher_id", teacher_id)
-      .andWhere("day_id", day_id)
-      .whereDoesntHave("allAppointment", (query) => {
-        query.where("status", "1").andWhere("date", date);
-      });
-    return slots;
+    try {
+      const payload = await this.timeSlotValidator
+        .validateShowSlots(ctx)
+        
+      return await this.timeSlotService.showSlotsService(payload);
+    } catch (error) {
+      console.log("stuck in error",error);
+    }
   }
   //TODO: This Controller only accessable by teacher type user
   public async created(ctx: HttpContextContract) {

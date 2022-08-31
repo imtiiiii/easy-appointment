@@ -80,4 +80,9 @@ export default class TimeSlotService {
       .saveTimeSlotQuery(validSlots)
       .catch((err) => console.log("err is ", err));
   }
+  public async showSlotsService(payload) { 
+    console.log("im service");
+    return await this.timeSlotQuery.showSlotsQuery(payload)
+
+  }
 }

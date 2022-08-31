@@ -3,9 +3,12 @@ import { DateTime } from "luxon";
 
 export default class TimeSlotQuery {
   public async created(slotsFor) {
-    // const slots = await TimeSlot.query().where('teacherId',slotsFor.id).andWhere('dayId',slotsFor.dayId).select('id','startTime','endTime','dayId').orderBy('startTime','asc');
-    // const slotsJSON = slots.map((slots)=> slots.toJSON())
-    // return slotsJSON;
+    const slots = await TimeSlot.query()
+      .where("teacher_id", slotsFor.id)
+      .andWhere("day_no_id", 1)
+      .select("id", "start_time", "end_time", "day_no_id")
+      .orderBy("start_time", "asc");
+    return slots
   }
 
   public async available(availableSlotsFor) {
@@ -184,6 +187,14 @@ export default class TimeSlotQuery {
         }
       })
     );
-    return validatedSlots
+    return validatedSlots;
   }
+  public async showSlotsQuery(data) {
+    const getSlots = await TimeSlot.query()
+      .where('teacher_id', `${data.teacher_id}`)
+      .where('day_no_id', `${data.day_no_id}`)
+      .whereDoesntHave('teacherAppointments', (q) => { q.where('date', `${data.date}`)})
+    return getSlots;
+  }
+  
 }
