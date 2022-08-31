@@ -1,7 +1,5 @@
 import TimeSlot from "App/Models/TimeSlot";
 import { DateTime } from "luxon";
-import moment from "moment";
-import Appointment from "../../../Models/Appointment";
 
 export default class TimeSlotQuery {
   public async created(slotsFor) {
@@ -158,23 +156,27 @@ export default class TimeSlotQuery {
     return await TimeSlot.createMany(data);
   }
   public async validateSlotsQuery(data, teacherId) {
-    const allExistingSlots = await TimeSlot.query()
-      .where("teacher_id", teacherId)
-          .where("day_id", "=", `${1}`);
-      
-      allExistingSlots.map(async el => {
-        //   console.log(DateTime.toISO(el.start_time));
-          const x = el.start_time;
-          x.toFormat('HH:mm').toString()
-          console.log(x);
-       } )
-    // const temp = await Promise.all(
-    //   data.map(async (el) => {
-    //     const fields = { ...el };
-    //     const check = await TimeSlot.query().where(fields).first();
-    //     return check;
-    //   })
-    // );
-    // return temp;
+    const validatedSlots = new Array()
+    await Promise.all(
+      await data.map(async (el) => {
+        const query =await TimeSlot.query()
+          .where("day_id", 1)
+          .where("teacher_id", teacherId)
+          .where((q1) => {
+            q1.where("start_time", "<=", `${el.start_time}`).andWhere(
+              "end_time",
+              ">=",
+              `${el.start_time}`
+            );
+          })
+          .orWhere("start_time", "<", `${el.end_time}`) 
+          .first();
+        console.log(query)
+        if (query == null) { 
+          validatedSlots.push(el)
+        }
+      })
+    );
+    return validatedSlots
   }
 }
