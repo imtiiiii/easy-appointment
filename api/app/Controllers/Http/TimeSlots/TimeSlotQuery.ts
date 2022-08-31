@@ -156,25 +156,31 @@ export default class TimeSlotQuery {
     return await TimeSlot.createMany(data);
   }
   public async validateSlotsQuery(data) {
-    console.log(data)
-    const validatedSlots = new Array()
+    // console.log(data);
+    const validatedSlots = new Array();
     await Promise.all(
       await data.map(async (el) => {
-        const query =await TimeSlot.query()
-          .where("day_no_id", el.day_no_id)
-          .where("teacher_id", el.teacher_id)
-          .where((q1) => {
-            q1.where("start_time", "<=", `${el.start_time}`).andWhere(
-              "end_time",
-              ">=",
-              `${el.start_time}`
-            );
+        const query = await TimeSlot.query()
+          .andWhere("day_no_id", "=", `${el.day_no_id}`)
+          .andWhere("teacher_id", `${el.teacher_id}`)
+          .andWhere((q1) => {
+            q1.andWhere("start_time", "<=", `${el.start_time}`)
+              .andWhere("end_time", ">=", `${el.start_time}`)
+              .orWhere((q2) => {
+                q2.where("start_time", "<", `${el.end_time}`).where(
+                  "end_time",
+                  ">=",
+                  `${el.end_time}`
+                );
+              });
           })
-          .orWhere("start_time", "<", `${el.end_time}`) 
+
           .first();
+        console.log(query?.$attributes.id);
+        console.log(query?.$attributes.day_no_id);
         if (query == null) {
-          console.log("cre")
-          validatedSlots.push(el)
+          console.log("cre");
+          validatedSlots.push(el);
         }
       })
     );
