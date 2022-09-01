@@ -89,7 +89,7 @@ export default {
       choosedSlotId: null,
       previousDates: {},
       day_no_id: null,
-      date: null,
+      date: null
     };
   },
 
@@ -105,7 +105,7 @@ export default {
         start_time: startTime,
         end_time: end_time,
         agenda: this.agenda,
-        teacherId: this.id,
+        teacherId: this.id
       };
 
       if (this.agenda === null || this.agenda === "") {
@@ -125,8 +125,9 @@ export default {
       this.isLoading = false;
     },
     async getDate(data) {
+      console.log("called", data);
       this.date = moment(data);
-      this.day_no_id = date.day();
+      this.day_no_id = this.date.day();
       try {
         const res = await this.callApi(
           "get",
@@ -136,11 +137,11 @@ export default {
         );
         this.slots = res.data;
       } catch (error) {}
-    },
+    }
   },
   watch: {
-    timings: function () {},
-    disableDates: function () {},
+    timings: function() {},
+    disableDates: function() {}
   },
   computed: {
     disableDates() {
@@ -154,12 +155,12 @@ export default {
           {
             // Disable dates in given ranges (exclusive).
             from: new Date(1950, 11, 25),
-            to: yesterday,
-          },
-        ],
+            to: yesterday
+          }
+        ]
       };
-    },
-  },
+    }
+  }
 };
 </script>
 
