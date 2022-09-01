@@ -17,7 +17,8 @@ export default class AppointmentsController {
 
     }
     async request(ctx: HttpContextContract) {
-
+        console.log(ctx.request.all())
+        return;
 
         try {
             const payload = await this.appoinmentValidator.validateBookingReq(ctx);

@@ -18,7 +18,7 @@
         text-decoration: underline;
       "
     >
-      Look for available appointment scheducles:
+      Look for available appointment schedules:
     </h3>
     <div class="available-bookings">
       <div>
@@ -36,8 +36,8 @@
             class="update"
             style="background-color: #42cc8c; width: 100%; padding: 15px 0px"
           >
-            {{ timeConvert(slot.start_time) }} -
-            {{ timeConvert(slot.end_time) }}
+            {{ slot.start_time }} -
+            {{ slot.end_time }}
           </button>
           <div style="margin: 20px 0px" v-if="choosedSlotId === slot.id">
             <div class="_log_input_group">
@@ -50,7 +50,7 @@
               <!-- *********** -->
               <button
                 v-on:click="
-                  sendReq(choosedSlotId, id, slot.start_time, slot.end_time)
+                  sendReq(slot.id, id, slot.start_time, slot.end_time)
                 "
                 :loading="isLoading"
                 :disabled="isLoading"
@@ -92,41 +92,22 @@ export default {
       date: null,
     };
   },
-  created() {
-    // console.log("created", this.date_today);
-  },
+
   methods: {
-    formatTime(time) {
-      console.log("format time is called", time);
-      let date = moment(this.date_today);
-      console.log("date today = ", date.toString());
-      let endTime = moment(`${time}`);
-
-      let hour = endTime.get("hour");
-      let min = endTime.get("minute");
-
-      date.set({ hour: hour, minute: min });
-
-      const sendDate = date.format("DD-MM-YYYY HH:mm").toString();
-
-      return sendDate;
-    },
     slotId(id) {
       this.choosedSlotId = id;
-      // console.log("slot id called", this.choosedSlotId);
     },
     async sendReq(timeSlotId, teacherId, startTime, endTime) {
-      let date = moment(this.date_today);
-      const selectedDate = date.format("DD-MM-YYYY");
-
+      this.date = moment(this.date);
       const data = {
-        timeSlotId,
-        date: selectedDate,
-        studentId: this.$store.state.authUser.id,
+        time_slot_id: timeSlotId,
+        date: this.date.format("YYYY-MM-DD"),
+        start_time: startTime,
+        end_time: end_time,
         agenda: this.agenda,
-        teacherId: parseInt(teacherId),
+        teacherId: this.id,
       };
-      console.log("data =====", data);
+
       if (this.agenda === null || this.agenda === "") {
         this.isLoading = false;
         return this.e("Mention your agenda for meeting");
@@ -144,18 +125,16 @@ export default {
       this.isLoading = false;
     },
     async getDate(data) {
-     
-      const date = moment(data);
+      this.date = moment(data);
       this.day_no_id = date.day();
-      console.log(this.day_no_id);
       try {
         const res = await this.callApi(
           "get",
-          `/time-slots/?day_no_id=${this.day_no_id}&date=${date.format(
+          `/time-slots/?day_no_id=${this.day_no_id}&date=${this.date.format(
             "YYYY-MM-DD"
           )}&teacher_id=${this.id}`
         );
-        this.slots=res.data
+        this.slots = res.data;
       } catch (error) {}
     },
   },
@@ -164,33 +143,6 @@ export default {
     disableDates: function () {},
   },
   computed: {
-    // async timings() {
-    // 	this.slots = [];
-    // 	if (this.date_today !== null) {
-    // 		let date = moment(this.date_today);
-
-    // 		console.log("choosed date ", date.toString());
-    // 		let day = moment(this.date_today).isoWeekday().toString();
-    // 		const selectedDate = date.format("DD-MM-YYYY");
-    // 		console.log("selected date = ", selectedDate);
-    // 		const data = {
-    // 			teacher_id: parseInt(this.id),
-    // 			day_id: parseInt(day),
-    // 		};
-
-    // 		const slots = await this.callApi(
-    // 			"get",
-    // 			`time-slots?teacher_id=${this.id}&day_id=${day}&date=${selectedDate}`
-    // 		);
-    // 		if (slots?.status === 200) {
-    // 			this.slots = slots.data;
-    // 			// console.log("got data", slots.data);
-    // 		} else {
-    // 			this.e("something went wrong");
-    // 		}
-    // 	}
-    // },
-
     disableDates() {
       let fullDate = moment(); //get the full date
       let dateOfAmonth = fullDate.get("date"); //date of the month

@@ -1,11 +1,6 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import TimeSlot from "../../../Models/TimeSlot";
 import TimeSlotValidator from "./TimeSlotValidator";
 import TimeSlotService from "./TimeSlotService";
-import moment from "moment";
-import { DateTime } from "luxon";
-import Day from "App/Models/Day";
-moment().format();
 
 export default class TimeSlotsController {
   private timeSlotValidator: TimeSlotValidator;
