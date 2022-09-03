@@ -1,45 +1,60 @@
 import Appointment from "App/Models/Appointment";
 import moment from "moment";
-moment().format()
+moment().format();
 export default class AppoinmentQuery {
-    public async upCommingAppoinments(upCommingAppoinmentsFor) {
-        // console.log("cccc", upCommingAppoinmentsFor);
-        /**
-         * Find all appoinments Request which is not accepted yet
-         */
-        let cuurentDate = moment().toString();
-        // let appoinments = await Appointment.query().select('*').preload('forWhichTimeSlot',(timeSlotQuery)=>{
-        //     timeSlotQuery.where('teacherId',upCommingAppoinmentsFor.teacherId).preload('day');
-        // }).preload('byWhichStudent').where('date','>=',cuurentDate).andWhere('status','0').orderBy('date','desc');
-        let appoinments = await Appointment.query().select('*').preload('forWhichTimeSlot', (timeSlotQuery) => {
-            timeSlotQuery.where('teacherId', upCommingAppoinmentsFor.teacherId).preload('day');
-        }).preload('byWhichStudent').andWhere('status', '0').orderBy('date', 'desc');
-        console.log("reqs", appoinments);
-        return appoinments
+  public async upCommingAppoinments(upCommingAppoinmentsFor) {
+    // console.log("cccc", upCommingAppoinmentsFor);
+    /**
+     * Find all appoinments Request which is not accepted yet
+     */
+    let cuurentDate = moment().toString();
+    // let appoinments = await Appointment.query().select('*').preload('forWhichTimeSlot',(timeSlotQuery)=>{
+    //     timeSlotQuery.where('teacherId',upCommingAppoinmentsFor.teacherId).preload('day');
+    // }).preload('byWhichStudent').where('date','>=',cuurentDate).andWhere('status','0').orderBy('date','desc');
+    let appoinments = await Appointment.query()
+      .select("*")
+      .preload("forWhichTimeSlot", (timeSlotQuery) => {
+        timeSlotQuery
+          .where("teacherId", upCommingAppoinmentsFor.teacherId)
+          .preload("day");
+      })
+      .preload("byWhichStudent")
+      .andWhere("status", "0")
+      .orderBy("date", "desc");
+    console.log("reqs", appoinments);
+    return appoinments;
 
-        // let appoinments = await Appointment.query().select('*').preload('byWhichStudent');
-        const appoinmentsJSON = appoinments.map((appoinments) => appoinments.serialize())
-        // console.log(appoinmentsJSON);
-        const finalResult: object[] = [];
-        for (let x of appoinmentsJSON) {
-            let dbDate = moment(x.date);
-            if (dbDate.isAfter(cuurentDate) && x.forWhichTimeSlot) {
-                finalResult.push(x);
-            }
-        }
-        // return appoinmentsJSON;
-        // console.log(finalResult);
-        return finalResult;
+    // let appoinments = await Appointment.query().select('*').preload('byWhichStudent');
+    const appoinmentsJSON = appoinments.map((appoinments) =>
+      appoinments.serialize()
+    );
+    // console.log(appoinmentsJSON);
+    const finalResult: object[] = [];
+    for (let x of appoinmentsJSON) {
+      let dbDate = moment(x.date);
+      if (dbDate.isAfter(cuurentDate) && x.forWhichTimeSlot) {
+        finalResult.push(x);
+      }
     }
+    // return appoinmentsJSON;
+    // console.log(finalResult);
+    return finalResult;
+  }
 
-    public async status(changeStatusFor) {
-        let appointment = await Appointment.findOrFail(changeStatusFor.appointmentId);
-        appointment.status = changeStatusFor.status;
+  public async status(changeStatusFor) {
+    let appointment = await Appointment.findOrFail(
+      changeStatusFor.appointmentId
+    );
+    appointment.status = changeStatusFor.status;
 
-        await appointment.save();
-
-    }
-    public async bookingReqQuery(payload){
-        return await Appointment.create(payload);
-    }
+    await appointment.save();
+  }
+  public async bookingReqQuery(payload) {
+    return await Appointment.create({
+      time_slot_id: payload.time_slot_id,
+      student_id: payload.student_id,
+      agenda: payload.agenda,
+      date: payload.date,
+    });
+  }
 }

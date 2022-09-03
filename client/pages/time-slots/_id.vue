@@ -36,8 +36,8 @@
             class="update"
             style="background-color: #42cc8c; width: 100%; padding: 15px 0px"
           >
-            {{ slot.start_time }} -
-            {{ slot.end_time }}
+            {{ timeConvert(slot.start_time) }} -
+            {{ timeConvert(slot.end_time) }}
           </button>
           <div style="margin: 20px 0px" v-if="choosedSlotId === slot.id">
             <div class="_log_input_group">
@@ -103,9 +103,9 @@ export default {
         time_slot_id: timeSlotId,
         date: this.date.format("YYYY-MM-DD"),
         start_time: startTime,
-        end_time: end_time,
+        end_time: endTime,
         agenda: this.agenda,
-        teacherId: this.id
+        teacher_id: this.id
       };
 
       if (this.agenda === null || this.agenda === "") {
