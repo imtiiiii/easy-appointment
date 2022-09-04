@@ -37,16 +37,18 @@
               </button>
             </th>
             <th>{{ item.byWhichStudent.email }}</th>
-            <th>{{ item.byWhichStudent.dept?item.byWhichStudent.dept: "" }}</th>
+            <th>
+              {{ item.byWhichStudent.dept ? item.byWhichStudent.dept : "" }}
+            </th>
 
             <th>{{ item.agenda }}</th>
             <th>
               <!-- acceptAppointment(item.id,index,1) here 1 means enum value of status accept -->
-              <Button v-on:click="changeStatus(item.id, index, '1')"
+              <Button type="primary" v-on:click="changeStatus(item.id, index, '1')"
                 >Accept</Button
               >
               <!-- acceptAppointment(item.id,index,1) here 2 means enum value of status rejection -->
-              <Button v-on:click="changeStatus(item.id, index, '2')"
+              <Button type="error" v-on:click="changeStatus(item.id, index, '2')"
                 >Reject</Button
               >
             </th>
@@ -79,7 +81,7 @@ export default {
     async changeStatus(itemId, index, status) {
       try {
         const data = await this.callApi("put", "/appointments/status", {
-          appointmentId: itemId,
+          appointment_id: itemId,
           status: status
         });
         this.upCommingAppoinments.splice(index, 1);
@@ -108,10 +110,13 @@ table {
 }
 
 th {
-  border: 3px solid #dddddd;
+  border: 3px solid #8ef2b3;
+  padding: 20px 30px;
+  
 }
 td {
-  padding: 10px 30px;
+  padding: 20px 30px;
+ 
 }
 
 tr:nth-child(even) {

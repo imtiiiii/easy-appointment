@@ -3,9 +3,9 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Appointment from "../../../Models/Appointment";
 
 export default class AppointmentValidator {
-  public async status(ctx: HttpContextContract) {
+  public async validateToggleStatus(ctx: HttpContextContract) {
     const statusIdSchema = schema.create({
-      appointmentId: schema.number(),
+      appointment_id: schema.number(),
       status: schema.string({ trim: true }),
     });
     const validationMessage = {

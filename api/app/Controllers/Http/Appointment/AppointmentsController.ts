@@ -22,9 +22,12 @@ export default class AppointmentsController {
         ...payload,
         student_id: ctx.auth.user?.$attributes.id,
       });
-      
+
       if (validateOverLapping.validated) {
-          return await this.appoinmentService.bookingReqService({...payload,student_id:ctx.auth.user?.$attributes.id});
+        return await this.appoinmentService.bookingReqService({
+          ...payload,
+          student_id: ctx.auth.user?.$attributes.id,
+        });
       } else return ctx.response.status(500).send(validateOverLapping.msg);
     } catch (error) {}
   }
@@ -54,27 +57,23 @@ export default class AppointmentsController {
             "appointmentId":"lll"
         }
      */
-  public async status(ctx: HttpContextContract) {
+  public async toggleStatus(ctx: HttpContextContract) {
     try {
-      await this.appoinmentValidator.status(ctx);
+      const payload = await this.appoinmentValidator.validateToggleStatus(ctx);
+      return await this.appoinmentService.toggleStatusService(payload);
     } catch (error) {
-      const errorObj = JSON.parse(error);
-      return ctx.response.status(422).send({
-        status: "BAD",
-        message: errorObj,
-        result: [],
-      });
+      return ctx.response.status(422).send(error);
     }
-    return await this.appoinmentService.status(ctx);
   }
+
   public async accepted(ctx: HttpContextContract) {
-    const data = ctx.request.qs();
-    console.log(data);
-    const appointments = await Appointment.query()
-      .where("teacher_id", data.id)
-      .andWhere("status", "1")
-      .preload("byWhichStudent")
-      .preload("forWhichTimeSlot");
-    return appointments;
+    const teacher_id = ctx.auth.user?.$attributes.id;
+    try {
+      return this.appoinmentService.acceptedAppointmentsService(teacher_id)
+    } catch (error) {
+      
+    }
+    
+   
   }
 }

@@ -1,82 +1,83 @@
 <template>
-	<div style="margin: 100px 0px">
-		<div
-			style="
-				border: 2px solid red;
-				width: 60%;
-				margin: 0 auto;
-				background-color: white;
-				box-shadow: 5px 5px 5px grey;
+  <div style="margin: 100px 0px">
+    <div
+      style="
+				
+				width: 100%;
+			display: flex;
+			justify-content: center;
+			margin: 100px;
+				
+				
 			"
-		>
-			<div class="slot">
-				<h6>Date</h6>
-				<h6>Agenda</h6>
-				<h6>Student</h6>
-				<h6>Depertment</h6>
-			</div>
-			<div class="slot" v-for="(data, index) of data" :key="index">
-				<h4>
-					{{
-						data.date +
-						" " +
-						data.start_time +
-						" - " +
-						data.end_time
-					}}
-				</h4>
-				<h4>{{ data.agenda }}</h4>
+    >
+      <table>
+        <tr>
+          <th>Date</th>
+          <th>Day</th>
+          <th>Student</th>
+          <th>Email</th>
+          <th>Dept</th>
 
-				<h4
-					v-on:click="jumpToProfile(data.byWhichStudent.id)"
-					style="color: blue; cursor: pointer"
-				>
-					{{
-						data.byWhichStudent.first_name +
-						" " +
-						data.byWhichStudent.last_name
-					}}
-				</h4>
-				<h4>{{ data.byWhichStudent.dept }}</h4>
-			</div>
-		</div>
-	</div>
+          <th>Agenda</th>
+        </tr>
+        <tr v-for="(item, index) in data" :key="index">
+          <th>
+            <p style="width: 100%">
+              {{ formatDate(item.date) }}
+            </p>
+          </th>
+          <th>{{ item.forWhichTimeSlot.day.day_name }}</th>
+          <th>
+            <button id="link">
+              {{
+                item.byWhichStudent.first_name +
+                  " " +
+                  item.byWhichStudent.last_name
+              }}
+            </button>
+          </th>
+          <th>{{ item.byWhichStudent.email }}</th>
+          <th>
+            {{ item.byWhichStudent.dept ? item.byWhichStudent.dept : "" }}
+          </th>
+
+          <th>{{ item.agenda }}</th>
+        </tr>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
+import moment from "moment";
+moment().format();
 export default {
-	data() {
-		return {
-			user: this.$route.params.id,
-			data: null,
-		};
-	},
-	async created() {
-		const data = await this.callApi(
-			"get",
-			`/appointments/accepted?id=${this.user}`
-		);
-		if (data.status === 200) {
-			this.data = data.data;
-		}
-		console.log("hello", this.data);
-	},
-	methods: {
-		jumpToProfile(id) {
-			this.$router.push(`/profile/${id}`);
-		},
-	},
+  data() {
+    return {
+      user: this.$route.params.id,
+      data: []
+    };
+  },
+  async created() {
+    const data = await this.callApi(
+      "get",
+      `/appointments/accepted?id=${this.user}`
+    );
+    if (data.status === 200) {
+      this.data = data.data;
+    }
+    console.log("hello", this.data);
+  },
+  methods: {
+    jumpToProfile(id) {
+      this.$router.push(`/profile/${id}`);
+    },
+    formatDate(date) {
+      return moment(date).format("YYYY-MM-DD");
+    }
+  }
 };
 </script>
 
-<style  scoped>
-.slot {
-	text-align: center;
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	/* grid-row-gap: 100px; */
-	grid-column-gap: 60px;
-	margin: 10px 0px 100px 0px;
-	padding: 30px 0px;
-}
-</style>
+<style></style>
