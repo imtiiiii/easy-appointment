@@ -23,4 +23,8 @@ export default class AppoinmentService {
     return await this.appoinmentQuery.acceptedAppointmentsQuery(teacher_id)
 
   }
+  async seeAppointmentsService(payload) { 
+    return await this.appoinmentQuery.seeAppointmentsQuery(payload)
+
+  }
 }

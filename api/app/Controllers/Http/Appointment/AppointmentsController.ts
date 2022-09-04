@@ -5,7 +5,7 @@ moment().format();
 
 import AppointmentsValidator from "./AppoinmentsValidator";
 import AppoinmentsService from "./AppoinmentsService";
-// import TimeSlot from 'App/Models/TimeSlot';
+
 
 export default class AppointmentsController {
   private appoinmentValidator: AppointmentsValidator;
@@ -33,30 +33,23 @@ export default class AppointmentsController {
   }
 
   async appointments(ctx: HttpContextContract) {
-    const data = ctx.request.all();
-    // console.log(data)
-    // const currdate = moment();
+    
+    try {
+      const payload = await this.appoinmentValidator.validateSeeAppointments(ctx)
+      payload.id = ctx.auth.user?.$attributes.id;
+      return await this.appoinmentService.seeAppointmentsService(payload)
+    } catch (error) {
+      
+    }
+   
+    
 
-    const appointment = await Appointment.query()
-      .where("studentId", data.id)
-      .andWhere("status", "1")
-      .preload("forWhichTimeSlot", (slotQuery) => {
-        slotQuery.preload("user");
-      });
-    console.log(appointment.length);
-    return appointment;
+    
   }
   public async upCommingAppoinments(ctx: HttpContextContract) {
     return await this.appoinmentService.upCommingAppoinments(ctx);
   }
-  /**
-     * Status Controller
-     * Ex Put Body: 
-     *  
-     * {
-            "appointmentId":"lll"
-        }
-     */
+
   public async toggleStatus(ctx: HttpContextContract) {
     try {
       const payload = await this.appoinmentValidator.validateToggleStatus(ctx);

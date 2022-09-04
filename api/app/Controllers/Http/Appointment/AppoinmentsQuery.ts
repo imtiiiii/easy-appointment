@@ -40,12 +40,25 @@ export default class AppoinmentQuery {
       console.log("errror is ", error);
     }
   }
-  public async acceptedAppointmentsQuery(teacher_id) { 
-      const appointments = await Appointment.query()
-        .where("teacher_id", teacher_id)
-        .where("status", `${1}`)
-        .preload("byWhichStudent")
-        .preload("forWhichTimeSlot",(q)=>q.preload('day'));
+  public async acceptedAppointmentsQuery(teacher_id) {
+    const appointments = await Appointment.query()
+      .where("teacher_id", teacher_id)
+      .where("status", `${1}`)
+      .preload("byWhichStudent")
+      .preload("forWhichTimeSlot", (q) => q.preload("day"));
     return appointments;
-  } 
+  }
+  async seeAppointmentsQuery(payload) {
+    let appointments = Appointment.query().where("student_id", `${payload.id}`)
+    if (payload.type === 'history') {
+      appointments.where('date','<=',DateTime.local().toSQLDate())
+    }
+    else if (payload.type === 'upcoming') {
+      appointments.where("date", ">=", DateTime.local().toSQLDate())
+      .andWhere('status',`${1}`)
+    }
+    appointments.preload('forWhichTimeSlot', (q) => q.preload('day'));
+    appointments.preload('byWhichTeacher')
+    return await appointments;
+   } 
 }

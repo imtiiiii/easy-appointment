@@ -4,9 +4,6 @@
 		<hr />
 		<div>
 			<h4 style="margin: 20px 10px">
-				Username: {{ userDetails.user_name }}
-			</h4>
-			<h4 style="margin: 20px 10px">
 				First Name: {{ userDetails.first_name }}
 			</h4>
 			<h4 style="margin: 20px 10px">

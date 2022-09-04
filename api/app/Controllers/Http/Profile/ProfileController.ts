@@ -1,48 +1,34 @@
-import {HttpContextContract} from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
-import ProfileService from './ProfileService'
-import ProfileValidator from './ProfileValidatior'
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import User from "App/Models/User";
+import ProfileService from "./ProfileService";
+import ProfileValidator from "./ProfileValidatior";
 
 export default class ProfileController {
-    private profileService : ProfileService
-    private profileValidator : ProfileValidator
+  private profileService: ProfileService;
+  private profileValidator: ProfileValidator;
 
-    constructor (){
-        this.profileService = new ProfileService()
-        this.profileValidator = new ProfileValidator()
+  constructor() {
+    this.profileService = new ProfileService();
+    this.profileValidator = new ProfileValidator();
+  }
+
+  async getProfileDetails(ctx: HttpContextContract) {
+    const userId = ctx.request.params().id;
+    let userInfo = await User.query().where("id", userId).first();
+    if (userInfo) {
+      return ctx.response.send(userInfo);
     }
 
-    async getProfileDetails(ctx : HttpContextContract){
-        const userId = ctx.request.params().id;
-        let userInfo = await User.query().where('id',userId).first();
-        // delete userInfo.password;
-        userInfo = userInfo?.toJSON();
-        delete userInfo?.password;
-        // console.log(userInfo);
-        return ctx.response.send(userInfo);
+    return ctx.response.status(422);
+  }
+
+  async updateProfile(ctx: HttpContextContract) {
+    const userId = ctx.auth.user?.$attributes.id;
+    const payload = ctx.request.all();
+    try {
+      return await this.profileService.updateProfileService(userId, payload);
+    } catch (error) {
+      return error;
     }
-    /** 
-     *  updateProfile
-     *  Example Payload Body:
-     * {
-            "firstName":"ak",
-            "lastName":"kmk",
-            "dept":"Bio",
-            "course":"xxx",
-            "studentId":123
-        }
-     */
-    async updateProfile(ctx: HttpContextContract){
-        try{
-            await this.profileValidator.profileUpdateValidator(ctx);
-        }catch(error){
-            return ctx.response.status(422).send({
-                status:'BAD',
-                message: error,
-                results:[],
-            });
-        }
-        return await this.profileService.profileUpdate(ctx)
-        
-    }
+  }
 }

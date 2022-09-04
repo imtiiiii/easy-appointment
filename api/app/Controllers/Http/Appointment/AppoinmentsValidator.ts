@@ -69,7 +69,6 @@ export default class AppointmentValidator {
       .where("time_slot_id", data.time_slot_id)
       .andWhere("date", data.date)
       .andWhere("status", "=", `${1}`);
-    
 
     if (isAlreadyBooked.length) {
       return { msg: "This slot is already booked", validated: false };
@@ -85,5 +84,15 @@ export default class AppointmentValidator {
       };
     }
     return { msg: "", validated: true };
+  }
+  async validateSeeAppointments(ctx: HttpContextContract) {
+    const slug = schema.create({
+      id: schema.number(),
+      type: schema.string(),
+    });
+    const validationMessage = {
+      required: "The {{ field }} is missing",
+    };
+    return ctx.request.validate({schema:slug,messages:validationMessage})
   }
 }
