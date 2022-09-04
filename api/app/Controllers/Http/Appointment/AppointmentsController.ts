@@ -22,7 +22,7 @@ export default class AppointmentsController {
         ...payload,
         student_id: ctx.auth.user?.$attributes.id,
       });
-        
+      
       if (validateOverLapping.validated) {
           return await this.appoinmentService.bookingReqService({...payload,student_id:ctx.auth.user?.$attributes.id});
       } else return ctx.response.status(500).send(validateOverLapping.msg);

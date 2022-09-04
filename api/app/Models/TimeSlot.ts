@@ -50,8 +50,7 @@ export default class TimeSlot extends BaseModel {
   })
   public user: BelongsTo<typeof User>;
   @belongsTo(() => Day, {
-    localKey: "day_no_id",
-    foreignKey: "day_no",
+    foreignKey:"day_no_id"
   })
   public day: BelongsTo<typeof Day>;
 

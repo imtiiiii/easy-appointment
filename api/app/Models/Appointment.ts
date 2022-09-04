@@ -26,7 +26,7 @@ export default class Appointment extends BaseModel {
     public agenda: string
     @column()
     public date: DateTime
-    =>
+    
    
 
     @column.dateTime({ autoCreate: true })
@@ -41,13 +41,14 @@ export default class Appointment extends BaseModel {
      */
     @belongsTo(() => User, {
         localKey: 'id',
-        foreignKey: 'studentId'
+        foreignKey: 'student_id'
     })
     public byWhichStudent: BelongsTo<typeof User>
 
 
     @belongsTo(() => TimeSlot, {
-        localKey: 'id'
+        localKey: 'id',
+        foreignKey:'time_slot_id'
     })
     public forWhichTimeSlot: BelongsTo<typeof TimeSlot>
 

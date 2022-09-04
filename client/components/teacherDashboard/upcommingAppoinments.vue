@@ -1,146 +1,131 @@
 <template>
-	<div
-		style="
+  <div
+    style="
 			width: 100%;
 			display: flex;
 			justify-content: center;
 			margin: 100px;
 		"
-	>
-		<div>
-			<div v-if="upCommingAppoinments.length > 0">
-				<table>
-					<tr>
-						<th>Date</th>
-						<th>Day</th>
-						<th>User Name</th>
-						<th>Email</th>
-						<th>Dept</th>
+  >
+    <div>
+      <div v-if="upCommingAppoinments.length > 0">
+        <table>
+          <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Dept</th>
 
-						<th>Agenda</th>
-						<th>Options</th>
-					</tr>
-					<tr
-						v-for="(item, index) in upCommingAppoinments"
-						:key="index"
-					>
-						<th style="padding: 0px 40px">
-							<h6 style="width: 100%">
-								{{
-									item.date +
-									" " +
-									item.start_time +
-									" - " +
-									item.end_time
-								}}
-							</h6>
-						</th>
-						<th>{{ item.forWhichTimeSlot.day.day_name }}</th>
-						<th>
-							<button
-								id="link"
-								v-on:click="
-									jumpToProfile(item.byWhichStudent.id)
-								"
-							>
-								{{ item.byWhichStudent.user_name }}
-							</button>
-						</th>
-						<th>{{ item.byWhichStudent.email }}</th>
-						<th>{{ item.byWhichStudent.dept }}</th>
+            <th>Agenda</th>
+            <th>Options</th>
+          </tr>
+          <tr v-for="(item, index) in upCommingAppoinments" :key="index">
+            <th style="padding: 0px 40px">
+              <h6 style="width: 100%">
+                {{ formatDate(item.date) }}
+              </h6>
+            </th>
+            <th>{{ item.forWhichTimeSlot.day.day_name }}</th>
+            <th>
+              <button id="link">
+                {{
+                  item.byWhichStudent.first_name +
+                    " " +
+                    item.byWhichStudent.last_name
+                }}
+              </button>
+            </th>
+            <th>{{ item.byWhichStudent.email }}</th>
+            <th>{{ item.byWhichStudent.dept?item.byWhichStudent.dept: "" }}</th>
 
-						<th>{{ item.agenda }}</th>
-						<th>
-							<!-- acceptAppointment(item.id,index,1) here 1 means enum value of status accept -->
-							<Button
-								v-on:click="changeStatus(item.id, index, '1')"
-								>Accept</Button
-							>
-							<!-- acceptAppointment(item.id,index,1) here 2 means enum value of status rejection -->
-							<Button
-								v-on:click="changeStatus(item.id, index, '2')"
-								>Reject</Button
-							>
-						</th>
-					</tr>
-				</table>
-			</div>
-			<div v-else style="">
-				<h4 class="">No Upcomming Appoinments Request</h4>
-			</div>
-		</div>
-	</div>
+            <th>{{ item.agenda }}</th>
+            <th>
+              <!-- acceptAppointment(item.id,index,1) here 1 means enum value of status accept -->
+              <Button v-on:click="changeStatus(item.id, index, '1')"
+                >Accept</Button
+              >
+              <!-- acceptAppointment(item.id,index,1) here 2 means enum value of status rejection -->
+              <Button v-on:click="changeStatus(item.id, index, '2')"
+                >Reject</Button
+              >
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div v-else style="">
+        <h4 class="">No Upcomming Appoinments Request</h4>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import moment from "moment";
 moment().format();
 export default {
-	data() {
-		return {
-			upCommingAppoinments: [],
-		};
-	},
-	async created() {
-		const res = await this.callApi(
-			"get",
-			"/appointments/upCommingAppoinments"
-		);
-		const data = res.data;
-		console.log("up coming data = ", data);
-		this.upCommingAppoinments = data;
-		// console.log(res);
-		// console.log(this.upCommingAppoinments);
-	},
-	methods: {
-		async changeStatus(itemId, index, status) {
-			try {
-				const data = await this.callApi("put", "/appointments/status", {
-					appointmentId: itemId,
-					status: status,
-				});
-				this.upCommingAppoinments.splice(index, 1);
-				const messageBody =
-					status == "1"
-						? "Appointment Accepted"
-						: "Appointment Rejected";
-				this.i(messageBody);
-			} catch (error) {
-				this.swr();
-			}
-		},
-		jumpToProfile(profileId) {
-			this.$router.push(`profile/${profileId}`);
-		},
-	},
+  data() {
+    return {
+      upCommingAppoinments: []
+    };
+  },
+  async created() {
+    const res = await this.callApi("get", "/appointments/upCommingAppoinments");
+    console.log("res is ", res);
+    if (res.status === 200 || res.status === 201) {
+      this.upCommingAppoinments = res.data;
+    }
+  },
+  methods: {
+    async changeStatus(itemId, index, status) {
+      try {
+        const data = await this.callApi("put", "/appointments/status", {
+          appointmentId: itemId,
+          status: status
+        });
+        this.upCommingAppoinments.splice(index, 1);
+        const messageBody =
+          status == "1" ? "Appointment Accepted" : "Appointment Rejected";
+        this.i(messageBody);
+      } catch (error) {
+        this.swr();
+      }
+    },
+    jumpToProfile(profileId) {
+      this.$router.push(`profile/${profileId}`);
+    },
+    formatDate(date) {
+      return moment(date).format("YYYY-MM-DD");
+    }
+  }
 };
 </script>
 
 <style>
 table {
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	padding: 100px;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  padding: 100px;
 }
 
 th {
-	border: 3px solid #dddddd;
+  border: 3px solid #dddddd;
 }
 td {
-	padding: 10px 30px;
+  padding: 10px 30px;
 }
 
 tr:nth-child(even) {
-	background-color: #dddddd;
+  background-color: #dddddd;
 }
 button#link {
-	background: none !important;
-	border: none;
-	padding: 0 !important;
-	/*optional*/
-	font-family: arial, sans-serif;
-	/*input has OS specific font-family*/
-	color: #069;
-	text-decoration: underline;
-	cursor: pointer;
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #069;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

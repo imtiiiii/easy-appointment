@@ -21,7 +21,7 @@ export default class Day extends BaseModel {
    * Database Relationships
    */
   @hasMany(() => TimeSlot, {
-    foreignKey: "day_no",
+    foreignKey: "day_no_id",
   })
   public timeSlots: HasMany<typeof TimeSlot>;
 }

@@ -1,44 +1,18 @@
 import Appointment from "App/Models/Appointment";
 import moment from "moment";
-moment().format();
-export default class AppoinmentQuery {
-  public async upCommingAppoinments(upCommingAppoinmentsFor) {
-    // console.log("cccc", upCommingAppoinmentsFor);
-    /**
-     * Find all appoinments Request which is not accepted yet
-     */
-    let cuurentDate = moment().toString();
-    // let appoinments = await Appointment.query().select('*').preload('forWhichTimeSlot',(timeSlotQuery)=>{
-    //     timeSlotQuery.where('teacherId',upCommingAppoinmentsFor.teacherId).preload('day');
-    // }).preload('byWhichStudent').where('date','>=',cuurentDate).andWhere('status','0').orderBy('date','desc');
-    let appoinments = await Appointment.query()
-      .select("*")
-      .preload("forWhichTimeSlot", (timeSlotQuery) => {
-        timeSlotQuery
-          .where("teacherId", upCommingAppoinmentsFor.teacherId)
-          .preload("day");
-      })
-      .preload("byWhichStudent")
-      .andWhere("status", "0")
-      .orderBy("date", "desc");
-    console.log("reqs", appoinments);
-    return appoinments;
+import { DateTime } from 'luxon';
 
-    // let appoinments = await Appointment.query().select('*').preload('byWhichStudent');
-    const appoinmentsJSON = appoinments.map((appoinments) =>
-      appoinments.serialize()
-    );
-    // console.log(appoinmentsJSON);
-    const finalResult: object[] = [];
-    for (let x of appoinmentsJSON) {
-      let dbDate = moment(x.date);
-      if (dbDate.isAfter(cuurentDate) && x.forWhichTimeSlot) {
-        finalResult.push(x);
-      }
-    }
-    // return appoinmentsJSON;
-    // console.log(finalResult);
-    return finalResult;
+export default class AppoinmentQuery {
+  public async upCommingAppoinments(teacherId) {
+   
+    const appointmentRequest = await Appointment.query().where('teacher_id', teacherId)
+      .where('date', '>=', DateTime.local().toSQLDate())
+      .where("status", '!=', `${1}`)
+      .preload("forWhichTimeSlot", (q) => q.select('start_time', 'end_time', 'day_no_id').preload("day").first())
+    .preload('byWhichStudent')
+    return appointmentRequest;
+
+    
   }
 
   public async status(changeStatusFor) {
@@ -50,11 +24,19 @@ export default class AppoinmentQuery {
     await appointment.save();
   }
   public async bookingReqQuery(payload) {
-    return await Appointment.create({
+    console.log(payload)
+    const data = {
       time_slot_id: payload.time_slot_id,
       student_id: payload.student_id,
       agenda: payload.agenda,
       date: payload.date,
-    });
+      teacher_id:payload.teacher_id
+    };
+    try {
+      const save = await Appointment.create(data);
+    } catch (error) {
+      console.log("errror is ", error)
+      
+    }
   }
 }
