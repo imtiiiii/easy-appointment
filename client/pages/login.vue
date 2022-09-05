@@ -81,32 +81,34 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
- 
   data() {
     return {
       form: {
         email: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   methods: {
+    ...mapActions(["checkUser"]),
     async login() {
       this.isLoading = true;
       try {
         const res = await this.callApi("post", "/auth/login", this.form);
         if (res.status === 200) {
-          this.$router.push('home');
+          await this.checkUser();
           this.s("logged in");
           console.log("res us", res);
+          this.$router.push("/home");
         }
       } catch (error) {
         this.e("Wrong password or email ! Try again");
       }
 
       this.isLoading = false;
-    }
-  }
+    },
+  },
 };
 </script>

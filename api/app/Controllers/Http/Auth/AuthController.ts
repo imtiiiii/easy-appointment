@@ -11,7 +11,7 @@ export default class AuthController {
     this.authService = new AuthService();
     this.authValidator = new AuthValidator();
   }
-  
+
   async register(ctx: HttpContextContract) {
     try {
       await this.authValidator.validateSignupSchema(ctx);
@@ -24,43 +24,46 @@ export default class AuthController {
         result: [],
       });
     }
-    
+
     return this.authService.register(ctx);
   }
-  
 
   async getUser(ctx: HttpContextContract) {
+    console.log("get user called");
     try {
-      // return ctx.auth.use('web').authenticate();
       if (ctx.auth.isLoggedIn) {
         return await ctx.auth.use("web").authenticate();
       }
-      throw "May Session Expired";
     } catch (error) {
       return ctx.response.status(403).send({
-        status: "BAD",
-        message: "May session Expired Or User is Logout",
-        result: [],
+        error,
       });
     }
   }
   /**
    * Only Logged In User Can access this Route
    */
-  async logout({ auth, response }) {
+  async logout(ctx: HttpContextContract) {
     // return auth.logout()
-    await auth.logout();
-    return response.status(200).send({
+    await ctx.auth.use('web').logout();
+    return ctx.response.status(200).send({
       status: "OK",
       message: "User is logged out successfully!!",
       result: [],
     });
   }
-    async login(ctx: HttpContextContract) {
-        const data = ctx.request.all();
-        console.log(data);
-        const logininfo = ctx.auth.use('web').attempt(data.email, data.password)
-        return logininfo
+  async login(ctx: HttpContextContract) {
+    const data = ctx.request.all();
+
+    try {
+      const logininfo = await ctx.auth
+        .use("web")
+        .attempt(data.email, data.password);
+      console.log("login info", logininfo);
+      return logininfo;
+    } catch (error) {
+      return ctx.response.status(422);
+    }
   }
 
   async delete(ctx: HttpContextContract) {

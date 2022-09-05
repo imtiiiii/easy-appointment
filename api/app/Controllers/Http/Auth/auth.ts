@@ -6,10 +6,7 @@ Route.group(() => {
     Route.get('/getUser', 'Auth/AuthController.getUser')
     Route.get('/logout', 'Auth/AuthController.logout')
 
-    Route.post('/sendResetToken', 'Auth/AuthController.sendResetToken')
-    Route.post('/verifyCode', 'Auth/AuthController.verifyCode')
-    Route.post('/passwordReset', 'Auth/AuthController.passwordReset')
-    Route.post('/verifyEmail', 'Auth/AuthController.verifyEmail')
+    
 
     Route.delete("/delete", "Auth/AuthController.delete")
 
