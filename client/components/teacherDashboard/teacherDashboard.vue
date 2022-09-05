@@ -26,9 +26,7 @@
       <Form :model="timeSlotForm" ref="timeSlotForm" :rules="ruleValidate">
         <div style="background-color: #ffffff">
           <div class="add-time-slot">
-            <h2 class="_log_form_title">
-              Add available time slots
-            </h2>
+            <h2 class="_log_form_title">Add available time slots</h2>
             <div class="_log_form">
               <div class="_log_input_group">
                 <FormItem prop="dayNo">
@@ -114,11 +112,12 @@ import moment, { duration, min } from "moment";
 moment().format();
 
 export default {
+ 
   components: {
     "vue-timepicker": VueTimepicker,
     "created-slot": createdSlot,
     "available-slot": availableSlots,
-    "uppcomming-appoinments": upcommingAppoinments
+    "uppcomming-appoinments": upcommingAppoinments,
   },
   data() {
     return {
@@ -128,46 +127,46 @@ export default {
         dayNo: null,
         duration: null,
         startTime: null,
-        endTime: null
+        endTime: null,
       },
       ruleValidate: {
         startTime: [
           {
             required: true,
-            message: "Start and End time required"
-          }
+            message: "Start and End time required",
+          },
         ],
         endTime: [
           {
             required: true,
-            message: "Start and End time required"
-          }
+            message: "Start and End time required",
+          },
         ],
         dayNo: [
           {
             required: true,
-            message: "Please Select day"
-          }
+            message: "Please Select day",
+          },
         ],
         duration: [
           {
             required: true,
-            message: "Please select the duration of each slot"
-          }
-        ]
-      }
+            message: "Please select the duration of each slot",
+          },
+        ],
+      },
     };
   },
   created() {
     this.user = this.$store.state.authUser;
-    
+   
   },
   methods: {
     jumptoAcceptedRequest() {
+      console.log("im called accepted");
       this.$router.push(`/accepted-appointments/${this.user.id}`);
     },
- 
-   
+
     chooseOption(value) {
       if (this.options === "index") {
         this.options = "appoinment";
@@ -176,7 +175,7 @@ export default {
       }
     },
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
+      this.$refs[name].validate((valid) => {
         if (valid) {
           this.validateTimeSlotData(this.timeSlotForm);
         } else {
@@ -200,17 +199,17 @@ export default {
           day_no: data.dayNo,
           duration: data.duration,
           start_time: startTime.format("HH:mm"),
-          end_time: endTime.format("HH:mm")
+          end_time: endTime.format("HH:mm"),
         });
-        
+
         if (req.status === 200 || req.status === 201) {
           this.i(`${req.data?.length} slots created`);
         }
       } catch (error) {
         this.swr();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -17,7 +17,7 @@
             <div class="_layout_auto">
               <div class="_menu_left">
                 <div class="_menu_logo">
-                  <NuxtLink to="/">
+                  <NuxtLink to="/home">
                     <h3 class="_menu_logo_text">
                       <span class="_menu_logo_symbol">A</span>
                       <span class="_menu_logo_text_main"
@@ -57,19 +57,26 @@
 
             <div class="nav">
               <div class="">
-                <a @click="jumpToDashBoard()" class="text-white">Dashboard</a>
+                <p
+                  @click="jumpToDashBoard()"
+                 
+                  class="text-white"
+                  >Dashboard</p
+                >
               </div>
               <br />
               <div class="">
-                <a
+                <p
                   @click="jumpToProfile"
-                  href="javascript:void(0)"
+                 
                   class="text-white"
-                  >Profile</a
+                  >Profile</p
                 >
               </div>
               <div class>
-                <a @click="logout" class="text-white">Logout</a>
+                <p @click="logout"  class="text-white"
+                  >Logout</p
+                >
               </div>
             </div>
           </div>
@@ -91,34 +98,62 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      moreDrop: false,
+      clickMenu: false,
+      isChatBox: false,
+      isNotification: false,
+      isFriendReq: false,
+      noData: false,
       isMessage: false,
       isloaded: false,
-
+      isHide: true,
+      isHide2: true,
       tab: "",
+      isMinimize: false,
+      isMobileSearch: false,
     };
   },
 
   methods: {
-    ...mapActions(["checkUser"]),
     async logout() {
+      //   this.logoutLoader = true
       const res = await this.callApi("get", `/auth/logout`);
       if (res.status == 200) {
-        await this.checkUser();
-        this.$router.push("/login");
+        window.location = "/";
       }
       this.logoutLoader = false;
     },
+    clickMenuDrop(tab) {
+      if (tab != "messageDrop" && tab != "notiDrop" && tab != "friReqDrop") {
+        this.tab = "";
+      }
 
+      var self = this;
+      var self2 = this;
+      setTimeout(function () {
+        self.$nextTick(function () {
+          self.isloaded = !self.isloaded;
+        });
+        self2.$nextTick(function () {
+          self2.isHide = !self2.isHide;
+        });
+      }, 1000);
+
+      return (this.tab = tab);
+    },
     jumpToDashBoard() {
       this.$router.push("/home");
     },
     jumpToProfile() {
       this.$router.push(`/profile/${this.$store.state.authUser.id}`);
     },
+  },
+
+  created() {
+    console.log("mixing test", this.isLoading);
   },
 };
 </script>

@@ -83,7 +83,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  middleware:'auth',
+
   data() {
     return {
       form: {
@@ -101,11 +101,11 @@ export default {
         if (res.status === 200) {
           await this.checkUser();
           this.s("logged in");
-          console.log("res us", res);
+        
           this.$router.push("/home");
         }
       } catch (error) {
-        this.e("Wrong password or email ! Try again");
+        this.e("Wrong password or email ! Try again111");
       }
 
       this.isLoading = false;

@@ -79,7 +79,7 @@ import profileDetails from "../../components/profileDetails.vue";
 import moment from "moment";
 moment().format();
 export default {
-  middleware: "secure",
+ 
   components: { profileDetails },
   data() {
     return {

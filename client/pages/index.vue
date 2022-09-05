@@ -4,13 +4,14 @@
 
 <script>
 export default {
-  middleware: "auth",
   data() {
     return {
       user: null,
     };
   },
-  async mounted() {},
+  async mounted() {
+    window.location = "/home";
+  },
 };
 </script>
 
