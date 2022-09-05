@@ -106,7 +106,7 @@
 import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 import "vue2-timepicker/dist/VueTimepicker.css";
 import createdSlot from "./createdSlots.vue";
-import availableSlots from "./availableSlots.vue";
+
 import upcommingAppoinments from "./upcommingAppoinments.vue";
 import moment, { duration, min } from "moment";
 moment().format();
@@ -116,7 +116,7 @@ export default {
   components: {
     "vue-timepicker": VueTimepicker,
     "created-slot": createdSlot,
-    "available-slot": availableSlots,
+    
     "uppcomming-appoinments": upcommingAppoinments,
   },
   data() {
