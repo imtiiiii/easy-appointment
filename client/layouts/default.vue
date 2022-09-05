@@ -156,7 +156,7 @@ export default {
 			return (this.tab = tab);
 		},
 		jumpToDashBoard() {
-			this.$router.push("/");
+			this.$router.push("/home");
 		},
 		jumpToProfile() {
 			this.$router.push(`/profile/${this.$store.state.authUser.id}`);
@@ -164,7 +164,7 @@ export default {
 	},
 
 	created() {
-		console.log("mixing test", this.isLoading);
+		
 	},
 };
 </script>

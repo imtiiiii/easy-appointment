@@ -67,7 +67,7 @@ export default {
     if (data.status === 200) {
       this.data = data.data;
     }
-    console.log("hello", this.data);
+    
   },
   methods: {
     jumpToProfile(id) {

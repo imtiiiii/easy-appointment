@@ -113,13 +113,19 @@ export default {
         return this.e("Mention your agenda for meeting");
       }
       const req = await this.callApi("post", "/appointments/request", data);
-
+      console.log("req is", req);
       console.log("req is ", req);
       if (req?.status === 200) {
         this.agenda = "";
         this.choosedSlotId = -1;
         this.i(`${req.data.msg}`);
+      } else if (req?.status === 500) {
+        this.agenda = "";
+        this.choosedSlotId = -1;
+        this.i(`${req.data}`);
       } else {
+        this.agenda = "";
+        this.choosedSlotId = -1;
         this.e("Something went wrong, try again");
       }
       this.isLoading = false;

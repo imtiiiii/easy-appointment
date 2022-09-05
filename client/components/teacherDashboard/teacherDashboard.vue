@@ -37,13 +37,13 @@
                     size="large"
                     v-model="timeSlotForm.dayNo"
                   >
-                    <Option value=0>sunday</Option>
-                    <Option value=1>monday</Option>
-                    <Option value=2>tuesday</Option>
-                    <Option value=3>wednesday</Option>
-                    <Option value=4>thursday</Option>
-                    <Option value=5>friday</Option>
-                    <Option value=6>saturday</Option>
+                    <Option value="0">sunday</Option>
+                    <Option value="1">monday</Option>
+                    <Option value="2">tuesday</Option>
+                    <Option value="3">wednesday</Option>
+                    <Option value="4">thursday</Option>
+                    <Option value="5">friday</Option>
+                    <Option value="6">saturday</Option>
                   </Select>
                 </FormItem>
               </div>
@@ -345,12 +345,21 @@ export default {
         this.e("End time can not be before start time");
         return;
       }
-      const req = await this.callApi("post", "/time-slots/add", {
-        day_no: data.dayNo,
-        duration: data.duration,
-        start_time: startTime.format("HH:mm"),
-        end_time: endTime.format("HH:mm")
-      });
+
+      try {
+        const req = await this.callApi("post", "/time-slots/add", {
+          day_no: data.dayNo,
+          duration: data.duration,
+          start_time: startTime.format("HH:mm"),
+          end_time: endTime.format("HH:mm")
+        });
+        
+        if (req.status === 200 || req.status === 201) {
+          this.i(`${req.data?.length} slots created`);
+        }
+      } catch (error) {
+        this.swr();
+      }
     }
   }
 };

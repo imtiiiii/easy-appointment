@@ -1,6 +1,6 @@
 import Appointment from "App/Models/Appointment";
 import moment from "moment";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 export default class AppoinmentQuery {
   public async upCommingAppoinments(teacherId) {
@@ -36,6 +36,9 @@ export default class AppoinmentQuery {
     };
     try {
       const save = await Appointment.create(data);
+      return {
+        msg: "request sent",
+      };
     } catch (error) {
       console.log("errror is ", error);
     }
@@ -49,16 +52,16 @@ export default class AppoinmentQuery {
     return appointments;
   }
   async seeAppointmentsQuery(payload) {
-    let appointments = Appointment.query().where("student_id", `${payload.id}`)
-    if (payload.type === 'history') {
-      appointments.where('date','<=',DateTime.local().toSQLDate())
+    let appointments = Appointment.query().where("student_id", `${payload.id}`);
+    if (payload.type === "history") {
+      appointments.where("date", "<=", DateTime.local().toSQLDate());
+    } else if (payload.type === "upcoming") {
+      appointments
+        .where("date", ">=", DateTime.local().toSQLDate())
+        .andWhere("status", `${1}`);
     }
-    else if (payload.type === 'upcoming') {
-      appointments.where("date", ">=", DateTime.local().toSQLDate())
-      .andWhere('status',`${1}`)
-    }
-    appointments.preload('forWhichTimeSlot', (q) => q.preload('day'));
-    appointments.preload('byWhichTeacher')
+    appointments.preload("forWhichTimeSlot", (q) => q.preload("day"));
+    appointments.preload("byWhichTeacher");
     return await appointments;
-   } 
+  }
 }
