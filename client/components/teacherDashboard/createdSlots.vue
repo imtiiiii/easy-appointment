@@ -74,11 +74,16 @@ export default {
   },
   watch: {
     async day(newValue, oldValue) {
-      const { data } = await this.callApi("post", "/time-slots/created", {
-        day: newValue,
-      });
-    //   console.log("data is ", data);
-    //   this.createdSlots = data;
+      try {
+        const { data } = await this.callApi("post", "/time-slots/created", {
+          day_no_id: newValue,
+        });
+        this.createdSlots=data
+      } catch (error) {
+        this.swr();
+      }
+      //   console.log("data is ", data);
+      //   this.createdSlots = data;
     },
   },
   methods: {

@@ -18,9 +18,9 @@ const msg = {
   "teacher_id.exists": "Teacher not found",
 };
 export default class TimeSlotValidator {
-  public async created(ctx: HttpContextContract) {
+  public async createdSlots(ctx: HttpContextContract) {
     const availableSlotSchema = schema.create({
-      day: schema.number(),
+      day_no_id: schema.string(),
     });
 
     try {
@@ -29,8 +29,7 @@ export default class TimeSlotValidator {
       });
       return payload;
     } catch (error) {
-      const errorObject = JSON.stringify(error.messages);
-      throw errorObject;
+      return ctx.response.status(422).send(error.messages)
     }
   }
   public async update(ctx: HttpContextContract) {

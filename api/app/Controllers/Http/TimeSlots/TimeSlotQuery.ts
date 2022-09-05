@@ -2,13 +2,12 @@ import TimeSlot from "App/Models/TimeSlot";
 import { DateTime } from "luxon";
 
 export default class TimeSlotQuery {
-  public async created(slotsFor) {
+  public async createdSlotsQuery(slotsFor) {
     const slots = await TimeSlot.query()
-      .where("teacher_id", slotsFor.id)
-      .andWhere("day_no_id", 1)
-      .select("id", "start_time", "end_time", "day_no_id")
+      .where("teacher_id", slotsFor.teacher_id)
+      .where("day_no_id", slotsFor.day_no_id)
       .orderBy("start_time", "asc");
-    return slots
+    return slots;
   }
 
   public async available(availableSlotsFor) {
@@ -191,11 +190,12 @@ export default class TimeSlotQuery {
   }
   public async showSlotsQuery(data) {
     const getSlots = await TimeSlot.query()
-      .where('teacher_id', `${data.teacher_id}`)
-      .where('day_no_id', `${data.day_no_id}`)
-      .whereDoesntHave('teacherAppointments', (q) => { q.where('date', `${data.date}`) })
-    .orderBy('start_time','asc')
+      .where("teacher_id", `${data.teacher_id}`)
+      .where("day_no_id", `${data.day_no_id}`)
+      .whereDoesntHave("teacherAppointments", (q) => {
+        q.where("date", `${data.date}`);
+      })
+      .orderBy("start_time", "asc");
     return getSlots;
   }
-  
 }

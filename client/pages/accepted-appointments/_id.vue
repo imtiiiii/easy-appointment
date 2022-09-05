@@ -3,7 +3,7 @@
     <div
       style="width: 100%; display: flex; justify-content: center; margin: 100px"
     >
-      <!-- <table>
+      <table>
         <tr>
           <th>Date</th>
           <th>Day</th>
@@ -36,7 +36,7 @@
 
           <th>{{ item.agenda }}</th>
         </tr>
-      </table> -->
+      </table>
     </div>
   </div>
 </template>
@@ -45,7 +45,6 @@
 import moment from "moment";
 moment().format();
 export default {
- 
   data() {
     return {
       user: this.$route.params.id,

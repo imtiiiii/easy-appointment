@@ -2,7 +2,7 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
     Route.post("/add", "TimeSlots/TimeSlotsController.addTimeSlots");
-    Route.post("/created", "TimeSlots/TimeSlotsController.created")
+    Route.post("/created", "TimeSlots/TimeSlotsController.createdSlots")
     Route.get('/available', "TimeSlots/TimeSlotsController.available")
     Route.put('/update', "TimeSlots/TimeSlotsController.update")
     Route.get("/", "TimeSlots/TimeSlotsController.slots")

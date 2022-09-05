@@ -6,14 +6,13 @@ export default class TimeSlotService {
   constructor() {
     this.timeSlotQuery = new TimeSlotQuery();
   }
-  public async created(ctx) {
-    const authUserId = ctx.auth.user.toJSON().id;
-    const day_id = ctx.request.only(["day"]).day;
+  public async createdSlotsService(payload) {
+   
     const slotsFor = {
-      id: authUserId,
-      dayId: day_id,
+      teacher_id: payload.userId,
+      day_no_id: payload.day_no_id,
     };
-    return await this.timeSlotQuery.created(slotsFor);
+    return await this.timeSlotQuery.createdSlotsQuery(slotsFor);
   }
   public async available(ctx) {
     // const authUserId = (ctx.auth.user).toJSON().id;
@@ -80,9 +79,7 @@ export default class TimeSlotService {
       .saveTimeSlotQuery(validSlots)
       .catch((err) => console.log("err is ", err));
   }
-  public async showSlotsService(payload) { 
-    
-    return await this.timeSlotQuery.showSlotsQuery(payload)
-
+  public async showSlotsService(payload) {
+    return await this.timeSlotQuery.showSlotsQuery(payload);
   }
 }
