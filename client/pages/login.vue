@@ -87,21 +87,29 @@ export default {
     return {
       form: {
         email: "",
-        password: "",
-      },
+        password: ""
+      }
     };
   },
   methods: {
     async login() {
       this.isLoading = true;
-      const { data: loginInfo } = await this.callApi(
-        "post",
-        "/auth/login",
-        this.form
-      );
+      try {
+        const res = await this.callApi("post", "/auth/login", this.form);
+        if (res.status === 200) {
+          this.$router.push({
+            path: `${'/'}`,
+           
+          });
+          this.s("logged in");
+          console.log("res us", res);
+        }
+      } catch (error) {
+        this.e("Wrong password or email ! Try again");
+      }
+
       this.isLoading = false;
-	 
-    },
-  },
+    }
+  }
 };
 </script>
