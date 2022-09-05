@@ -122,11 +122,7 @@ export default {
   },
   data() {
     return {
-      day: "",
-      startTime: "",
-      endTime: "",
       user: null,
-      duration: null,
       options: "index", // possible variable appoinment,inde
       timeSlotForm: {
         dayNo: null,
@@ -164,161 +160,14 @@ export default {
   },
   created() {
     this.user = this.$store.state.authUser;
-    // console.log(this.user);
+    
   },
   methods: {
     jumptoAcceptedRequest() {
       this.$router.push(`/accepted-appointments/${this.user.id}`);
     },
-    clearData() {
-      this.startTime = "";
-      this.endTime = "";
-      this.duration = "";
-      this.day = "";
-    },
-    async addSlot() {
-      this.isLoading = true;
-      // console.log("start time = ", this.startTime);
-      // console.log("start time = ", this.endTime);
-      this.duration = parseInt(this.duration);
-      if (this.duration === NaN) {
-        this.isLoading = false;
-        return this.e("provide duration properly");
-      }
-      let start = moment();
-      let end = moment();
-      let x = moment(this.startTime, "hh:mm a");
-      let y = moment(this.endTime, "hh:mm a");
-      console.log("hope", this.startTime);
-      start.set({
-        hours: x.get("hour"),
-        minutes: x.get("minute")
-      });
-      end.set({
-        hours: y.get("hour"),
-        minutes: y.get("minute")
-      });
-      console.log("start time = ", start.toString());
-      console.log("start time = ", end.toString());
-
-      // // start = moment(start + "" + this.startTime);
-      // console.log(
-      // 	"start holo finaal ",
-      // 	start.format("DD-MM-YYYY hh:mm a")
-      // );
-      // let end = moment();
-      // end = moment(end + " " + this.endTime);
-      // console.log("start holo ", end);
-
-      // console.log("start is ", start.toString());
-      // console.log("end is ", end.toString());
-      if (start.isSame(end) || end.isBefore(start)) {
-        // console.log("hello guys");
-        this.e("Start and end time are same or end time is behind start time");
-      }
-      // let startTime=moment(this.startTime).format("HH:mm")
-      // let time1 = moment().format("DD-MM-YYYY");
-      // let time2 = moment().format("DD-MM-YYYY");
-      // time1 = moment(time1 + " " + this.startTime).format(
-      // 	"DD-MM-YYYY HH:mm"
-      // );
-      // time2 = moment(time2 + " " + this.endTime).format(
-      // 	"DD-MM-YYYY HH:mm"
-      // );
-      // // ************* (x,y)and(time1,time2) both = start and end time   ********************
-
-      // console.log(start.valueOf());
-      // console.log(end.valueOf());
-
-      let diffInMs = end - start;
-      // console.log("diff in ms", diffInMs);
-      // // ***********converting milliseconds to seconds***********
-      let diffInM = Math.floor(diffInMs / 60000);
-      // console.log("min difference ", diffInM);
-
-      // console.log("duration is", this.duration);
-      // ***********if single slot duration is greater than the whole start-end time duration *********
-      if (this.duration > diffInM) {
-        this.isLoading = false;
-        return this.e(
-          "lower your duration per meeting to create atleast one slot"
-        );
-      }
-      // number of slots will be allocated if this range of time are all available
-      const slotsRequested = Math.floor(diffInM / this.duration);
-      // console.log("slots requested", slotsRequested);
-      // NUMBER OF SLOTS THAT ARE MADE CONSIDERING TIME AND PREVIOUS CREATED SLOTS
-      let cntOfSlotsCreated = 0;
-      // ************ It will contain starting time's hour and minute ****************
-
-      let hours = start.hour();
-      let mins = start.minute();
-      // console.log("hours = ", hours);
-      // console.log("hours = ", mins);
-
-      // *********** loop to see and allocate  slots considering slot requests and slots availibility *************
-      for (let i = 1; i <= slotsRequested; i++) {
-        // console.log("index=", i);
-        // **************start time =hours and mins *************
-        // *********************ending minute*******************
-        // end time minute
-        let endTimeInM = mins + this.duration;
-        // separating hour and minutes from end time
-        // ***************ending minute
-        endTimeInM %= 60;
-        // console.log(
-        // 	"end time in  min= ",
-        // 	typeof endTimeInM,
-        // 	endTimeInM
-        // );
-        // *****************ending hour
-        let endTimeInH = Math.floor((mins + this.duration) / 60);
-        end.set("hour", parseInt(endTimeInH + hours));
-        end.set("minute", parseInt(endTimeInM));
-        // console.log("new start time = ", start.toString());
-        // console.log("new end time is= ", end.toString());
-
-        // ************* POST TO DB ****************
-
-        const start_time = start;
-        const end_time = end;
-        const data = {
-          teacher_id: this.user.id,
-          start_time,
-          end_time,
-          day_id: this.day
-        };
-
-        const addToDb = await this.callApi("post", "time-slots/add", data);
-        // console.log(addToDb);
-        if (addToDb?.status === 200) {
-          if (addToDb.data.msg === "possible") {
-            // this.s("created");
-            cntOfSlotsCreated++;
-          }
-        } else {
-          this.w("something went wrong . Please try again");
-          this.isLoading = false;
-          break;
-        }
-
-        // **********************************************
-
-        if (endTimeInM === 59) {
-          hours = endTimeInH + hours + 1;
-          mins = 0;
-        } else {
-          hours = endTimeInH + hours;
-          mins = parseInt(endTimeInM);
-        }
-        // ******SETTING NEW START TIME ********
-        start.set("hour", parseInt(hours));
-        start.set("minute", parseInt(mins));
-      }
-      this.i(`${cntOfSlotsCreated} slots created`);
-
-      this.isLoading = false;
-    },
+ 
+   
     chooseOption(value) {
       if (this.options === "index") {
         this.options = "appoinment";

@@ -44,19 +44,8 @@ export default {
 	async created() {
 		this.userId = this.$route.params.id;
 		this.userId = parseInt(this.userId);
-		// console.log("userId", this.userId);
-		// console.log("user type", this.$store.state.authUser.user_type);
+		
+	},
 
-		// console.log(" auth user user id", this.$store.state.authUser.id);
-		// console.log("router id", this.userId);
-	},
-	mounted() {
-		// if (
-		// 	this.$store.state.authUser.user_type !== "admin" &&
-		// 	this.userId !== this.$store.state.authUser.id
-		// ) {
-		// 	this.$router.push("/profile");
-		// }
-	},
 };
 </script>
