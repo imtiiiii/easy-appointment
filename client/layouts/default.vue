@@ -63,7 +63,7 @@
 							<div class="">
 								<a
 									@click="jumpToDashBoard()"
-									href="javascript:void(0)"
+									
 									class="text-white"
 									>Dashboard</a
 								>

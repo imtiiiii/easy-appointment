@@ -15,7 +15,7 @@ export default {
       user: null
     };
   },
-  created() {
+  async mounted() {
     this.user = this.$store.state.authUser;
     this.$router.push("/home");
   }

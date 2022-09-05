@@ -82,7 +82,7 @@
 
 <script>
 export default {
-  middleware: "guest",
+ 
   data() {
     return {
       form: {
@@ -97,7 +97,7 @@ export default {
       try {
         const res = await this.callApi("post", "/auth/login", this.form);
         if (res.status === 200) {
-          this.$router.push("/home");
+          this.$router.push('home');
           this.s("logged in");
           console.log("res us", res);
         }
