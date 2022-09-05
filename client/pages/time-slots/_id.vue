@@ -79,6 +79,7 @@ import profileDetails from "../../components/profileDetails.vue";
 import moment from "moment";
 moment().format();
 export default {
+  middleware: "secure",
   components: { profileDetails },
   data() {
     return {
@@ -89,7 +90,7 @@ export default {
       choosedSlotId: null,
       previousDates: {},
       day_no_id: null,
-      date: null
+      date: null,
     };
   },
 
@@ -105,7 +106,7 @@ export default {
         start_time: startTime,
         end_time: endTime,
         agenda: this.agenda,
-        teacher_id: this.id
+        teacher_id: this.id,
       };
 
       if (this.agenda === null || this.agenda === "") {
@@ -143,11 +144,11 @@ export default {
         );
         this.slots = res.data;
       } catch (error) {}
-    }
+    },
   },
   watch: {
-    timings: function() {},
-    disableDates: function() {}
+    timings: function () {},
+    disableDates: function () {},
   },
   computed: {
     disableDates() {
@@ -161,12 +162,12 @@ export default {
           {
             // Disable dates in given ranges (exclusive).
             from: new Date(1950, 11, 25),
-            to: yesterday
-          }
-        ]
+            to: yesterday,
+          },
+        ],
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -83,6 +83,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
+  middleware:'auth',
   data() {
     return {
       form: {

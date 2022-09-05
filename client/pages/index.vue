@@ -3,22 +3,14 @@
 </template>
 
 <script>
-import adminDashboard from "../components/adminDashboard/adminDashboard.vue";
-import StudentDashboard from "../components/studentDashboard/studentDashboard.vue";
-import TeacherDashboard from "../components/teacherDashboard/teacherDashboard.vue";
-
 export default {
- 
-  components: { adminDashboard, TeacherDashboard, StudentDashboard },
+  middleware: "auth",
   data() {
     return {
-      user: null
+      user: null,
     };
   },
-  async mounted() {
-    this.user = this.$store.state.authUser;
-    this.$router.push("/home");
-  }
+  async mounted() {},
 };
 </script>
 

@@ -1,15 +1,7 @@
 <template>
   <div style="margin: 100px 0px">
     <div
-      style="
-				
-				width: 100%;
-			display: flex;
-			justify-content: center;
-			margin: 100px;
-				
-				
-			"
+      style="width: 100%; display: flex; justify-content: center; margin: 100px"
     >
       <table>
         <tr>
@@ -32,8 +24,8 @@
             <button id="link">
               {{
                 item.byWhichStudent.first_name +
-                  " " +
-                  item.byWhichStudent.last_name
+                " " +
+                item.byWhichStudent.last_name
               }}
             </button>
           </th>
@@ -53,10 +45,11 @@
 import moment from "moment";
 moment().format();
 export default {
+  middleware: "secure",
   data() {
     return {
       user: this.$route.params.id,
-      data: []
+      data: [],
     };
   },
   async created() {
@@ -67,7 +60,6 @@ export default {
     if (data.status === 200) {
       this.data = data.data;
     }
-    
   },
   methods: {
     jumpToProfile(id) {
@@ -75,8 +67,8 @@ export default {
     },
     formatDate(date) {
       return moment(date).format("YYYY-MM-DD");
-    }
-  }
+    },
+  },
 };
 </script>
 

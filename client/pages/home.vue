@@ -27,7 +27,7 @@ import StudentDashboard from "../components/studentDashboard/studentDashboard.vu
 import TeacherDashboard from "../components/teacherDashboard/teacherDashboard.vue";
 
 export default {
- 
+ middleware:'auth',
   components: { adminDashboard, TeacherDashboard, StudentDashboard },
   data() {
     return {
