@@ -9,7 +9,8 @@ export default class AppoinmentQuery {
       .where("date", ">=", DateTime.local().toSQLDate())
       .where("status", "!=", `${1}`)
       .preload("forWhichTimeSlot", (q) =>
-        q.select("start_time", "end_time", "day_no_id").preload("day").first()
+          q. select("start_time", "end_time", "day_no_id").preload("day")
+          
       )
       .preload("byWhichStudent");
     return appointmentRequest;

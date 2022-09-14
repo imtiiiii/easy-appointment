@@ -46,7 +46,7 @@ export default class AppointmentsController {
 
     
   }
-  public async upCommingAppoinments(ctx: HttpContextContract) {
+  public async upComingAppoinments(ctx: HttpContextContract) {
     return await this.appoinmentService.upCommingAppoinments(ctx);
   }
 
