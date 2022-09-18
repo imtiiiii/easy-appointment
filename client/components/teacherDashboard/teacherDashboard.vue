@@ -19,9 +19,9 @@
     </div>
     <!-- ***********CREATED SLOT ********* -->
     <div class="main-content" v-if="options === 'index'">
-      <div style="background-color: #ffffff">
+      <!-- <div style="background-color: #ffffff">
         <created-slot></created-slot>
-      </div>
+      </div> -->
       <!-- *********ADD TIME SLOT ********** -->
       <Form :model="timeSlotForm" ref="timeSlotForm" :rules="ruleValidate">
         <div style="background-color: #ffffff">
