@@ -1,15 +1,23 @@
 <template>
   <div style="margin: 100px padding:100px 0px">
     <div v-if="user.user_type === 'admin'">
-      <h3 style="margin: 100px 0px; text-align: center">Admin dashboard</h3>
+      <h3 style="margin: 100px 0px; text-align: center">Admin Dashboard</h3>
       <admin-dashboard></admin-dashboard>
     </div>
     <div style=" width:60%;margin:0 auto" v-if="user.user_type === 'teacher'">
-      <h1 style="margin: 100px 0px; text-align: center;text-decoration:underline">Teacher Dashboard</h1>
+      <h1
+        style="margin: 100px 0px; text-align: center;text-decoration:underline"
+      >
+        Teacher Dashboard
+      </h1>
       <teacher-dashboard></teacher-dashboard>
     </div>
     <div v-if="user.user_type === 'student'">
-      <h3 style="margin: 100px 0px; text-align: center">Student dashboard</h3>
+      <h1
+        style="margin: 100px 0px; text-align: center;text-decoration:underline"
+      >
+        Student Dashboard
+      </h1>
       <student-dashboard></student-dashboard>
     </div>
   </div>
@@ -30,7 +38,7 @@ export default {
   created() {
     this.user = this.$store.state.authUser;
     if (!this.user) {
-      this.$router.push('/login')
+      this.$router.push("/login");
     }
   },
 };

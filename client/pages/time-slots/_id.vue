@@ -1,10 +1,10 @@
 <template>
   <div
     style="
-      background-color: #9cb0ba;
+      
       margin: 10px 20px;
       padding: 20px 10px;
-      height: 400vh;
+      height: 200vh;
     "
   >
     <div>
