@@ -4,8 +4,8 @@
       <h3 style="margin: 100px 0px; text-align: center">Admin dashboard</h3>
       <admin-dashboard></admin-dashboard>
     </div>
-    <div v-if="user.user_type === 'teacher'">
-      <h1 style="margin: 100px 0px; text-align: center">Teacher Dashboard</h1>
+    <div style=" width:60%;margin:0 auto" v-if="user.user_type === 'teacher'">
+      <h1 style="margin: 100px 0px; text-align: center;text-decoration:underline">Teacher Dashboard</h1>
       <teacher-dashboard></teacher-dashboard>
     </div>
     <div v-if="user.user_type === 'student'">

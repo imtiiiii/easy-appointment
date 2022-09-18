@@ -1,30 +1,42 @@
 <template>
-  <div>
-    <div style="width:50%; margin:0 auto">
-      <button
-        style="margin: 50px 20px"
-        class="_log_btn _2menu_long"
-        v-on:click="jumptoAcceptedRequest"
-      >
-        See accepted appoinments
-      </button>
-      <button
-        style="margin: 50px 20px;color:white"
-        class="_log_btn _2menu_long"
-      >
+  <div style="">
+    <div style="width:50%; margin:50px auto">
+      <Row :gutter="25" style="width:100%">
+        <Col  span="12">
+          <Button
+            style="width:100%"
+            type="primary"
+            @click="jumptoAcceptedRequest"
+            >Accepted appoinments</Button
+          >
+        </Col>
+        <Col  span="12">
+          <Button style="width:100%" type="primary">
+            <NuxtLink to="/teacher/appointmnet-requests"
+              ><span class="text-white">Appointment requests</span></NuxtLink
+            >
+          </Button>
+        </Col>
+        <Col style="margin:10px auto;" span="24">
+          <Button style="width:100%" type="primary">
+            <NuxtLink to="/teacher/appointmnet-requests"
+              ><span class="text-white">Slots</span></NuxtLink
+            >
+          </Button>
+        </Col>
+      </Row>
+
+      <!-- <Button type="primary">
         <NuxtLink to="/teacher/appointmnet-requests"
-          ><span class="text-white">See appointment requests</span></NuxtLink
+          ><span class="text-white">Slots</span></NuxtLink
         >
-      </button>
+      </Button> -->
     </div>
-    <!-- ***********CREATED SLOT ********* -->
-    <div class="main-content" v-if="options === 'index'">
-      <!-- <div style="background-color: #ffffff">
-        <created-slot></created-slot>
-      </div> -->
+
+    <div style="width:100%;margin:0 auto;;border-radius:20px">
       <!-- *********ADD TIME SLOT ********** -->
-      <Form :model="timeSlotForm" ref="timeSlotForm" :rules="ruleValidate">
-        <div style="background-color: #ffffff">
+      <Form style="margin:40px;border:1px solid blue" :model="timeSlotForm" ref="timeSlotForm" :rules="ruleValidate">
+        <div style="background-color: #ffffff;padding:20px">
           <div class="add-time-slot">
             <h2 class="_log_form_title">Add available time slots</h2>
             <div class="_log_form">
