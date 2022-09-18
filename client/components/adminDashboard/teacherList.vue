@@ -24,7 +24,9 @@
     <Row style="width:80%;margin:0 auto" :gutter="50" justify="start">
       <div v-for="(teacher, index) of teachers" :key="index">
         <Col style="margin:20px 0px" span="24">
-          <div style="background-color: #a0cae8;padding:30px 30px;border-radius:10px">
+          <div
+            style="background-color: rgb(211 214 218);padding: 30px;border-radius: 10px;"
+          >
             <h4>Name: {{ teacher.first_name + " " + teacher.last_name }}</h4>
             <hr />
             <h4>Email:{{ teacher.email }}</h4>

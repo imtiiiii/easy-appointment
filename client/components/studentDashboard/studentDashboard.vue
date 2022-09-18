@@ -4,20 +4,26 @@
     <div style="width:50%; margin:50px auto">
       <Row :gutter="25" style="width:100%">
         <Col span="12">
-          <Button style="width:100%" type="primary">History</Button>
+          <Button style="width:100%" type="primary">
+            <NuxtLink to="/student/appointment-history"
+              ><span class="text-white">Appointments history</span></NuxtLink
+            >
+          </Button>
         </Col>
         <Col span="12">
           <Button style="width:100%" type="primary">
-            <NuxtLink to="/teacher/appointmnet-requests"
+            <NuxtLink to="/student/upcoming-appointments"
               ><span class="text-white">Near appointments</span></NuxtLink
             >
           </Button>
         </Col>
         <Col style="margin:10px auto;" span="24">
-          <Button @click="showTeacherList=true" style="width:100%" type="primary">
-            
-              <span class="text-white">Book Appointment</span>
-            
+          <Button
+            @click="showTeacherList = true"
+            style="width:100%"
+            type="primary"
+          >
+            <span class="text-white">Book Appointment</span>
           </Button>
         </Col>
       </Row>
@@ -25,12 +31,7 @@
     <div v-if="showTeacherList">
       <teacher-list></teacher-list>
     </div>
-    <div v-if="showHistory">
-      <students-appointment v-bind:type="type"></students-appointment>
-    </div>
-    <div v-if="showUpcomingMeeting">
-      <students-appointment v-bind:type="type"></students-appointment>
-    </div>
+    
   </div>
 </template>
 
