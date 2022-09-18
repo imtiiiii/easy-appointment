@@ -28,7 +28,7 @@
       </table>
     </div>
     <div v-else>
-      <h4>No data yet...</h4>
+      <h4>No data</h4>
     </div>
     <hr />
     <Select placeholder="Select Day" size="large" v-model="day">
