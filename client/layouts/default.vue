@@ -7,9 +7,9 @@
         class="_menu"
         v-if="
           $route.path != '/login' &&
-          $route.path != '/register' &&
-          $route.name != 'forgot_password' &&
-          $route.name != 'verify-account'
+            $route.path != '/register' &&
+            $route.name != 'forgot_password' &&
+            $route.name != 'verify-account'
         "
       >
         <div class="_layout">
@@ -26,57 +26,25 @@
                     </h3>
                   </NuxtLink>
                 </div>
-
-                <!-- <p class="_menu_left_home"><i class="fas fa-home"></i> <i class="fal fa-house-day"></i></p> -->
               </div>
             </div>
 
-            <!-- Mobile and Ipad Menu button -->
-            <div class="_layout_col _only_sm_md _desk_hidden">
-              <NuxtLink to="/mobileMenu"
-                ><button class="_2btn _btn_sm">Menu</button></NuxtLink
-              >
-            </div>
-            <!-- Mobile and Ipad Menu button -->
-
-            <div class="_layout_col _only_desktop">
-              <!-- 
-				  <div class="_menu_search">
-                <div class="_menu_search_main">
-                  <div class="_menu_search_icon">
-                    <i class="fas fa-search"></i>
-                  </div>
-
-                  <div class="_menu_search_input">
-                    <input type="text" placeholder="Searchhh" />
-                  </div>
-                </div>
-              </div>
-			   -->
-            </div>
-
+            <div class="_layout_col _only_desktop"></div>
             <div class="nav">
               <div class="">
-                <p
-                  @click="jumpToDashBoard()"
-                 
-                  class="text-white"
-                  >Dashboard</p
-                >
+                <p @click="jumpToDashBoard()" class="text-white">Dashboard</p>
               </div>
               <br />
               <div class="">
-                <p
-                  @click="jumpToProfile"
-                 
-                  class="text-white"
-                  >Profile</p
-                >
+                <p @click="jumpToProfile" class="text-white">Profile</p>
               </div>
               <div class>
-                <p @click="logout"  class="text-white"
-                  >Logout</p
-                >
+                <p @click="logout" class="text-white">Logout</p>
+              </div>
+              <div class>
+                <NuxtLink to="/teacher/appointmnet-requests">
+                  <h6 class="text-white">Requests</h6>
+                </NuxtLink>
               </div>
             </div>
           </div>
@@ -133,11 +101,11 @@ export default {
 
       var self = this;
       var self2 = this;
-      setTimeout(function () {
-        self.$nextTick(function () {
+      setTimeout(function() {
+        self.$nextTick(function() {
           self.isloaded = !self.isloaded;
         });
-        self2.$nextTick(function () {
+        self2.$nextTick(function() {
           self2.isHide = !self2.isHide;
         });
       }, 1000);

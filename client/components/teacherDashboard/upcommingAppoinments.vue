@@ -1,14 +1,16 @@
 <template>
   <div
     style="
-			width: 100%;
+			width: 80%;
+      margin:100px auto
 			display: flex;
 			justify-content: center;
-			margin: 100px;
+			
+      
 		"
   >
     <div>
-      <div v-if="upCommingAppoinments.length > 0">
+      <div v-if="upCommingAppoinments.length > 0" >
         <table>
           <tr>
             <th>Date</th>
@@ -110,7 +112,7 @@ table {
 }
 
 th {
-  border: 3px solid #8ef2b3;
+  border: 1px solid black;
   padding: 20px 30px;
   
 }

@@ -5,7 +5,7 @@
       <admin-dashboard></admin-dashboard>
     </div>
     <div v-if="user.user_type === 'teacher'">
-      <h3 style="margin: 100px 0px; text-align: center">Teacher dashboard</h3>
+      <h1 style="margin: 100px 0px; text-align: center">Teacher Dashboard</h1>
       <teacher-dashboard></teacher-dashboard>
     </div>
     <div v-if="user.user_type === 'student'">

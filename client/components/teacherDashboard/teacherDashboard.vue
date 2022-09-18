@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div>
+    <div style="width:50%; margin:0 auto">
       <button
-        style="marging: 50px 20px"
-        class="_log_btn _2menu_long"
-        type="button"
-        v-on:click="chooseOption()"
-      >
-        {{ options === "appoinment" ? "Create Slot" : "Appoinments Request" }}
-      </button>
-      <button
-        style="marging: 50px 20px"
+        style="margin: 50px 20px"
         class="_log_btn _2menu_long"
         v-on:click="jumptoAcceptedRequest"
       >
         See accepted appoinments
+      </button>
+      <button
+        style="margin: 50px 20px;color:white"
+        class="_log_btn _2menu_long"
+      >
+        <NuxtLink to="/teacher/appointmnet-requests"
+          ><span class="text-white">See appointment requests</span></NuxtLink
+        >
       </button>
     </div>
     <!-- ***********CREATED SLOT ********* -->
@@ -112,11 +112,10 @@ import moment, { duration, min } from "moment";
 moment().format();
 
 export default {
- 
   components: {
     "vue-timepicker": VueTimepicker,
     "created-slot": createdSlot,
-    
+
     "uppcomming-appoinments": upcommingAppoinments,
   },
   data() {
@@ -159,7 +158,6 @@ export default {
   },
   created() {
     this.user = this.$store.state.authUser;
-   
   },
   methods: {
     jumptoAcceptedRequest() {
