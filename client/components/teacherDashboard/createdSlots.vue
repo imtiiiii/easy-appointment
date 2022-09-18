@@ -1,8 +1,5 @@
 <template>
   <div class="created-slot-partent">
-    <div class="heading">
-      <h2 style="text-align: center; color: #2c92f8">Created Slots</h2>
-    </div>
     <div class="main-content" v-if="createdSlots.length">
       <table>
         <tr>
@@ -20,12 +17,12 @@
           </td>
 
           <td style="width: 100%">
-            <button
-              style="background-color: #ff0000; padding: 10px 20px"
-              v-on:click="deleteSlot(item.id, index)"
+            <Button type="error"
+              
+              
             >
               Delete
-            </button>
+            </Button>
           </td>
         </tr>
       </table>
@@ -43,8 +40,6 @@
       <Option value="5">friday</Option>
       <Option value="6">saturday</Option>
     </Select>
-    <!-- {{day}} -->
-    <!-- {{this.$store.state.authUser.id}} -->
   </div>
 </template>
 <script>
@@ -78,7 +73,7 @@ export default {
         const { data } = await this.callApi("post", "/time-slots/created", {
           day_no_id: newValue,
         });
-        this.createdSlots=data
+        this.createdSlots = data;
       } catch (error) {
         this.swr();
       }
@@ -125,25 +120,25 @@ export default {
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  column-gap: 40px;
+  padding: 100px;
 }
 
-td,
 th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 25px;
-  column-gap: 40px;
-  font-weight: bold;
+  border: 1px solid black;
+  padding: 20px 30px;
+}
+td {
+  padding: 20px 30px;
 }
 
 tr:nth-child(even) {
   background-color: #dddddd;
 }
 .created-slot-partent {
-  /* margin: 100px 0px; */
-
-  padding: 30px 10px;
+  width: 50%;
+  margin:50px auto;
+  
+ 
 }
 .main-content {
   display: flex;

@@ -19,7 +19,7 @@
         </Col>
         <Col style="margin:10px auto;" span="24">
           <Button style="width:100%" type="primary">
-            <NuxtLink to="/teacher/appointmnet-requests"
+            <NuxtLink to="/teacher/created-slots"
               ><span class="text-white">Slots</span></NuxtLink
             >
           </Button>

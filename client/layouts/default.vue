@@ -1,9 +1,9 @@
 <template>
-  <div id="app" style="margin-bottom: 200px; padding-bottom: 100px">
+  <div id="app" style="margin-bottom: 200px; padding-bottom: 100px;">
     <div id="main-wrapper">
       <!-- Menu -->
       <div
-        style="margin: 0px"
+        style="margin: 0px height:500px"
         class="_menu"
         v-if="
           $route.path != '/login' &&
@@ -19,7 +19,7 @@
                 <div class="_menu_logo">
                   <NuxtLink to="/home">
                     <h3 class="_menu_logo_text">
-                      <span class="_menu_logo_symbol">A</span>
+                      <span class="_menu_logo_symbol">E</span>
                       <span class="_menu_logo_text_main"
                         >APPOINTMENT SYSTEM</span
                       >
