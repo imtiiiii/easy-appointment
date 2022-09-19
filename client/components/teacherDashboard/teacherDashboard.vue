@@ -36,7 +36,7 @@
     <div style="width:100%;margin:0 auto;;border-radius:20px">
       <!-- *********ADD TIME SLOT ********** -->
       <Form style="margin:40px;border:1px solid blue" :model="timeSlotForm" ref="timeSlotForm" :rules="ruleValidate">
-        <div style="background-color: #ffffff;padding:20px">
+        <div style="background-color: #ffffff;padding:20px 40px">
           <div class="add-time-slot">
             <h2 class="_log_form_title">Add available time slots</h2>
             <div class="_log_form">
