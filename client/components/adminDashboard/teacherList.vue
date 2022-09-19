@@ -36,7 +36,11 @@
             <hr />
 
             <div>
-              <Button v-on:click="timeSlot(teacher.id)" type="success">
+              <Button
+                v-if="user.user_type == 'student'"
+                v-on:click="timeSlot(teacher.id)"
+                type="success"
+              >
                 See time slots
               </Button>
             </div>

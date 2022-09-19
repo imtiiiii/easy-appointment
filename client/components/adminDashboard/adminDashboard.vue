@@ -5,7 +5,7 @@
 				style="marging: 30px 20px"
 				class="_log_btn _2menu_long"
 				type="button"
-				v-on:click="seePendingReq()"
+				v-on:click="$router.push('/admin/join-requests')"
 			>
 				Pending Requests
 			</button>
