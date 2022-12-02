@@ -55,7 +55,7 @@ export default {
         '@/assets/css/common.css',
         '@/assets/css/main.css',
         '@/assets/css/responsive.css',
-        '@/assets/css/login.css',
+       
     ],
     /*
     ** Plugins to load before mounting the App
