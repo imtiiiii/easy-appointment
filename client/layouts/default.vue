@@ -3,7 +3,7 @@
     <div id="main-wrapper">
       <!-- Menu -->
       <div
-        style="margin: 0px height:500px"
+        style="margin: 0px height:1500px"
         class="_menu"
         v-if="
           $route.path != '/login' &&
@@ -19,7 +19,7 @@
                 <div class="_menu_logo">
                   <NuxtLink to="/home">
                     <h3 class="_menu_logo_text">
-                      <span class="_menu_logo_symbol">E</span>
+                      <span class="_menu_logo_symbol">EA</span>
                       <span class="_menu_logo_text_main"
                         >APPOINTMENT SYSTEM</span
                       >
