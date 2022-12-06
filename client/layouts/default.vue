@@ -1,89 +1,66 @@
 <template>
-  <div class="layout">
+  <div>
+    <nav>
+      <div class="left">
+        <h3 class="_menu_logo_text">
+          <span class="_menu_logo_symbol">A</span>
+          <span class="_menu_logo_text_main">APPOINTMENT SYSTEM</span>
+        </h3>
+      </div>
+      <div class="right">
+        <span>user.name</span>
+        <a @click="logout">Logout</a>
+        <a @click="login">Login</a>
+      </div>
+    </nav>
     <Layout>
-      <Header>
-        <Menu :style="{ display:'flex',alignItems:'center',justifyContent:'space-between' }" mode="horizontal" theme="dark" active-name="1">
-          <div  class="_menu_logo">
-            <NuxtLink to="/home">
-              <h3 class="_menu_logo_text">
-                <span class="_menu_logo_symbol">A</span>
-                <span class="_menu_logo_text_main">APPOINTMENT SYSTEM</span>
-              </h3>
-            </NuxtLink>
-          </div>
-          <div class="nav">
-            <div class="">
-              <p @click="jumpToDashBoard()" class="text-white">Dashboard</p>
-            </div>
-            <br />
-            <div class="">
-              <p @click="jumpToProfile" class="text-white">Profile</p>
-            </div>
-            <div class>
-              <p @click="logout" class="text-white">Logout</p>
-            </div>
-            <div class>
-              <NuxtLink to="/teacher/appointmnet-requests">
-                <h6 class="text-white">Requests</h6>
-              </NuxtLink>
-            </div>
-          </div>
-        </Menu>
-      </Header>
-      <Layout :style="{ padding: '0 50px' }">
-        <Breadcrumb :style="{ margin: '16px 0' }"> </Breadcrumb>
-        <Content
-          :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
-        >
-          <Layout>
-            <Sider hide-trigger :style="{ background: '#fff' }">
-              <Menu
-                active-name="1-2"
-                theme="light"
-                width="auto"
-                :open-names="['1']"
-              >
-                <Submenu name="1">
-                  <template #title>
-                    <Icon type="ios-navigate"></Icon>
-                    Item 1
-                  </template>
-                  <MenuItem name="1-1">Option 1</MenuItem>
-                  <MenuItem name="1-2">Option 2</MenuItem>
-                  <MenuItem name="1-3">Option 3</MenuItem>
-                </Submenu>
-                <Submenu name="2">
-                  <template #title>
-                    <Icon type="ios-keypad"></Icon>
-                    Item 2
-                  </template>
-                  <MenuItem name="2-1">Option 1</MenuItem>
-                  <MenuItem name="2-2">Option 2</MenuItem>
-                </Submenu>
-                <Submenu name="3">
-                  <template #title>
-                    <Icon type="ios-analytics">EA</Icon>
-                    Item 3
-                  </template>
-                  <MenuItem name="3-1">Option 1</MenuItem>
-                  <MenuItem name="3-2">Option 2</MenuItem>
-                </Submenu>
-              </Menu>
-            </Sider>
-            <Content
-              :style="{
-                padding: '24px',
-                minHeight: '280px',
-                background: '#fff',
-              }"
-            >
-              <nuxt />
-            </Content>
-          </Layout>
-        </Content>
-      </Layout>
-      <Footer class="layout-footer-center">2011-2016 &copy; View Design</Footer>
+      <Breadcrumb> </Breadcrumb>
+      <Content
+        :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
+      >
+        <Layout>
+          <Sider hide-trigger :style="{ background: '#fff' }">
+            <Menu theme="light" width="auto" :open-names="['1', '2', '3']">
+              <Submenu name="1">
+                <template #title>
+                  <Icon type="ios-navigate"></Icon>
+                  Item 1
+                </template>
+                <MenuItem name="1-1">Option 1</MenuItem>
+                <MenuItem name="1-2">Option 2</MenuItem>
+                <MenuItem name="1-3">Option 3</MenuItem>
+              </Submenu>
+              <Submenu name="2">
+                <template #title>
+                  <Icon type="ios-keypad"></Icon>
+                  Item 2
+                </template>
+                <MenuItem name="2-1">Option 1</MenuItem>
+                <MenuItem name="2-2">Option 2</MenuItem>
+              </Submenu>
+              <Submenu name="3">
+                <template #title>
+                  <Icon type="ios-analytics">EA</Icon>
+                  Item 3
+                </template>
+                <MenuItem name="3-1">Option 1</MenuItem>
+                <MenuItem name="3-2">Option 2</MenuItem>
+              </Submenu>
+            </Menu>
+          </Sider>
+          <Content
+            :style="{
+              padding: '24px',
+              minHeight: '280px',
+              background: '#fff',
+            }"
+          >
+            <nuxt />
+          </Content>
+        </Layout>
+      </Content>
     </Layout>
+    <Footer class="layout-footer-center"></Footer>
   </div>
 </template>
 
@@ -149,29 +126,27 @@ export default {
 </script>
 
 <style scoped>
-.layout {
-  border: 1px solid #d7dde4;
-  background: #f5f7f9;
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
+nav {
+  display: flex;
+  padding: 30px 20px;
+  align-items: center;
+  justify-content: space-between;
+
+  /* background-color: #8f94fb; */
+  background-color: #404040;
 }
-.layout-logo {
-  width: 100px;
-  height: 30px;
-  background: #f7faff;
-  border-radius: 3px;
-  float: left;
-  position: relative;
-  top: 15px;
-  left: 20px;
+.left {
+  flex: 1;
 }
-.layout-nav {
-  width: 420px;
-  margin: 0 auto;
-  margin-right: 20px;
+.right {
+  flex: 1;
+  margin-left: 1em;
+  text-align: right;
 }
-.layout-footer-center {
-  text-align: center;
+.right > a,
+.right > span {
+  margin-left: 1em;
+  cursor: pointer;
+  color: aliceblue;
 }
 </style>
