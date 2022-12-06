@@ -51,7 +51,7 @@
           <Content
             :style="{
               padding: '24px',
-              minHeight: '280px',
+              minHeight: '100vh',
               background: '#fff',
             }"
           >

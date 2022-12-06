@@ -1,11 +1,11 @@
 <template>
-  <div style="margin: 100px padding:100px 0px">
+  <div>
     <div v-if="user.user_type === 'admin'">
-      <h1
-        style="margin: 100px 0px; text-align: center;text-decoration:underline"
+      <h3
+        style=" margin-bottom:10em ; text-align: center;text-decoration:underline"
       >
         Admin Dashboard
-      </h1>
+      </h3>
       <admin-dashboard></admin-dashboard>
     </div>
     <div style=" width:60%;margin:0 auto" v-if="user.user_type === 'teacher'">
