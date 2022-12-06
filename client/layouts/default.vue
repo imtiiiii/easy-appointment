@@ -24,27 +24,27 @@
               <Submenu name="1">
                 <template #title>
                   <Icon type="ios-navigate"></Icon>
-                  Item 1
+                  USERS MANAGEMENT
                 </template>
-                <MenuItem name="1-1">Option 1</MenuItem>
-                <MenuItem name="1-2">Option 2</MenuItem>
-                <MenuItem name="1-3">Option 3</MenuItem>
+                <MenuItem name="1-1">Students list</MenuItem>
+                <MenuItem name="1-2">Teachers list </MenuItem>
+                <MenuItem name="1-3">Admins list</MenuItem>
               </Submenu>
               <Submenu name="2">
                 <template #title>
                   <Icon type="ios-keypad"></Icon>
-                  Item 2
+                  JOIN REQUESTS
                 </template>
-                <MenuItem name="2-1">Option 1</MenuItem>
-                <MenuItem name="2-2">Option 2</MenuItem>
+                <MenuItem name="2-1">Pending requests</MenuItem>
+                <MenuItem name="2-2">Denied requests</MenuItem>
               </Submenu>
               <Submenu name="3">
                 <template #title>
-                  <Icon type="ios-analytics">EA</Icon>
-                  Item 3
+                  <Icon type="ios-analytics"></Icon>
+                  REGISTER USER
                 </template>
-                <MenuItem name="3-1">Option 1</MenuItem>
-                <MenuItem name="3-2">Option 2</MenuItem>
+                <!-- <MenuItem name="3-1">Option 1</MenuItem>
+                <MenuItem name="3-2">Option 2</MenuItem> -->
               </Submenu>
             </Menu>
           </Sider>

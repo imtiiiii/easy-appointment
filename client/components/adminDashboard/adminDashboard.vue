@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="dashboard-menu">
+		<!-- <div class="dashboard-menu">
 			<button
 				style="marging: 30px 20px"
 				class="_log_btn _2menu_long"
@@ -45,7 +45,7 @@
 		</div>
 		<div v-if="addUser === true">
 			<register></register>
-		</div>
+		</div> -->
 	</div>
 </template>
 
