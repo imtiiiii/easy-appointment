@@ -8,9 +8,9 @@
         </h3>
       </div>
       <div class="right">
-        <span>user.name</span>
-        <a @click="logout">Logout</a>
-        <a @click="login">Login</a>
+        <span>{{$store.state.authUser.first_name}}</span>
+        <a v-if="$store.state.authUser" @click="logout">Logout</a>
+        <a v-else @click="login">Login</a>
       </div>
     </nav>
     <Layout>
@@ -41,7 +41,7 @@
               <Submenu name="3">
                 <template #title>
                   <Icon type="ios-analytics"></Icon>
-                  REGISTER USER
+                  ADD USERS
                 </template>
                 <!-- <MenuItem name="3-1">Option 1</MenuItem>
                 <MenuItem name="3-2">Option 2</MenuItem> -->
