@@ -46,6 +46,15 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime;
+  // * extras data
+  @column()
+  public total_users: number;
+  @column()
+    public total_students: number;
+    @column()
+    public total_teachers: number;
+    @column()
+    public total_pending_requests: number;
 
   /**
    *  Hooks

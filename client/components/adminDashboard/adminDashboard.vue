@@ -68,7 +68,11 @@ export default {
 			studentList: false,
 			addUser: false,
 		};
-	},
+    },
+    async created() {
+        const { data} = await this.callApi('get', '/dashboard/')
+        console.log("🚀 ~ file: adminDashboard.vue:74 ~ created ~ req", data)
+     },
 	methods: {
 		seePendingReq() {
 			this.pendingReq = !this.pendingReq;
