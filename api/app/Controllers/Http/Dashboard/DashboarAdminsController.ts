@@ -61,5 +61,15 @@ export default class DashboarAdminsController {
             return error
         }
 
-     }
+    }
+    public async teacherDashboard(ctx: HttpContextContract) { 
+        if(ctx.auth.user?.user_type !== "teacher"){
+            return ctx.response.status(422).json({ msg: "You are not authorized to access this page" })
+        }
+        try {
+            return  this.dashboardAdminService.teacherDashboardService(ctx.auth.user.id)
+        } catch (error) {
+            return error
+        }
+    }
 }

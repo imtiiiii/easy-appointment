@@ -32,6 +32,16 @@ export default class Appointment extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime;
 
+  // * extras
+  @column()
+  public all_appointments_count: number;
+  @column()
+  public pending_appointments_count: number;
+  @column()
+  public todays_appointments_count: number;
+  @column()
+  public up_coming_appointments_count: number;
+
   /**
    * Database Relationships
    */

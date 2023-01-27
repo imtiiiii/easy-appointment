@@ -8,12 +8,12 @@
       </h2>
       <admin-dashboard></admin-dashboard>
     </div>
-    <div style=" width:60%;margin:0 auto" v-if="user.user_type === 'teacher'">
-      <h1
-        style="margin: 100px 0px; text-align: center;text-decoration:underline"
+    <div style="margin:0 auto" v-if="user.user_type === 'teacher'">
+      <h2
+        style=" margin-bottom:10em ; text-align: center;"
       >
         Teacher Dashboard
-      </h1>
+      </h2>
       <teacher-dashboard></teacher-dashboard>
     </div>
     <div v-if="user.user_type === 'student'">

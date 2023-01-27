@@ -8,12 +8,13 @@
         </h3>
       </div>
       <div class="right">
-        <span>{{$store.state.authUser.first_name}}</span>
+        <span>{{ $store.state.authUser.first_name }}</span>
         <a v-if="$store.state.authUser" @click="logout">Logout</a>
         <a v-else @click="login">Login</a>
       </div>
     </nav>
-    <Layout>
+    <!-- * admin layout -->
+    <Layout v-if="$store.state.authUser.user_type !== 'teacher'">
       <Breadcrumb> </Breadcrumb>
       <Content
         :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
@@ -42,6 +43,48 @@
                 <template #title>
                   <Icon type="ios-analytics"></Icon>
                   ADD USERS
+                </template>
+                <!-- <MenuItem name="3-1">Option 1</MenuItem>
+                <MenuItem name="3-2">Option 2</MenuItem> -->
+              </Submenu>
+            </Menu>
+          </Sider>
+          <Content
+            :style="{
+              padding: '24px',
+              minHeight: '100vh',
+              background: '#fff',
+            }"
+          >
+            <nuxt />
+          </Content>
+        </Layout>
+      </Content>
+    </Layout>
+    <Layout v-if="$store.state.authUser.user_type === 'teacher'">
+      <Breadcrumb> </Breadcrumb>
+      <Content
+        :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
+      >
+        <Layout>
+          <Sider hide-trigger :style="{ background: '#fff' }">
+            <Menu theme="light" width="auto" :open-names="['1', '2', '3']">
+              <Submenu name="1">
+                <template #title>
+                  <Icon type="ios-navigate"></Icon>
+                  Manage Slots
+                </template>
+              </Submenu>
+              <Submenu name="2">
+                <template #title>
+                  <Icon type="ios-keypad"></Icon>
+                  Accepted Appointments
+                </template>
+              </Submenu>
+              <Submenu name="3">
+                <template #title>
+                  <Icon type="ios-analytics"></Icon>
+                  Appointment Requests
                 </template>
                 <!-- <MenuItem name="3-1">Option 1</MenuItem>
                 <MenuItem name="3-2">Option 2</MenuItem> -->

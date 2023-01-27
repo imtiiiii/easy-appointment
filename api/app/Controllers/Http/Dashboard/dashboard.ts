@@ -7,4 +7,5 @@ Route.group(() => {
     Route.get("/student-list/", "Dashboard/DashboarAdminsController.studentList")
     Route.get("/teacher-list/", "Dashboard/DashboarAdminsController.teacherList")
     Route.get("/teacher-list/search", "Dashboard/DashboarAdminsController.searchTeacher")
+    Route.get('/teacher', 'Dashboard/DashboarAdminsController.teacherDashboard')
 }).prefix("dashboard").middleware("auth")
