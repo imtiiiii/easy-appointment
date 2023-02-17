@@ -74,7 +74,18 @@
                   <Icon type="ios-navigate"></Icon>
                   Manage Slots
                 </template>
+                <div >
+                  <MenuItem  name="1-1">
+                      <span @click="jumpToAddTimeSlot">Add time slot</span>
+                  </MenuItem>
+                </div>
+                <template >
+                  <MenuItem name="1-2">
+                    <span @click="jumpToSeeCreatedSlots">See created slots</span>
+                </MenuItem>
+                </template>
               </Submenu>
+
               <Submenu name="2">
                 <template #title>
                   <Icon type="ios-keypad"></Icon>
@@ -129,7 +140,6 @@ export default {
 
   methods: {
     async logout() {
-      //   this.logoutLoader = true
       const res = await this.callApi("get", `/auth/logout`);
       if (res.status == 200) {
         window.location = "/";
@@ -160,6 +170,13 @@ export default {
     jumpToProfile() {
       this.$router.push(`/profile/${this.$store.state.authUser.id}`);
     },
+    jumpToAddTimeSlot() {
+      console.log("called");
+      this.$router.push("/manage-slots/add");
+    },
+    jumpToSeeCreatedSlots() {
+      this.$router.push("/teacher/created-slots");
+    },
   },
 
   created() {
@@ -174,8 +191,6 @@ nav {
   padding: 30px 20px;
   align-items: center;
   justify-content: space-between;
-
-  /* background-color: #8f94fb; */
   background-color: #404040;
 }
 .left {
