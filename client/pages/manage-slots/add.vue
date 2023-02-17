@@ -9,7 +9,7 @@
     >
       <div style="background-color: #ffffff; padding: 20px 40px">
         <div class="add-time-slot">
-          <h2 style="color:#404040;font-weight:500;" class="_log_form_title">Add your available time slots</h2>
+          <h2 style="color:#404040;font-weight:500;" class="_log_form_title">Add free time slots</h2>
           <div class="_log_form">
             <div class="_log_input_group">
               <FormItem prop="dayNo">
@@ -138,7 +138,7 @@ export default {
   async created() {
       this.user = this.$store.state.authUser;
       const {data} = await this.callApi("get", "/dashboard/teacher");
-      console.log("🚀 ~ file: teacherDashboard.vue:203 ~ created ~ data", data)
+     
   },
   methods: {
     jumptoAcceptedRequest() {
@@ -165,9 +165,9 @@ export default {
       });
     },
     async validateTimeSlotData(data) {
-      console.log("🚀 ~ file: add.vue:168 ~ validateTimeSlotData ~ data", data)
-      let startTime = moment(data.startTime, "hh:mm a");
-      let endTime = moment(data.endTime, "hh:mm a");
+        let startTime = moment(data.startTime, "hh:mm a Z");
+        let endTime = moment(data.endTime, "hh:mm a Z");
+        
 
       if (!startTime.isBefore(endTime)) {
         this.e("End time can not be before start time");

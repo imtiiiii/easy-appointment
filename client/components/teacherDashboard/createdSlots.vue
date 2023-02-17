@@ -1,5 +1,15 @@
 <template>
   <div class="created-slot-partent">
+    <Select placeholder="Select Day" size="large" v-model="day">
+      <Option value="0">sunday</Option>
+      <Option value="1">monday</Option>
+      <Option value="2">tuesday</Option>
+      <Option value="3">wednesday</Option>
+      <Option value="4">thursday</Option>
+      <Option value="5">friday</Option>
+      <Option value="6">saturday</Option>
+    </Select>
+    <hr />
     <div class="main-content" v-if="createdSlots.length">
       <table>
         <tr>
@@ -17,12 +27,7 @@
           </td>
 
           <td style="width: 100%">
-            <Button type="error"
-              
-              
-            >
-              Delete
-            </Button>
+            <Button type="error"> Delete </Button>
           </td>
         </tr>
       </table>
@@ -30,16 +35,6 @@
     <div v-else>
       <h4>No data</h4>
     </div>
-    <hr />
-    <Select placeholder="Select Day" size="large" v-model="day">
-      <Option value="0">sunday</Option>
-      <Option value="1">monday</Option>
-      <Option value="2">tuesday</Option>
-      <Option value="3">wednesday</Option>
-      <Option value="4">thursday</Option>
-      <Option value="5">friday</Option>
-      <Option value="6">saturday</Option>
-    </Select>
   </div>
 </template>
 <script>
@@ -61,14 +56,9 @@ export default {
       convertedEndTime: null,
     };
   },
-  async created() {
-    try {
-    } catch (error) {
-      this.e("Something is wrong to fetch your created slots data");
-    }
-  },
+
   watch: {
-    async day(newValue, oldValue) {
+    async day(newValue) {
       try {
         const { data } = await this.callApi("post", "/time-slots/created", {
           day_no_id: newValue,
@@ -77,8 +67,7 @@ export default {
       } catch (error) {
         this.swr();
       }
-      //   console.log("data is ", data);
-      //   this.createdSlots = data;
+     
     },
   },
   methods: {
@@ -136,9 +125,7 @@ tr:nth-child(even) {
 }
 .created-slot-partent {
   width: 50%;
-  margin:50px auto;
-  
- 
+  margin: 50px auto;
 }
 .main-content {
   display: flex;

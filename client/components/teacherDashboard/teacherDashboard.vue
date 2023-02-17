@@ -133,7 +133,7 @@
         <h3>Upcoming appointments : {{ studentsCount }}</h3>
       </div>
       <div class="container_child">
-        <h3>Join requests : {{ joinRequests }}</h3>
+        <h3>Appointment requests : {{ joinRequests }}</h3>
       </div>
     </div>
   </div>

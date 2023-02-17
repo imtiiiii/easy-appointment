@@ -15,7 +15,6 @@
 
 <script>
 import createdSlotsVue from "../../components/teacherDashboard/createdSlots.vue";
-import upcommingAppoinmentsVue from "../../components/teacherDashboard/upcommingAppoinments.vue";
 export default {
   components: {
     created_slots: createdSlotsVue,
