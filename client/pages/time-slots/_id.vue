@@ -4,7 +4,7 @@
       
       margin: 10px 20px;
       padding: 20px 10px;
-      height: 200vh;
+      height: 100vh;
     "
   >
     <div>
