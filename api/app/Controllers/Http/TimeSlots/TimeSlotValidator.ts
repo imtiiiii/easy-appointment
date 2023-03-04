@@ -65,11 +65,11 @@ export default class TimeSlotValidator {
       day_no: schema.number([rules.range(0, 6)]),
       duration: schema.number(),
       start_time: schema.date({
-        format: "HH:mm",
+        format: "HH:mm Z",
       }),
       end_time: schema.date(
         {
-          format: "HH:mm",
+          format: "HH:mm Z",
         },
         [rules.afterField("start_time")]
       ),

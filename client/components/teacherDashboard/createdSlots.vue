@@ -131,5 +131,6 @@ tr:nth-child(even) {
   display: flex;
   justify-content: center;
   align-content: center;
+  width: 50%;
 }
 </style>

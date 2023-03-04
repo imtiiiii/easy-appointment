@@ -178,10 +178,8 @@ export default class TimeSlotQuery {
           })
 
           .first();
-        console.log(query?.$attributes.id);
-        console.log(query?.$attributes.day_no_id);
+
         if (query == null) {
-          console.log("cre");
           validatedSlots.push(el);
         }
       })

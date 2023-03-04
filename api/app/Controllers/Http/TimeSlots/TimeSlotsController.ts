@@ -16,6 +16,8 @@ export default class TimeSlotsController {
       .catch((err) => {
         return ctx.response.status(422).send(err.messages);
       });
+     
+      
     return await this.timeSlotService.timeSlotService(
       payload,
       ctx?.auth?.user?.id

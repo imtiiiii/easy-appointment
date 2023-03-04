@@ -9,7 +9,9 @@
     >
       <div style="background-color: #ffffff; padding: 20px 40px">
         <div class="add-time-slot">
-          <h2 style="color:#404040;font-weight:500;" class="_log_form_title">Add free time slots</h2>
+          <h2 style="color: #404040; font-weight: 500" class="_log_form_title">
+            Add free time slots
+          </h2>
           <div class="_log_form">
             <div class="_log_input_group">
               <FormItem prop="dayNo">
@@ -72,10 +74,11 @@
         </div>
       </div>
     </Form>
-    <!-- ********* AVAILABLE SLOTS ************ -->
-    <!-- <div style="background-color: #ffffff">
-				<available-slot></available-slot>
-			</div> -->
+    <div style="margin: 40px;">
+        <Button  type="dashed">
+            <nuxt-link to="/teacher/created-slots">See your created slots</nuxt-link>
+        </Button>
+    </div>
   </div>
 </template>
 
@@ -83,15 +86,12 @@
 import VueTimepicker from "vue2-timepicker/src/vue-timepicker.vue";
 import "vue2-timepicker/dist/VueTimepicker.css";
 
-
-
 import moment, { duration, min } from "moment";
 moment().format();
 
 export default {
   components: {
     "vue-timepicker": VueTimepicker,
-
   },
   data() {
     return {
@@ -136,9 +136,8 @@ export default {
     };
   },
   async created() {
-      this.user = this.$store.state.authUser;
-      const {data} = await this.callApi("get", "/dashboard/teacher");
-     
+    this.user = this.$store.state.authUser;
+    const { data } = await this.callApi("get", "/dashboard/teacher");
   },
   methods: {
     jumptoAcceptedRequest() {
@@ -154,9 +153,10 @@ export default {
       }
     },
     handleSubmit(name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(async (valid) => {
         if (valid) {
-          this.validateTimeSlotData(this.timeSlotForm);
+          await this.validateTimeSlotData(this.timeSlotForm);
+          this.$refs[name].resetFields();
         } else {
           this.$Message.error("Some fields are missing");
 
@@ -165,9 +165,8 @@ export default {
       });
     },
     async validateTimeSlotData(data) {
-        let startTime = moment(data.startTime, "hh:mm a Z");
-        let endTime = moment(data.endTime, "hh:mm a Z");
-        
+      let startTime = moment(data.startTime, "hh:mm a Z");
+      let endTime = moment(data.endTime, "hh:mm a Z");
 
       if (!startTime.isBefore(endTime)) {
         this.e("End time can not be before start time");
@@ -178,9 +177,10 @@ export default {
         const req = await this.callApi("post", "/time-slots/add", {
           day_no: data.dayNo,
           duration: data.duration,
-          start_time: startTime.format("HH:mm"),
-          end_time: endTime.format("HH:mm"),
+          start_time: startTime.format("HH:mm Z"),
+          end_time: endTime.format("HH:mm Z"),
         });
+        console.log("🚀 ~ file: add.vue:177 ~ validateTimeSlotData ~ req", req);
 
         if (req.status === 200 || req.status === 201) {
           this.i(`${req.data?.length} slots created`);
@@ -210,7 +210,6 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
- 
 }
 .container_child {
   width: 20%;
