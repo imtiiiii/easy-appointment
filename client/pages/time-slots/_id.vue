@@ -1,12 +1,5 @@
 <template>
-  <div
-    style="
-      
-      margin: 10px 20px;
-      padding: 20px 10px;
-      height: 100vh;
-    "
-  >
+  <div>
     <div>
       <profile-details v-bind:userId="id"></profile-details>
     </div>
@@ -14,8 +7,7 @@
     <h3
       style="
         text-align: center;
-        margin-bottom: 80px;
-        text-decoration: underline;
+        margin: 40px 0px;
       "
     >
       Look for available appointment schedules:
@@ -25,7 +17,7 @@
         <DatePicker
           type="date"
           placeholder="Select date"
-          style="width: 240px"
+          style="width: 540px"
           @on-change="getDate"
         ></DatePicker>
       </div>
