@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ALL BUTTONS -->
-    <!-- <div style="width:50%; margin:50px auto">
+    <div style="width:50%; margin:50px auto">
       <Row :gutter="25" style="width:100%">
         <Col span="12">
           <Button style="width:100%" type="primary">
@@ -30,8 +30,8 @@
     </div>
     <div v-if="showTeacherList">
       <teacher-list></teacher-list>
-    </div> -->
-    <div
+    </div>
+    <!-- <div
       v-if="$store.state.authUser.user_type === 'student'"
       class="container_admin"
     >
@@ -44,7 +44,7 @@
       <div class="container_child">
         <h3>Upcoming appointments : {{ studentsCount ?? 0 }}</h3>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

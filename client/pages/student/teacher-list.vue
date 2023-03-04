@@ -1,8 +1,8 @@
 <template>
   <div>
     <div id="main-wrapper">
-      <div style="margin: 100px 0px">
-        <h2 style="text-align:center; text-decoration:underline">
+      <div style="margin: 50px 0px">
+        <h2 style="text-align:center">
           Teacher List
         </h2>
         <div>

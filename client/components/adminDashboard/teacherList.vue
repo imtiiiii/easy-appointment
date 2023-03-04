@@ -11,21 +11,29 @@
             <i class="fas fa-search"></i>
           </div>
 
-          <div class="_menu_search_input">
+          <!-- <div class="_menu_search_input">
             <input
               type="text"
-              placeholder="Teacher Name"
+              placeholder="search teacher"
               v-model="searchInput"
             />
+          </div> -->
+          <div class="search-bar">
+            <input type="text" placeholder="Search..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
           </div>
         </div>
       </div>
     </div>
-    <Row style="width:80%;margin:0 auto" :gutter="50" justify="start">
+    <Row style="width: 80%; margin: 0 auto" :gutter="50" justify="start">
       <div v-for="(teacher, index) of teachers" :key="index">
-        <Col style="margin:20px 0px" span="24">
+        <Col style="margin: 20px 0px" span="24">
           <div
-            style="background-color: rgb(211 214 218);padding: 30px;border-radius: 10px;"
+            style="
+              background-color: rgb(211 214 218);
+              padding: 30px;
+              border-radius: 10px;
+            "
           >
             <h4>Name: {{ teacher.first_name + " " + teacher.last_name }}</h4>
             <hr />
@@ -91,7 +99,7 @@ export default {
     async searching() {},
   },
   computed: {
-    searching: async function() {
+    searching: async function () {
       // console.log("searching for something", this.searchInput);
       if (this.searchInput === "") {
         const teachers = await this.callApi("get", "/dashboard/teacher-list/");
@@ -113,4 +121,37 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input[type="text"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: #bbb;
+}
+
+.search-bar button[type="submit"] {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.search-bar button[type="submit"]:hover {
+  color: #007bff;
+}
+</style>
