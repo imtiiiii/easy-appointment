@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ALL BUTTONS -->
-    <div style="width:50%; margin:50px auto">
+    <!-- <div style="width:50%; margin:50px auto">
       <Row :gutter="25" style="width:100%">
         <Col span="12">
           <Button style="width:100%" type="primary">
@@ -30,8 +30,21 @@
     </div>
     <div v-if="showTeacherList">
       <teacher-list></teacher-list>
+    </div> -->
+    <div
+      v-if="$store.state.authUser.user_type === 'student'"
+      class="container_admin"
+    >
+      <div class="container_child">
+        <h3>All appointments : {{ allUsersCount ?? 0 }}</h3>
+      </div>
+      <div class="container_child">
+        <h3>Today's appointments : {{ teachersCount ?? 0 }}</h3>
+      </div>
+      <div class="container_child">
+        <h3>Upcoming appointments : {{ studentsCount ?? 0 }}</h3>
+      </div>
     </div>
-    
   </div>
 </template>
 
@@ -74,10 +87,21 @@ export default {
 };
 </script>
 
-<style>
-.dashboard-menu {
-  display: grid;
-  grid-template: 150px / auto auto auto auto;
-  column-gap: 50px;
+<style scoped>
+.container_admin {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.container_child {
+  width: 20%;
+  height: 100px;
+  background-color: #f1f1f1;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
