@@ -131,7 +131,7 @@
                 </template>
                 <div>
                   <MenuItem name="1-1">
-                    <span @click="jumpToAddTimeSlot">View Teachers</span>
+                    <span @click="jumpToTeacherListForStudent">View Teachers</span>
                   </MenuItem>
                 </div>
               </Submenu>
@@ -211,6 +211,9 @@ export default {
     },
     jumpToSeeCreatedSlots() {
       this.$router.push("/teacher/created-slots");
+    },
+    jumpToTeacherListForStudent() {
+      this.$router.push("/student/teacher-list");
     },
   },
 

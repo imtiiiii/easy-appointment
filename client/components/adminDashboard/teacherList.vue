@@ -5,57 +5,44 @@
       class="_layout_col _only_desktop"
       style="margin: 50px 0px"
     >
-      <div class="_menu_search">
-        <div class="_menu_search_main">
-          <div class="_menu_search_icon">
-            <i class="fas fa-search"></i>
-          </div>
-
-          <!-- <div class="_menu_search_input">
+      <!-- <div class="_menu_search_input">
             <input
               type="text"
               placeholder="search teacher"
               v-model="searchInput"
             />
           </div> -->
-          <div class="search-bar">
-            <input type="text" placeholder="Search..." />
-            <button type="submit"><i class="fas fa-search"></i></button>
-          </div>
-        </div>
+      <div class="search-container">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search..." />
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
       </div>
     </div>
-    <Row style="width: 80%; margin: 0 auto" :gutter="50" justify="start">
-      <div v-for="(teacher, index) of teachers" :key="index">
-        <Col style="margin: 20px 0px" span="24">
-          <div
-            style="
-              background-color: rgb(211 214 218);
-              padding: 30px;
-              border-radius: 10px;
-            "
-          >
-            <h4>Name: {{ teacher.first_name + " " + teacher.last_name }}</h4>
-            <hr />
-            <h4>Email:{{ teacher.email }}</h4>
-            <hr />
 
-            <h4>Department:{{ teacher.dept }}</h4>
-            <hr />
-
-            <div>
-              <Button
-                v-if="user.user_type == 'student'"
-                v-on:click="timeSlot(teacher.id)"
-                type="success"
-              >
-                See time slots
-              </Button>
-            </div>
+    <div v-for="(teacher, index) of teachers" :key="index">
+      <div class="card">
+        <div class="card-row">
+          <div class="card-label">Name:</div>
+          <div class="card-value">
+            {{ teacher.first_name + " " + teacher.last_name }}
           </div>
-        </Col>
+        </div>
+        <div class="card-row">
+          <div class="card-label">Email:</div>
+          <div class="card-value">{{ teacher.email }}</div>
+        </div>
+        <div class="card-row">
+          <div class="card-label">Department:</div>
+          <div class="card-value">{{ teacher.dept ?? "N/A" }}</div>
+        </div>
+        <button href="#" class="card-button" v-on:click="timeSlot(teacher.id)">
+          View Profile & Time Slots
+        </button>
       </div>
-    </Row>
+    </div>
   </div>
 </template>
 
@@ -122,36 +109,91 @@ export default {
 </script>
 
 <style scoped>
-.search-bar {
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 20px;
+.search-container {
+  background-color: #f8f9fa;
   padding: 10px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin: 0 auto;
 }
 
-.search-bar input[type="text"] {
-  flex: 1;
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
   border: none;
   outline: none;
   font-size: 16px;
   color: #333;
-  background-color: transparent;
+  background-color: #f8f9fa;
+  padding: 10px;
+  width: 300px;
+  border-radius: 20px 0px 0px 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.search-bar input[type="text"]::placeholder {
-  color: #bbb;
+.search-input:focus {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.search-bar button[type="submit"] {
+.search-button {
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  background-color: transparent;
+  padding: 10px 20px;
+  border-radius: 0px 20px 20px 0px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  margin-left: 10px;
+  transition: background-color 0.2s ease;
 }
 
-.search-bar button[type="submit"]:hover {
-  color: #007bff;
+.search-button:hover {
+  background-color: #0062cc;
+}
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 50%;
+  margin: 20px auto;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-label {
+  flex: 1;
+  font-weight: bold;
+}
+
+.card-value {
+  flex: 2;
+}
+
+.card-button {
+  display: block;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.card-button:hover {
+  background-color: #0062cc;
 }
 </style>
