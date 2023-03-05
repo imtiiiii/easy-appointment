@@ -25,8 +25,13 @@ export default class TimeSlotsController {
   }
 
   public async slots(ctx: HttpContextContract) {
+
+    
+   
     try {
       const payload = await this.timeSlotValidator.validateShowSlots(ctx);
+      console.log("🚀 ~ file: TimeSlotscontroller.ts:33 ~ payload:", payload)
+     
       return await this.timeSlotService.showSlotsService(payload);
     } catch (error) {
       return ctx.response.status(422).send(error.messages);

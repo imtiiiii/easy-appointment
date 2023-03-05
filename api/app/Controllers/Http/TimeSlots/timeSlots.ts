@@ -5,6 +5,6 @@ Route.group(() => {
     Route.post("/created", "TimeSlots/TimeSlotsController.createdSlots")
     Route.get('/available', "TimeSlots/TimeSlotsController.available")
     Route.put('/update', "TimeSlots/TimeSlotsController.update")
-    Route.get("/", "TimeSlots/TimeSlotsController.slots")
+    Route.post("/get-teacher-slots", "TimeSlots/TimeSlotsController.slots")
     Route.delete('/delete',"TimeSlots/TimeSlotsController.delete")
 }).prefix("/time-slots").middleware('auth')

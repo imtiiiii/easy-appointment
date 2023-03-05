@@ -1,5 +1,6 @@
 import TimeSlot from "App/Models/TimeSlot";
 import { DateTime } from "luxon";
+import { SlotServicePayload } from "./TimeSlot";
 
 export default class TimeSlotQuery {
   public async createdSlotsQuery(slotsFor) {
@@ -186,10 +187,10 @@ export default class TimeSlotQuery {
     );
     return validatedSlots;
   }
-  public async showSlotsQuery(data) {
+  public async showSlotsQuery(data :SlotServicePayload) {
     const getSlots = await TimeSlot.query()
-      .where("teacher_id", `${data.teacher_id}`)
-      .where("day_no_id", `${data.day_no_id}`)
+      .where("teacher_id",data.teacher_id)
+      .where("day_no_id", data.day_no_id)
       .whereDoesntHave("teacherAppointments", (q) => {
         q.where("date", `${data.date}`);
       })

@@ -1,5 +1,7 @@
-import moment from "moment";
+
+import { SlotServicePayload } from "./TimeSlot";
 import TimeSlotQuery from "./TimeSlotQuery";
+import { DateTime } from 'luxon';
 
 export default class TimeSlotService {
   private timeSlotQuery: TimeSlotQuery;
@@ -81,7 +83,7 @@ export default class TimeSlotService {
       .saveTimeSlotQuery(validSlots)
       .catch((err) => console.log("err is ", err));
   }
-  public async showSlotsService(payload) {
+  public async showSlotsService(payload : SlotServicePayload) {
     return await this.timeSlotQuery.showSlotsQuery(payload);
   }
 }

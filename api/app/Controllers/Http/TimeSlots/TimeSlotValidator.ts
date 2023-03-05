@@ -89,16 +89,12 @@ export default class TimeSlotValidator {
         rules.exists({
           table: "users",
           column: "id",
+            where: { user_type: "teacher" },
         }),
       ]),
     });
-    try {
-       const payload= ctx.request
-         .validate({ schema: validateSlot, messages: {...msg} })
-      return payload
-    } catch (error) {
-      return ctx.response.status(422).send(error.messages)
-    }
+  return await ctx.request
+  .validate({ schema: validateSlot, messages: {...msg} })
    
   }
 }

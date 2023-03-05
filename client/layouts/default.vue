@@ -10,7 +10,7 @@
       <div class="right">
         <span>{{ $store.state.authUser.first_name }}</span>
         <a v-if="$store.state.authUser" @click="logout">Logout</a>
-        <a v-else @click="login">Login</a>
+        <!-- <a v-else @click="login">Login</a> -->
       </div>
     </nav>
     <!-- * admin layout -->
@@ -117,6 +117,39 @@
       </Content>
     </Layout>
     <Layout v-if="$store.state.authUser.user_type === 'student'">
+      <Breadcrumb> </Breadcrumb>
+      <Content
+        :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
+      >
+        <Layout>
+          <Sider hide-trigger :style="{ background: '#fff' }">
+            <Menu theme="light" width="auto" :open-names="['1']">
+              <Submenu name="1">
+                <template #title>
+                  <Icon type="ios-navigate"></Icon>
+                  Teacher list
+                </template>
+                <div>
+                  <MenuItem name="1-1">
+                    <span @click="jumpToTeacherListForStudent">View Teachers</span>
+                  </MenuItem>
+                </div>
+              </Submenu>
+            </Menu>
+          </Sider>
+          <Content
+            :style="{
+              padding: '24px',
+              minHeight: '100vh',
+              background: '#fff',
+            }"
+          >
+            <nuxt />
+          </Content>
+        </Layout>
+      </Content>
+    </Layout>
+    <Layout v-else>
       <Breadcrumb> </Breadcrumb>
       <Content
         :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"

@@ -4,30 +4,23 @@
       <profile-details v-bind:userId="id"></profile-details>
     </div>
     <hr />
-    <h3
-      style="
-        text-align: center;
-        margin: 40px 0px;
-      "
-    >
+    <h3 style="text-align: center; margin: 40px 0px">
       Look for available appointment schedules:
     </h3>
     <div class="available-bookings">
       <div>
         <DatePicker
           type="date"
+          size="large"
           placeholder="Select date"
           style="width: 540px"
           @on-change="getDate"
+          :editable="false"
         ></DatePicker>
       </div>
       <div v-if="slots.length !== 0" class="slot">
         <div v-for="(slot, index) of slots" :key="index">
-          <button
-            v-on:click="slotId(slot.id)"
-            class="update"
-            style="background-color: #42cc8c; width: 100%; padding: 15px 0px"
-          >
+          <button v-on:click="slotId(slot.id)" class="time-slot-cards">
             {{ timeConvert(slot.start_time) }} -
             {{ timeConvert(slot.end_time) }}
           </button>
@@ -46,18 +39,16 @@
                 "
                 :loading="isLoading"
                 :disabled="isLoading"
-                class="update"
-                style="
-                  background-color: #e182af;
-                  padding: 10px 05px;
-                  margin-top: 5px;
-                "
+                class="send-req-btn"
               >
                 {{ isLoading ? "Please wait..." : "Send request" }}
               </button>
             </div>
           </div>
         </div>
+      </div>
+      <div v-else-if="selectedDate === null">
+        <h1 style="text-align: center">Select a date to see available slots</h1>
       </div>
       <div v-else>
         <h1 style="text-align: center">No slots available</h1>
@@ -71,7 +62,6 @@ import profileDetails from "../../components/profileDetails.vue";
 import moment from "moment";
 moment().format();
 export default {
- 
   components: { profileDetails },
   data() {
     return {
@@ -83,6 +73,8 @@ export default {
       previousDates: {},
       day_no_id: null,
       date: null,
+      isLoading: false,
+      selectedDate: null,
     };
   },
 
@@ -123,19 +115,23 @@ export default {
       }
       this.isLoading = false;
     },
-    async getDate(data) {
-      console.log("called", data);
-      this.date = moment(data);
+    async getDate(date) {
+      console.log("called", date);
+      this.selectedDate = date;
+      this.date = moment(date);
+
       this.day_no_id = this.date.day();
-      try {
-        const res = await this.callApi(
-          "get",
-          `/time-slots/?day_no_id=${this.day_no_id}&date=${this.date.format(
-            "YYYY-MM-DD"
-          )}&teacher_id=${this.id}`
-        );
+
+      const res = await this.callApi("post", `/time-slots/get-teacher-slots`, {
+        day_no_id: this.day_no_id,
+        date: this.date.format("YYYY-MM-DD"),
+        teacher_id: this.id,
+      });
+      if (res?.status === 200) {
         this.slots = res.data;
-      } catch (error) {}
+      }
+      console.log("🚀 ~ file: _id.vue:142 ~ res:", res);
+      // this.slots = res.data;
     },
   },
   watch: {
@@ -174,5 +170,28 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 20px;
   grid-column-gap: 20px;
+}
+.time-slot-cards {
+  background-color: #404040;
+  padding: 20px 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.send-req-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  margin-top: 5px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 </style>
