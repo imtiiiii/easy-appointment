@@ -4,7 +4,9 @@
       <profile-details v-bind:userId="id"></profile-details>
     </div>
     <hr />
-    <h6 style="text-align: center;">Look for available appointment schedules:</h6>
+    <h6 style="text-align: center">
+      Look for available appointment schedules:
+    </h6>
     <div class="available-bookings">
       <div>
         <DatePicker
@@ -33,9 +35,7 @@
               ></Input>
               <!-- *********** -->
               <button
-                v-on:click="
-                  sendReq(slot.id, id, slot.start_time, slot.end_time)
-                "
+                v-on:click="sendReq(slot.id, slot.start_time, slot.end_time)"
                 :loading="isLoading"
                 :disabled="isLoading"
                 class="send-req-btn"
@@ -83,8 +83,11 @@ export default {
     slotId(id) {
       this.choosedSlotId = id;
     },
-    async sendReq(timeSlotId, teacherId, startTime, endTime) {
+    async sendReq(timeSlotId, startTime, endTime) {
       this.date = moment(this.date);
+      if (this.agenda === null || this.agenda === "") {
+        return this.e("Mention your agenda for meeting");
+      }
       const data = {
         time_slot_id: timeSlotId,
         date: this.date.format("YYYY-MM-DD"),
@@ -94,13 +97,8 @@ export default {
         teacher_id: this.id,
       };
 
-      if (this.agenda === null || this.agenda === "") {
-        this.isLoading = false;
-        return this.e("Mention your agenda for meeting");
-      }
       const req = await this.callApi("post", "/appointments/request", data);
       console.log("req is", req);
-      console.log("req is ", req);
       if (req?.status === 200) {
         this.agenda = "";
         this.choosedSlotId = -1;
@@ -163,9 +161,8 @@ export default {
   grid-template-columns: 1fr 2fr;
   grid-row-gap: 36px;
   margin: 20px;
-  padding:30px 20px;
+  padding: 30px 20px;
   grid-column-gap: 20px;
-
 }
 .slot {
   display: grid;

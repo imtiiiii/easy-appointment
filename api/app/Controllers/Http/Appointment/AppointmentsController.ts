@@ -1,5 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import Appointment from "../../../Models/Appointment";
+
 import moment from "moment";
 moment().format();
 
