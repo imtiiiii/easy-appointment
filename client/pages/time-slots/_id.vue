@@ -4,14 +4,13 @@
       <profile-details v-bind:userId="id"></profile-details>
     </div>
     <hr />
-    <h3 style="text-align: center; margin: 40px 0px">
-      Look for available appointment schedules:
-    </h3>
+    <h6 style="text-align: center;">Look for available appointment schedules:</h6>
     <div class="available-bookings">
       <div>
         <DatePicker
           type="date"
           size="large"
+          :disabled="slotLoading"
           placeholder="Select date"
           style="width: 540px"
           @on-change="getDate"
@@ -48,10 +47,12 @@
         </div>
       </div>
       <div v-else-if="selectedDate === null">
-        <h1 style="text-align: center">Select a date to see available slots</h1>
+        <p style="text-align: center">
+          <strong> Select a date from calendar to see available slots </strong>
+        </p>
       </div>
       <div v-else>
-        <h1 style="text-align: center">No slots available</h1>
+        <p style="text-align: center">No slots available</p>
       </div>
     </div>
   </div>
@@ -73,7 +74,7 @@ export default {
       previousDates: {},
       day_no_id: null,
       date: null,
-      isLoading: false,
+      slotLoading: false,
       selectedDate: null,
     };
   },
@@ -116,12 +117,10 @@ export default {
       this.isLoading = false;
     },
     async getDate(date) {
-      console.log("called", date);
       this.selectedDate = date;
+      this.slotLoading = true;
       this.date = moment(date);
-
       this.day_no_id = this.date.day();
-
       const res = await this.callApi("post", `/time-slots/get-teacher-slots`, {
         day_no_id: this.day_no_id,
         date: this.date.format("YYYY-MM-DD"),
@@ -130,8 +129,7 @@ export default {
       if (res?.status === 200) {
         this.slots = res.data;
       }
-      console.log("🚀 ~ file: _id.vue:142 ~ res:", res);
-      // this.slots = res.data;
+      this.slotLoading = false;
     },
   },
   watch: {
@@ -163,7 +161,11 @@ export default {
 .available-bookings {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-row-gap: 26px;
+  grid-row-gap: 36px;
+  margin: 20px;
+  padding:30px 20px;
+  grid-column-gap: 20px;
+
 }
 .slot {
   display: grid;
