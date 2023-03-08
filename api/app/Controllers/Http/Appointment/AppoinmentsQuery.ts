@@ -2,6 +2,21 @@ import Appointment from "App/Models/Appointment";
 import moment from "moment";
 import { DateTime } from "luxon";
 
+type CheckBooking = {
+  time_slot_id: number;
+  student_id?: number;
+  date: string;
+  status?: string;
+};
+type BookingReq = {
+  time_slot_id: number;
+  agenda: string;
+  teacher_id: number;
+  student_id: number;
+  date: string;
+  status: '0';
+};
+
 export default class AppoinmentQuery {
   public async upCommingAppoinments(teacherId) {
     const appointmentRequest = await Appointment.query()
@@ -9,8 +24,7 @@ export default class AppoinmentQuery {
       .where("date", ">=", DateTime.local().toSQLDate())
       .where("status", "!=", `${1}`)
       .preload("forWhichTimeSlot", (q) =>
-          q. select("start_time", "end_time", "day_no_id").preload("day")
-          
+        q.select("start_time", "end_time", "day_no_id").preload("day")
       )
       .preload("byWhichStudent");
     return appointmentRequest;
@@ -26,23 +40,8 @@ export default class AppoinmentQuery {
 
     return appointment;
   }
-  public async bookingReqQuery(payload) {
-    console.log(payload);
-    const data = {
-      time_slot_id: payload.time_slot_id,
-      student_id: payload.student_id,
-      agenda: payload.agenda,
-      date: payload.date,
-      teacher_id: payload.teacher_id,
-    };
-    try {
-      const save = await Appointment.create(data);
-      return {
-        msg: "request sent",
-      };
-    } catch (error) {
-      console.log("errror is ", error);
-    }
+  public async bookingReqQuery(payload: BookingReq) {
+    return await Appointment.create(payload);
   }
   public async acceptedAppointmentsQuery(teacher_id) {
     const appointments = await Appointment.query()
@@ -64,5 +63,8 @@ export default class AppoinmentQuery {
     appointments.preload("forWhichTimeSlot", (q) => q.preload("day"));
     appointments.preload("byWhichTeacher");
     return await appointments;
+  }
+  async checkBookingQuery(fields: CheckBooking) {
+    return await Appointment.query().where(fields).first();
   }
 }

@@ -95,14 +95,21 @@ Vue.mixin({
                 })
                 return data
             } catch (e) {
+                console.log("🚀 ~ file: iview.js:98 ~ e:", e.response)
+                
                 let res = e.response
                 if (res.status == 403) {
                     window.location = '/login';
 
-                } else if (res.status == 422 || res.status == 400) {
+                } else if (res.status == 422 ) {
+                    
                     this.validationError(res.data)
 
-                } else if (res.status == 404 || res.status == 401) {
+                }
+                else if (res.status === 400) {
+                     this.e(res.data)
+                    }
+                else if (res.status == 404 || res.status == 401) {
                     if (res.data.message) this.i(res.data.message)
                     if (res.data.msg) this.i(res.data.msg)
                 } else {

@@ -16,7 +16,7 @@ export default class Appointment extends BaseModel {
   public student_id: number;
 
   @column()
-  public status: number;
+  public status: string;
 
   /**
    * This Column act like note of appoinment request
@@ -24,7 +24,7 @@ export default class Appointment extends BaseModel {
   @column()
   public agenda: string;
   @column()
-  public date: DateTime;
+  public date: string;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;

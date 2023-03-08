@@ -6,4 +6,4 @@ Route.group(() => {
     Route.put("/status", "Appointment/AppointmentsController.toggleStatus"); // By teacher
     Route.get("/booked", "Appointment/AppointmentsController.alreadyBooked")
     Route.get("/accepted", "Appointment/AppointmentsController.accepted")//by teacher
-}).prefix("appointments")
+}).prefix("appointments").middleware("auth")

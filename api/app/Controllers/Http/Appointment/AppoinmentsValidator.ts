@@ -35,13 +35,36 @@ export default class AppointmentValidator {
       teacher_id: schema.number([
         rules.exists({ table: "users", column: "id" }),
       ]),
-      date: schema.string(),
-      start_time: schema.date({ format: "HH:mm:ss" }, [
-        rules.exists({ table: "time_slots", column: "start_time" }),
+      date: schema.date({ format: "yyyy-MM-dd" }, [
+        rules.unique({
+          table: "appointments",
+          column: "date",
+          where: {
+            teacher_id: ctx.request.all().teacher_id,
+            time_slot_id: ctx.request.all().time_slot_id,
+            status: '1',
+          },
+        }),
       ]),
-
+      start_time: schema.date({ format: "HH:mm:ss" }, [
+        rules.exists({
+          table: "time_slots",
+          column: "start_time",
+          where: {
+            id: ctx.request.all().time_slot_id,
+            teacher_id: ctx.request.all().teacher_id,
+          },
+        }),
+      ]),
       end_time: schema.date({ format: "HH:mm:ss" }, [
-        rules.exists({ table: "time_slots", column: "end_time" }),
+        rules.exists({
+          table: "time_slots",
+          column: "end_time",
+          where: {
+            id: ctx.request.all().time_slot_id,
+            teacher_id: ctx.request.all().teacher_id,
+          },
+        }),
       ]),
     });
     const msg = {
@@ -49,20 +72,16 @@ export default class AppointmentValidator {
       exists: "{{field}} not found",
       "end_time.date.format": "unexpected format of end time",
       "start_time.date.format": "unexpected format of end time",
-      "start_time.exists": "Slot not found",
-      "end_time.exists": "Slot not found",
+      "date.date.format": "unexpected format of date",
+      "date.unique": "This slot is already booked",
     };
 
-    try {
-      const payload = await ctx.request.validate({
-        schema: bookingReq,
-        messages: msg,
-      });
+    const payload = await ctx.request.validate({
+      schema: bookingReq,
+      messages: msg,
+    });
 
-      return payload;
-    } catch (error) {
-      return error.messages;
-    }
+    return payload;
   }
   public async checkBooking(data) {
     const isAlreadyBooked: any = await Appointment.query()
@@ -93,6 +112,6 @@ export default class AppointmentValidator {
     const validationMessage = {
       required: "The {{ field }} is missing",
     };
-    return ctx.request.validate({schema:slug,messages:validationMessage})
+    return ctx.request.validate({ schema: slug, messages: validationMessage });
   }
 }
