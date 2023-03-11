@@ -74,11 +74,11 @@
         </div>
       </div>
     </Form>
-    <div style="margin: 40px;">
+    <!-- <div style="margin: 40px;">
         <Button  type="dashed">
             <nuxt-link to="/teacher/created-slots">See your created slots</nuxt-link>
         </Button>
-    </div>
+    </div> -->
   </div>
 </template>
 

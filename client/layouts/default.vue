@@ -1,14 +1,16 @@
 <template>
   <div>
     <nav>
-      <div class="left">
+      <div @click="jumpToDashBoard" style="cursor: pointer" class="left">
         <h3 class="_menu_logo_text">
           <span class="_menu_logo_symbol">A</span>
           <span class="_menu_logo_text_main">APPOINTMENT SYSTEM</span>
         </h3>
       </div>
       <div class="right">
-        <span>{{ $store.state.authUser.first_name }}</span>
+        <span @click="jumpToProfile">{{
+          $store.state.authUser.first_name
+        }}</span>
         <a v-if="$store.state.authUser" @click="logout">Logout</a>
         <!-- <a v-else @click="login">Login</a> -->
       </div>
@@ -91,16 +93,20 @@
               <Submenu name="2">
                 <template #title>
                   <Icon type="ios-keypad"></Icon>
-                  Accepted Appointments
+                  Appointments
                 </template>
-              </Submenu>
-              <Submenu name="3">
-                <template #title>
-                  <Icon type="ios-analytics"></Icon>
-                  Appointment Requests
-                </template>
-                <!-- <MenuItem name="3-1">Option 1</MenuItem>
-                <MenuItem name="3-2">Option 2</MenuItem> -->
+                <div>
+                  <MenuItem name="2-1">
+                    <span @click="viewAppointmentReq"
+                      >See appointment requests</span
+                    >
+                  </MenuItem>
+                </div>
+                <div>
+                  <MenuItem name="2-2">
+                    <span @click="viewAppointments">View appointments</span>
+                  </MenuItem>
+                </div>
               </Submenu>
             </Menu>
           </Sider>
@@ -131,7 +137,9 @@
                 </template>
                 <div>
                   <MenuItem name="1-1">
-                    <span @click="jumpToTeacherListForStudent">View Teachers</span>
+                    <span @click="jumpToTeacherListForStudent"
+                      >View Teachers</span
+                    >
                   </MenuItem>
                 </div>
               </Submenu>
@@ -149,39 +157,10 @@
         </Layout>
       </Content>
     </Layout>
-    <Layout v-else>
-      <Breadcrumb> </Breadcrumb>
-      <Content
-        :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
-      >
-        <Layout>
-          <Sider hide-trigger :style="{ background: '#fff' }">
-            <Menu theme="light" width="auto" :open-names="['1']">
-              <Submenu name="1">
-                <template #title>
-                  <Icon type="ios-navigate"></Icon>
-                  Teacher list
-                </template>
-                <div>
-                  <MenuItem name="1-1">
-                    <span @click="jumpToTeacherListForStudent">View Teachers</span>
-                  </MenuItem>
-                </div>
-              </Submenu>
-            </Menu>
-          </Sider>
-          <Content
-            :style="{
-              padding: '24px',
-              minHeight: '100vh',
-              background: '#fff',
-            }"
-          >
-            <nuxt />
-          </Content>
-        </Layout>
-      </Content>
-    </Layout>
+    <div v-if="!$store.state.authUser">
+      <nuxt />
+    </div>
+
     <Footer class="layout-footer-center"></Footer>
   </div>
 </template>
@@ -234,6 +213,14 @@ export default {
     },
     jumpToDashBoard() {
       this.$router.push("/home");
+    },
+    viewAppointmentReq() {
+      this.$router.push(`/teacher/appointmnet-requests`);
+    },
+    viewAppointments() {
+      this.$router.push(
+        `/accepted-appointments/${this.$store.state.authUser.id}`
+      );
     },
     jumpToProfile() {
       this.$router.push(`/profile/${this.$store.state.authUser.id}`);

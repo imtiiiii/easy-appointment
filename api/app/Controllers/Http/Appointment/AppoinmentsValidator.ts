@@ -5,25 +5,28 @@ import Appointment from "../../../Models/Appointment";
 export default class AppointmentValidator {
   public async validateToggleStatus(ctx: HttpContextContract) {
     const statusIdSchema = schema.create({
-      appointment_id: schema.number(),
-      status: schema.string({ trim: true }),
+      request_id: schema.number([
+        rules.exists({
+          table: "appointments",
+          column: "id",
+          where: { teacher_id: ctx.auth.user?.id },
+        }),
+      ]),
+      status: schema.enum(["0", "1", "2"]),
     });
     const validationMessage = {
-      required: "The {{ field }} is required to create a new account",
-      "appointmentId.number": "appointmentId must be a valid number",
+      required: "The {{ field }} is required",
+      "request_id.number": "appointmentId must be a valid number",
+      "request_id.exists": "appointmentId not found",
       "status.string":
         "appointmentId must be a valid number on string format.Ex: Valid Range ['0','1','2']",
     };
-    try {
-      const payload = await ctx.request.validate({
-        schema: statusIdSchema,
-        messages: validationMessage,
-      });
-      return payload;
-    } catch (error) {
-      const errorString = JSON.stringify(error.messages);
-      throw errorString;
-    }
+
+    const payload = await ctx.request.validate({
+      schema: statusIdSchema,
+      messages: validationMessage,
+    });
+    return payload;
   }
   public async validateBookingReq(ctx: HttpContextContract) {
     const bookingReq = schema.create({
@@ -42,7 +45,7 @@ export default class AppointmentValidator {
           where: {
             teacher_id: ctx.request.all().teacher_id,
             time_slot_id: ctx.request.all().time_slot_id,
-            status: '1',
+            status: "1",
           },
         }),
       ]),

@@ -1,42 +1,60 @@
 <template>
   <div style="margin: 100px 0px">
     <div
-      style="width: 100%; display: flex; justify-content: center; margin: 100px"
+      style="
+			width: 80%;
+             margin:100px auto
+			display: flex;
+			justify-content: center;
+		"
     >
-      <table>
-        <tr>
-          <th>Date</th>
-          <th>Day</th>
-          <th>Student</th>
-          <th>Email</th>
-          <th>Dept</th>
+      <h5 style="text-align: center;margin: 20px;">Your appointments</h5>
 
-          <th>Agenda</th>
-        </tr>
-        <tr v-for="(item, index) in data" :key="index">
-          <th>
-            <p style="width: 100%">
-              {{ formatDate(item.date) }}
-            </p>
-          </th>
-          <th>{{ item.forWhichTimeSlot.day.day_name }}</th>
-          <th>
-            <button id="link">
-              {{
-                item.byWhichStudent.first_name +
-                " " +
-                item.byWhichStudent.last_name
-              }}
-            </button>
-          </th>
-          <th>{{ item.byWhichStudent.email }}</th>
-          <th>
-            {{ item.byWhichStudent.dept ? item.byWhichStudent.dept : "" }}
-          </th>
+      <div>
+        <table style="width: 100%">
+          <thead style="background-color: aliceblue">
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Student</th>
+              <th>Email</th>
+              <th>Dept</th>
+              <th>Agenda</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in data" :key="index">
+              <th style="padding: 0px 40px">
+                <h6 style="width: 100%">
+                  {{ formatDate(item.date) }}
+                </h6>
+              </th>
+              <th>
+                {{ item.forWhichTimeSlot.start_time }} -
+                {{ item.forWhichTimeSlot.end_time }}
+              </th>
+              <th>
+                <button id="link">
+                  {{
+                    item.byWhichStudent.first_name +
+                    " " +
+                    item.byWhichStudent.last_name
+                  }}
+                </button>
+              </th>
+              <th>{{ item.byWhichStudent.email }}</th>
+              <th>
+                {{ item.byWhichStudent.dept ? item.byWhichStudent.dept : "" }}
+              </th>
 
-          <th>{{ item.agenda }}</th>
-        </tr>
-      </table>
+              <th>{{ item.agenda }}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div v-else style="">
+        <h4 class="">No Upcomming Appoinments Request</h4>
+      </div> -->
     </div>
   </div>
 </template>
@@ -52,13 +70,10 @@ export default {
     };
   },
   async mounted() {
-    console.log("jar na kne");
-    const data = await this.callApi(
-      "get",
-      `/appointments/accepted?id=${this.user}`
-    );
-    if (data.status === 200) {
-      this.data = data.data;
+    const req = await this.callApi("get", `/appointments/accepted`);
+
+    if (req?.status === 200) {
+      this.data = req.data;
     }
   },
   methods: {

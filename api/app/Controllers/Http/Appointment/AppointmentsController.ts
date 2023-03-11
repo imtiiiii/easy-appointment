@@ -25,9 +25,7 @@ export default class AppointmentsController {
         student_id: ctx.auth.user?.$attributes.id,
       });
     } catch (error) {
-      console.log("🚀 ~ file: Appointmentscontroller.ts:28 ~ error:", error)
       if (error.code === "E_VALIDATION_FAILURE") {
-        
         return ctx.response
           .status(error.status)
           .send(error.messages.errors[0].message);
@@ -48,8 +46,17 @@ export default class AppointmentsController {
       return await this.appoinmentService.seeAppointmentsService(payload);
     } catch (error) {}
   }
-  public async upComingAppoinments(ctx: HttpContextContract) {
-    return await this.appoinmentService.upCommingAppoinments(ctx);
+  public async upComingAppointments(ctx: HttpContextContract) {
+    if (!ctx.auth.user) {
+      return ctx.response.status(403).send("Unauthorized");
+    }
+    try {
+      return await this.appoinmentService.upComingAppointmentsService({
+        teacher_id: ctx.auth.user.id,
+      });
+    } catch (error) {
+      return ctx.response.status(500).send("Internal Server Error");
+    }
   }
 
   public async toggleStatus(ctx: HttpContextContract) {
@@ -57,14 +64,26 @@ export default class AppointmentsController {
       const payload = await this.appoinmentValidator.validateToggleStatus(ctx);
       return await this.appoinmentService.toggleStatusService(payload);
     } catch (error) {
-      return ctx.response.status(422).send(error);
+      console.log(error.message);
+      switch (error.code) {
+        case "E_VALIDATION_FAILURE":
+          return ctx.response
+            .status(error.status)
+            .send(error.messages.errors[0].message);
+        default:
+          return ctx.response.status(500).send("Internal Server Error");
+      }
     }
   }
 
   public async accepted(ctx: HttpContextContract) {
-    const teacher_id = ctx.auth.user?.$attributes.id;
+    if(!ctx.auth.user){
+        return ctx.response.status(403).send("Unauthorized");
+    }
     try {
-      return this.appoinmentService.acceptedAppointmentsService(teacher_id);
-    } catch (error) {}
+      return this.appoinmentService.acceptedAppointmentsService(ctx.auth.user.id);
+    } catch (error) {
+        return ctx.response.status(500).send("Internal Server Error");
+    }
   }
 }

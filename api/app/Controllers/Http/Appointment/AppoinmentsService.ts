@@ -12,24 +12,23 @@ type BookingReq = {
 };
 
 export default class AppoinmentService {
-  private appoinmentQuery: AppoinmentQuery;
+  private appointmentQuery: AppoinmentQuery;
 
   constructor() {
-    this.appoinmentQuery = new AppoinmentQuery();
+    this.appointmentQuery = new AppoinmentQuery();
   }
-  public async upCommingAppoinments(ctx) {
-    const teacher_id = ctx.auth.user.id;
+  public async upComingAppointmentsService(payload:{teacher_id:number}) {
+    
 
-    return this.appoinmentQuery.upCommingAppoinments(teacher_id);
+    return this.appointmentQuery.upComingAppointmentRequests(payload);
   }
 
-  public async toggleStatusService(payload) {
-    return await this.appoinmentQuery.toggleStatusQuery(payload);
+  public async toggleStatusService(payload :{request_id:number,status:string}  ) {
+    return await this.appointmentQuery.toggleStatusQuery({appointment_id:payload.request_id,status:payload.status});
   }
   public async bookingReqService(payload: BookingReq) {
     //check if the student already requested for the same time
-    const x = payload.date.toFormat("yyyy-MM-dd");
-    const alreadyRequested = await this.appoinmentQuery.checkBookingQuery({
+    const alreadyRequested = await this.appointmentQuery.checkBookingQuery({
       date: payload.date.toFormat("yyyy-MM-dd"),
       time_slot_id: payload.time_slot_id,
       student_id: payload.student_id,
@@ -44,7 +43,7 @@ export default class AppoinmentService {
     // console.log(payload.date)
    
 
-    return await this.appoinmentQuery.bookingReqQuery({
+    return await this.appointmentQuery.bookingReqQuery({
       time_slot_id: payload.time_slot_id,
       agenda: payload.agenda,
       teacher_id: payload.teacher_id,
@@ -53,10 +52,10 @@ export default class AppoinmentService {
       status: '0',
     });
   }
-  public async acceptedAppointmentsService(teacher_id) {
-    return await this.appoinmentQuery.acceptedAppointmentsQuery(teacher_id);
+  public async acceptedAppointmentsService(teacherId:number) {
+    return await this.appointmentQuery.acceptedAppointmentsQuery(teacherId);
   }
   async seeAppointmentsService(payload) {
-    return await this.appoinmentQuery.seeAppointmentsQuery(payload);
+    return await this.appointmentQuery.seeAppointmentsQuery(payload);
   }
 }

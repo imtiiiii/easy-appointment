@@ -1,5 +1,5 @@
 import Appointment from "App/Models/Appointment";
-import moment from "moment";
+
 import { DateTime } from "luxon";
 
 type CheckBooking = {
@@ -14,13 +14,13 @@ type BookingReq = {
   teacher_id: number;
   student_id: number;
   date: string;
-  status: '0';
+  status: "0";
 };
 
 export default class AppoinmentQuery {
-  public async upCommingAppoinments(teacherId) {
+  public async upComingAppointments({ teacher_id }: { teacher_id: number }) {
     const appointmentRequest = await Appointment.query()
-      .where("teacher_id", teacherId)
+      .where("teacher_id", teacher_id)
       .where("date", ">=", DateTime.local().toSQLDate())
       .where("status", "!=", `${1}`)
       .preload("forWhichTimeSlot", (q) =>
@@ -29,13 +29,31 @@ export default class AppoinmentQuery {
       .preload("byWhichStudent");
     return appointmentRequest;
   }
+  public async upComingAppointmentRequests({
+    teacher_id,
+  }: {
+    teacher_id: number;
+  }) {
+    const appointmentRequest = await Appointment.query()
+      .where("teacher_id", teacher_id)
+      .where("date", ">=", DateTime.local().toSQLDate())
+      .where("status", "=", "0")
+      .preload("forWhichTimeSlot", (q) =>
+        q
+          .select("start_time", "end_time", "day_no_id")
+          .preload("day", (q) => q.select("id", "day_name"))
+      )
+      .preload("byWhichStudent", (student) =>
+        student.select("id", "first_name", "last_name", "email", "dept")
+      );
+    return appointmentRequest;
+  }
 
-  public async toggleStatusQuery(payload) {
-    const appointment = await Appointment.find(payload.appointment_id);
+  public async toggleStatusQuery(payload :{appointment_id:number,status:string}   ) {
+    const appointment = await Appointment.find(payload.appointment_id);  
 
     if (appointment) {
-      appointment.status = payload.status;
-      appointment.save();
+      return await appointment.merge({ status: payload.status }).save();
     }
 
     return appointment;
@@ -43,10 +61,10 @@ export default class AppoinmentQuery {
   public async bookingReqQuery(payload: BookingReq) {
     return await Appointment.create(payload);
   }
-  public async acceptedAppointmentsQuery(teacher_id) {
+  public async acceptedAppointmentsQuery(teacher_id :number) {
     const appointments = await Appointment.query()
       .where("teacher_id", teacher_id)
-      .where("status", `${1}`)
+      .where("status", "1")
       .preload("byWhichStudent")
       .preload("forWhichTimeSlot", (q) => q.preload("day"));
     return appointments;
