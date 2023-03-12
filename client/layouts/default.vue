@@ -130,7 +130,7 @@
       >
         <Layout>
           <Sider hide-trigger :style="{ background: '#fff' }">
-            <Menu theme="light" width="auto" :open-names="['1']">
+            <Menu theme="light" width="auto" :open-names="['1','2']">
               <Submenu name="1">
                 <template #title>
                   <Icon type="ios-navigate"></Icon>
@@ -151,7 +151,7 @@
                 </template>
                 <div>
                   <MenuItem name="2-1">
-                    <span @click="jumpToTeacherListForStudent"
+                    <span @click="jumpToStudentsAppointments"
                       >View Appointments</span
                     >
                   </MenuItem>
@@ -227,6 +227,9 @@ export default {
     },
     jumpToDashBoard() {
       this.$router.push("/home");
+    },
+    jumpToStudentsAppointments() {
+      this.$router.push("/student/appointment-history");
     },
     viewAppointmentReq() {
       this.$router.push(`/teacher/appointmnet-requests`);
