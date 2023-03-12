@@ -58,4 +58,9 @@ export default class AppoinmentService {
   async seeAppointmentsService(payload) {
     return await this.appointmentQuery.seeAppointmentsQuery(payload);
   }
+  async studentAppointmentHistoryService(payload:{studentId:number}){
+    console.log("🚀 ~ file: AppoinmentsService.ts:62 ~ payload:", payload)
+    
+    return await this.appointmentQuery.studentsAppointmentHistoryQuery({student_id:payload.studentId})
+  }
 }

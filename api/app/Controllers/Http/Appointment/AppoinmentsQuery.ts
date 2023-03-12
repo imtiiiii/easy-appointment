@@ -82,6 +82,14 @@ export default class AppoinmentQuery {
     appointments.preload("byWhichTeacher");
     return await appointments;
   }
+  async studentsAppointmentHistoryQuery(payload:{student_id:number}) {
+    let appointments = Appointment.query().where("student_id", `${payload.student_id}`)
+    .where('status','1')
+    .orWhere('status','0');
+    appointments.preload("forWhichTimeSlot", (q) => q.preload("day"))
+    appointments.preload("byWhichTeacher");
+    return await appointments;
+  }
   async checkBookingQuery(fields: CheckBooking) {
     return await Appointment.query().where(fields).first();
   }

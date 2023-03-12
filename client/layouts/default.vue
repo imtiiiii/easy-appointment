@@ -63,6 +63,7 @@
         </Layout>
       </Content>
     </Layout>
+    <!-- * teacher layout -->
     <Layout v-if="$store.state.authUser.user_type === 'teacher'">
       <Breadcrumb> </Breadcrumb>
       <Content
@@ -139,6 +140,19 @@
                   <MenuItem name="1-1">
                     <span @click="jumpToTeacherListForStudent"
                       >View Teachers</span
+                    >
+                  </MenuItem>
+                </div>
+              </Submenu>
+              <Submenu name="2">
+                <template #title>
+                  <Icon type="ios-navigate"></Icon>
+                  Appointments
+                </template>
+                <div>
+                  <MenuItem name="2-1">
+                    <span @click="jumpToTeacherListForStudent"
+                      >View Appointments</span
                     >
                   </MenuItem>
                 </div>

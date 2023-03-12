@@ -86,4 +86,15 @@ export default class AppointmentsController {
         return ctx.response.status(500).send("Internal Server Error");
     }
   }
+  async studentAppointmentHistory (ctx: HttpContextContract) {
+    if(!ctx.auth.user || ctx.auth.user.user_type !== 'student' ){
+        return ctx.response.status(403).send({msg: "Unauthorized"});
+    }
+    try {
+        return await this.appoinmentService.studentAppointmentHistoryService({studentId:ctx.auth.user.id})
+        
+    } catch (error) {
+        return ctx.response.status(500).send("Internal error ! Something went wrong")
+    }
+  }
 }
