@@ -1,10 +1,10 @@
 <template>
   <div style="margin:30px auto;width:50%">
-    <div v-if="requests === null || requests.length < 1">
+    <div v-if="rejectedSignup === null || rejectedSignup.length < 1">
       <h5>Nothing to show....</h5>
     </div>
     <div
-      v-for="(request, index) of requests"
+      v-for="(request, index) of rejectedSignup"
       :key="index"
       style="margin: 30px 20px;display: flex;"
     >
@@ -36,7 +36,7 @@
           >
             Accept
           </button>
-          <button
+          <!-- <button
             v-on:click.once="reject(request.id, index)"
             class="reject"
             style="
@@ -48,7 +48,7 @@
             :disabled="isLoading"
           >
             Reject
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -59,15 +59,15 @@
 export default {
   data() {
     return {
-      requests: [],
+      rejectedSignup: [],
     };
   },
   async created() {
-    const res = await this.callApi("get", "dashboard/request");
+    const res = await this.callApi("get", "dashboard/rejected-signup-request");
     if (res.status === 200) {
-      this.requests = res.data;
+      this.rejectedSignup = res.data;
     }
-    // console.log("requests=>", this.requests);
+    // console.log("rejectedSignup=>", this.rejectedSignup);
   },
   methods: {
     async accept(id, index) {
@@ -79,7 +79,7 @@ export default {
       this.isLoading = false;
       // console.log("accept is = ", accept.status);
       if (accept.status === 200) {
-        this.requests.splice(index, 1);
+        this.rejectedSignup.splice(index, 1);
         this.s("Request accepted successfully");
       } else {
         this.e("Try again");
@@ -93,7 +93,7 @@ export default {
       });
       this.isLoading = false;
       if (reject.status === 200) {
-        this.requests.splice(index, 1);
+        this.rejectedSignup.splice(index, 1);
         this.s("Rejected");
       } else {
         this.e("Try again");

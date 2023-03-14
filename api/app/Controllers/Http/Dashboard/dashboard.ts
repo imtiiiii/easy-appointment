@@ -3,6 +3,7 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
     Route.get("/", "Dashboard/DashboardAdminsController.adminDashboard")
     Route.get("/request", "Dashboard/DashboardAdminsController.requested")
+    Route.get("/rejected-signup-request", "Dashboard/DashboardAdminsController.rejectedSignupRequests")
     Route.put("/update/status", "Dashboard/DashboardAdminsController.updateStatus")
     Route.get("/student-list/", "Dashboard/DashboardAdminsController.studentList")
     Route.get("/teacher-list/", "Dashboard/DashboardAdminsController.teacherList")

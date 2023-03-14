@@ -15,6 +15,11 @@ export default class DashboardAdminsController {
         const users = await User.query().where("status", "0")
         return users
     }
+    public async rejectedSignupRequests(ctx: HttpContextContract) {
+
+        const users = await User.query().where("status", "2")
+        return users
+    }
     public async updateStatus(ctx: HttpContextContract) {
         // update users registration request
         /**
