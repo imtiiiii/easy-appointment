@@ -5,16 +5,14 @@
       class="_layout_col _only_desktop"
       style="margin: 50px 0px"
     >
-      <!-- <div class="_menu_search_input">
-            <input
-              type="text"
-              placeholder="search teacher"
-              v-model="searchInput"
-            />
-          </div> -->
       <div class="search-container">
         <form class="search-form">
-          <input type="text" class="search-input" placeholder="Search..." />
+          <input
+            v-model="searchInput"
+            type="text"
+            class="search-input"
+            placeholder="Search..."
+          />
           <button type="submit" class="search-button">
             <i class="fas fa-search"></i>
           </button>
@@ -75,6 +73,9 @@ export default {
         this.s("Successfull");
       }
     },
+    src() {
+      console.log("im called src");
+    },
     update(id) {
       this.$router.push(`/profile/${id}`);
     },
@@ -87,7 +88,7 @@ export default {
   },
   computed: {
     searching: async function () {
-      // console.log("searching for something", this.searchInput);
+      console.log("searching for something", this.searchInput);
       if (this.searchInput === "") {
         const teachers = await this.callApi("get", "/dashboard/teacher-list/");
         if (teachers.status === 200) {
@@ -101,7 +102,6 @@ export default {
           `/dashboard/teacher-list/search?value=${this.searchInput}`
         );
         this.teachers = teachers.data;
-        // console.log("im from search", teachers.data);
       }
     },
   },
