@@ -19,7 +19,7 @@ export default class DashboardAdminQuery {
   }
   public async pendingRequestCountQuery() {
     return await User.query()
-      .where("status", "=", 0)
+      .where("status", "=", '0')
       .count("id as total_pending_requests")
       .first();
   }
@@ -75,4 +75,8 @@ export default class DashboardAdminQuery {
       .count("id as up_coming_appointments_count")
       .first();
   }
+    async adminListQuery() {
+        const users = await User.query().where("user_type", "admin");
+        return users;
+    }
 }

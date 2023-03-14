@@ -52,4 +52,7 @@ export default class DashboardAdminService {
       todaysAppointmentsCount,
     };
   }
+  async adminListService() {
+    return await this.dashboardAdminQuery.adminListQuery();
+  }
 }

@@ -82,4 +82,14 @@ export default class DashboardAdminsController {
             return error
         }
     }
+    public async adminList(ctx: HttpContextContract) {
+        if(ctx.auth.user?.user_type !== "admin"){
+            return ctx.response.status(422).json({ msg: "You are not authorized to access this page" })
+        }
+        try {
+            return  this.dashboardAdminService.adminListService()
+        } catch (error) {
+            return error
+        }
+    }
 }

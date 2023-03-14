@@ -1,14 +1,17 @@
 <template>
-  <div style="margin: 30px auto; width: 50%">
+  <div style="margin:30px auto;width:50%">
     <div v-if="requests === null || requests.length < 1">
       <h5>Nothing to show....</h5>
     </div>
     <div
       v-for="(request, index) of requests"
       :key="index"
-      style="margin: 30px 20px; display: flex"
+      style="margin: 30px 20px;display: flex;"
     >
-      <div class="card">
+      <div
+      
+        class="card"
+      >
         <h4>name: {{ request.first_name + " " + request.last_name }}</h4>
         <hr />
         <h4>email:{{ request.email }}</h4>
@@ -23,7 +26,11 @@
           <button
             v-on:click.once="accept(request.id, index)"
             class="accept"
-            style="background-color: #42cc8c; width: 100px; padding: 15px 0px"
+            style="
+							background-color: #42cc8c;
+							width: 100px;
+							padding: 15px 0px;
+						"
             :loading="isLoading"
             :disabled="isLoading"
           >
@@ -32,7 +39,11 @@
           <button
             v-on:click.once="reject(request.id, index)"
             class="reject"
-            style="background-color: #ff531d; width: 100px; padding: 15px 0px"
+            style="
+							background-color: #ff531d;
+							width: 100px;
+							padding: 15px 0px;
+						"
             :loading="isLoading"
             :disabled="isLoading"
           >

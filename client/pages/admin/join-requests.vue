@@ -2,9 +2,9 @@
   <div>
     <div id="main-wrapper">
       <div style="margin: 100px 0px">
-        <h2 style="text-align:center; text-decoration:underline">
+        <h5 style="text-align:center;">
           Join Requests
-        </h2>
+        </h5>
         <div>
           <pending_requests></pending_requests>
         </div>
