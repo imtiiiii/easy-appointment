@@ -20,7 +20,7 @@ export default class AuthService {
          * '1' -> active
          * '2' -> rejected
          */
-        data.status = 0
+        data.status = "0"
         return await this.authQuery.register(data)
     }
    

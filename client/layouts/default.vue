@@ -29,23 +29,51 @@
                   <Icon type="ios-navigate"></Icon>
                   USERS MANAGEMENT
                 </template>
-                <MenuItem name="1-1">Students list</MenuItem>
-                <MenuItem name="1-2">Teachers list </MenuItem>
-                <MenuItem name="1-3">Admins list</MenuItem>
+
+                <MenuItem name="1-1">
+                  <span @click="adminRoutes('/admin/student-list')">
+                    Students list
+                  </span>
+                </MenuItem>
+                <MenuItem name="1-2">
+                  <span @click="adminRoutes('/admin/teacher-list')">
+                    Teachers list
+                  </span>
+                </MenuItem>
+                <MenuItem name="1-3">
+                  <span @click="adminRoutes('/admin/admin-list')">
+                    Admins list
+                  </span>
+                </MenuItem>
               </Submenu>
               <Submenu name="2">
                 <template #title>
                   <Icon type="ios-keypad"></Icon>
                   JOIN REQUESTS
                 </template>
-                <MenuItem name="2-1">Pending requests</MenuItem>
-                <MenuItem name="2-2">Denied requests</MenuItem>
+                <MenuItem name="2-1"
+                  ><span @click="adminRoutes('/admin/join-requests')"
+                    >Pending requests</span
+                  >
+                </MenuItem>
+                <MenuItem name="2-2">
+                  <span @click="adminRoutes('/admin/rejected-requests')"
+                    >Denied requests
+                  </span></MenuItem
+                >
               </Submenu>
               <Submenu name="3">
                 <template #title>
                   <Icon type="ios-analytics"></Icon>
                   ADD USERS
                 </template>
+
+                <MenuItem name="3-1">
+                  <span @click="adminRoutes('/admin/add-users')">
+                    Add a new user
+                  </span>
+                </MenuItem>
+
                 <!-- <MenuItem name="3-1">Option 1</MenuItem>
                 <MenuItem name="3-2">Option 2</MenuItem> -->
               </Submenu>
@@ -130,7 +158,7 @@
       >
         <Layout>
           <Sider hide-trigger :style="{ background: '#fff' }">
-            <Menu theme="light" width="auto" :open-names="['1','2']">
+            <Menu theme="light" width="auto" :open-names="['1', '2']">
               <Submenu name="1">
                 <template #title>
                   <Icon type="ios-navigate"></Icon>
@@ -251,6 +279,9 @@ export default {
     },
     jumpToTeacherListForStudent() {
       this.$router.push("/student/teacher-list");
+    },
+    adminRoutes(route) {
+      this.$router.push(route);
     },
   },
 
