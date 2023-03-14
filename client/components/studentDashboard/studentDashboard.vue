@@ -1,48 +1,17 @@
 <template>
   <div>
-    <!-- ALL BUTTONS -->
-    <!-- <div style="width:50%; margin:50px auto">
-      <Row :gutter="25" style="width:100%">
-        <Col span="12">
-          <Button style="width:100%" type="primary">
-            <NuxtLink to="/student/appointment-history"
-              ><span class="text-white">Appointments history</span></NuxtLink
-            >
-          </Button>
-        </Col>
-        <Col span="12">
-          <Button style="width:100%" type="primary">
-            <NuxtLink to="/student/upcoming-appointments"
-              ><span class="text-white">Near appointments</span></NuxtLink
-            >
-          </Button>
-        </Col>
-        <Col style="margin:10px auto;" span="24">
-          <Button
-            @click="showTeacherList = true"
-            style="width:100%"
-            type="primary"
-          >
-            <span class="text-white">Book Appointment</span>
-          </Button>
-        </Col>
-      </Row>
-    </div> -->
-    <!-- <div v-if="showTeacherList">
-      <teacher-list></teacher-list>
-    </div> -->
     <div
       v-if="$store.state.authUser.user_type === 'student'"
       class="container_admin"
     >
       <div class="container_child">
-        <h3>All appointments : {{ allUsersCount ?? 0 }}</h3>
+        <h3>All appointments : {{ appointmentRequests ?? 0 }}</h3>
       </div>
       <div class="container_child">
-        <h3>Today's appointments : {{ teachersCount ?? 0 }}</h3>
+        <h3>Today's appointments : {{ todaysAppointments ?? 0 }}</h3>
       </div>
       <div class="container_child">
-        <h3>Pending appointments : {{ studentsCount ?? 0 }}</h3>
+        <h3>Pending appointments : {{ pendingRequests ?? 0 }}</h3>
       </div>
     </div>
   </div>
@@ -62,7 +31,20 @@ export default {
       showHistory: false,
       showUpcomingMeeting: false,
       type: "",
+      todaysAppointments: 0,
+      appointmentRequests: 0,
+      pendingRequests: 0,
     };
+  },
+  async created() {
+    const { data } = await this.callApi("get", "/dashboard/student");
+    console.log("🚀 ~ file: studentDashboard.vue:39 ~ data:", data);
+    this.todaysAppointments =
+      data.todaysAppointmentsCount.todays_appointments_count;
+    this.appointmentRequests =
+      data.allAppointmentsCount.all_appointments_count;
+    this.pendingRequests =
+      data.pendingAppointmentsCount.pending_appointments_count;
   },
   methods: {
     seeTeachers() {

@@ -1,11 +1,12 @@
 import Route from '@ioc:Adonis/Core/Route'
 // * admin dashboard
 Route.group(() => {
-    Route.get("/", "Dashboard/DashboarAdminsController.adminDashboard")
-    Route.get("/request", "Dashboard/DashboarAdminsController.requested")
-    Route.put("/update/status", "Dashboard/DashboarAdminsController.updateStatus")
-    Route.get("/student-list/", "Dashboard/DashboarAdminsController.studentList")
-    Route.get("/teacher-list/", "Dashboard/DashboarAdminsController.teacherList")
-    Route.get("/teacher-list/search", "Dashboard/DashboarAdminsController.searchTeacher")
-    Route.get('/teacher', 'Dashboard/DashboarAdminsController.teacherDashboard')
+    Route.get("/", "Dashboard/DashboardAdminsController.adminDashboard")
+    Route.get("/request", "Dashboard/DashboardAdminsController.requested")
+    Route.put("/update/status", "Dashboard/DashboardAdminsController.updateStatus")
+    Route.get("/student-list/", "Dashboard/DashboardAdminsController.studentList")
+    Route.get("/teacher-list/", "Dashboard/DashboardAdminsController.teacherList")
+    Route.get("/teacher-list/search", "Dashboard/DashboardAdminsController.searchTeacher")
+    Route.get('/teacher', 'Dashboard/DashboardAdminsController.teacherDashboard')
+    Route.get('/student', 'Dashboard/DashboardAdminsController.studentDashboard')
 }).prefix("dashboard").middleware("auth")

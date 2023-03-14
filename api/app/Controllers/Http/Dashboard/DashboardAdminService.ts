@@ -1,5 +1,5 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import DashboardAdminQuery from './DashboardAdminQuery';
+import DashboardAdminQuery from "./DashboardAdminQuery";
 export default class DashboardAdminService {
   private dashboardAdminQuery: DashboardAdminQuery;
   constructor() {
@@ -18,26 +18,38 @@ export default class DashboardAdminService {
       pendingRequestCount,
     };
   }
-    public async teacherDashboardService(teacherId: number) {
-        const allAppointmentsCount =
-          await this.dashboardAdminQuery.allAppointmentsCountQuery(teacherId);
-        const pendingAppointmentsCount =
-          await this.dashboardAdminQuery.pendingAppointmentsCountQuery(
-            teacherId
-          );
-        const todaysAppointmentsCount =
-          await this.dashboardAdminQuery.todaysAppointmentsCountQuery(
-            teacherId
-          );
-        const upComingAppointmentsCount =
-          await this.dashboardAdminQuery.upComingAppointmentsCountQuery(
-            teacherId
-            );
-        return {
-            allAppointmentsCount,
-            pendingAppointmentsCount,
-            todaysAppointmentsCount,
-            upComingAppointmentsCount,
-        };
+  public async teacherDashboardService(teacherId: number) {
+    const allAppointmentsCount =
+      await this.dashboardAdminQuery.allAppointmentsCountQuery(teacherId);
+    const pendingAppointmentsCount =
+      await this.dashboardAdminQuery.pendingAppointmentsCountQuery(teacherId);
+    const todaysAppointmentsCount =
+      await this.dashboardAdminQuery.todaysAppointmentsCountQuery(teacherId);
+    const upComingAppointmentsCount =
+      await this.dashboardAdminQuery.upComingAppointmentsCountQuery(teacherId);
+    return {
+      allAppointmentsCount,
+      pendingAppointmentsCount,
+      todaysAppointmentsCount,
+      upComingAppointmentsCount,
+    };
+  }
+  public async studentDashboardService(studentId: number) {
+    const allAppointmentsCount =
+      await this.dashboardAdminQuery.allAppointmentsCountForStudent(studentId);
+    const pendingAppointmentsCount =
+      await this.dashboardAdminQuery.StudentsPendingAppointmentsCountQuery(
+        studentId
+      );
+    const todaysAppointmentsCount =
+      await this.dashboardAdminQuery.studentsTodaysAppointmentsCountQuery(
+        studentId
+      );
+
+    return {
+      allAppointmentsCount,
+      pendingAppointmentsCount,
+      todaysAppointmentsCount,
+    };
   }
 }

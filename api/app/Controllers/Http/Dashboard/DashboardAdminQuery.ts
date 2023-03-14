@@ -29,6 +29,14 @@ export default class DashboardAdminQuery {
       .count("id as all_appointments_count")
       .first();
   }
+  public async allAppointmentsCountForStudent(studentId: number) {
+    return await Appointment.query()
+      .where("student_id", "=", studentId)
+      .where("status", "=", "1")
+      .orWhere("status", "=", "0")
+      .count("id as all_appointments_count")
+      .first();
+  }
   public async pendingAppointmentsCountQuery(teacherId: number) {
     return await Appointment.query()
       .where("teacher_id", "=", teacherId)
@@ -36,9 +44,24 @@ export default class DashboardAdminQuery {
       .count("* as pending_appointments_count")
       .first();
   }
+  public async StudentsPendingAppointmentsCountQuery(studentId: number) {
+    return await Appointment.query()
+      .where("student_id", "=", studentId)
+      .where("status", "0")
+      .count("* as pending_appointments_count")
+      .first();
+  }
   public async todaysAppointmentsCountQuery(teacherId: number) {
     return await Appointment.query()
       .where("teacher_id", "=", teacherId)
+      .where("status", "=", "1")
+      .whereRaw("DATE(date) = CURDATE()")
+      .count("id as todays_appointments_count")
+      .first();
+  }
+  public async studentsTodaysAppointmentsCountQuery(studentId: number) {
+    return await Appointment.query()
+      .where("student_id", "=", studentId)
       .where("status", "=", "1")
       .whereRaw("DATE(date) = CURDATE()")
       .count("id as todays_appointments_count")

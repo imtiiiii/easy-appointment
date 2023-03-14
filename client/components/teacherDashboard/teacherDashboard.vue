@@ -1,139 +1,21 @@
 <template>
   <div>
-    <div v-if="$store.state.authUser.user_type === 'admin'" style="">
-      <div style="width: 50%; margin: 50px auto">
-        <Row :gutter="25" style="width: 100%">
-          <Col span="12">
-            <Button
-              style="width: 100%"
-              type="primary"
-              @click="jumptoAcceptedRequest"
-              >Accepted appoinments</Button
-            >
-          </Col>
-          <Col span="12">
-            <Button style="width: 100%" type="primary">
-              <NuxtLink to="/teacher/appointmnet-requests"
-                ><span class="text-white">Appointment requests</span></NuxtLink
-              >
-            </Button>
-          </Col>
-          <Col style="margin: 10px auto" span="24">
-            <Button style="width: 100%" type="primary">
-              <NuxtLink to="/teacher/created-slots"
-                ><span class="text-white">Slots</span></NuxtLink
-              >
-            </Button>
-          </Col>
-        </Row>
-
-        <!-- <Button type="primary">
-        <NuxtLink to="/teacher/appointmnet-requests"
-          ><span class="text-white">Slots</span></NuxtLink
-        >
-      </Button> -->
-      </div>
-
-      <div style="width: 100%; margin: 0 auto; border-radius: 20px">
-        <!-- *********ADD TIME SLOT ********** -->
-        <Form
-          style="margin: 40px; border: 1px solid blue"
-          :model="timeSlotForm"
-          ref="timeSlotForm"
-          :rules="ruleValidate"
-        >
-          <div style="background-color: #ffffff; padding: 20px 40px">
-            <div class="add-time-slot">
-              <h2 class="_log_form_title">Add available time slots</h2>
-              <div class="_log_form">
-                <div class="_log_input_group">
-                  <FormItem prop="dayNo">
-                    <Select
-                      placeholder="Select Day"
-                      size="large"
-                      v-model="timeSlotForm.dayNo"
-                    >
-                      <Option value="0">sunday</Option>
-                      <Option value="1">monday</Option>
-                      <Option value="2">tuesday</Option>
-                      <Option value="3">wednesday</Option>
-                      <Option value="4">thursday</Option>
-                      <Option value="5">friday</Option>
-                      <Option value="6">saturday</Option>
-                    </Select>
-                  </FormItem>
-                </div>
-                <div class="_log_input_group">
-                  <FormItem prop="startTime">
-                    <TimePicker
-                      placeholder="Start time"
-                      v-model="timeSlotForm.startTime"
-                      format="hh:mm a"
-                      confirm
-                    ></TimePicker>
-                  </FormItem>
-                  <FormItem prop="endTime">
-                    <TimePicker
-                      type="time"
-                      confirm
-                      placeholder="End time"
-                      v-model="timeSlotForm.endTime"
-                      format="hh:mm a"
-                    ></TimePicker>
-                  </FormItem>
-                </div>
-
-                <div>
-                  <FormItem prop="duration">
-                    <Input
-                      type="text"
-                      v-model="timeSlotForm.duration"
-                      number
-                      placeholder="duration in minutes"
-                    ></Input>
-                  </FormItem>
-                </div>
-                <div class="_log_button">
-                  <FormItem>
-                    <Button
-                      type="primary"
-                      style="font-weight: bold"
-                      @click="handleSubmit('timeSlotForm')"
-                      >Add</Button
-                    >
-                  </FormItem>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Form>
-        <!-- ********* AVAILABLE SLOTS ************ -->
-        <!-- <div style="background-color: #ffffff">
-				<available-slot></available-slot>
-			</div> -->
-      </div>
-
-      <!-- If app user click appoinment request -->
-      <div style="display: flex" v-if="options === 'appoinment'">
-        <uppcomming-appoinments />
-      </div>
-    </div>
-
     <div
-      v-else-if="$store.state.authUser.user_type === 'teacher'"
+      v-if="$store.state.authUser.user_type === 'teacher'"
       class="container_admin"
     >
-      <div class="container_child">
+      <!-- <div class="container_child">
         <h3>All appointments : {{ allUsersCount }}</h3>
+      </div> -->
+      <div class="container_child">
+        <h3>Today's appointments : {{ todaysAppointments }}</h3>
+      </div>
+
+      <div class="container_child">
+        <h3>Appointment requests : {{ appointmentRequests }}</h3>
       </div>
       <div class="container_child">
-        <h3>Today's appointments : {{ teachersCount }}</h3>
-      </div>
-      <div class="container_child">
-        <h3>Upcoming appointments : {{ studentsCount }}</h3>
-      </div>
-      <div class="container_child">
-        <h3>Appointment requests : {{ joinRequests }}</h3>
+        <h3>Upcoming appointments : {{ upComingAppointments }}</h3>
       </div>
     </div>
   </div>
@@ -165,10 +47,10 @@ export default {
         startTime: null,
         endTime: null,
       },
-      allUsersCount: 0,
-      teachersCount: 0,
-      studentsCount: 0,
-      joinRequests: 0,
+      todaysAppointments: 0,
+      appointmentRequests: 0,
+      upComingAppointments: 0,
+
       ruleValidate: {
         startTime: [
           {
@@ -198,9 +80,15 @@ export default {
     };
   },
   async created() {
-      this.user = this.$store.state.authUser;
-      const {data} = await this.callApi("get", "/dashboard/teacher");
-      console.log("🚀 ~ file: teacherDashboard.vue:203 ~ created ~ data", data)
+    this.user = this.$store.state.authUser;
+    const { data } = await this.callApi("get", "/dashboard/teacher");
+    console.log("🚀 ~ file: teacherDashboard.vue:203 ~ created ~ data", data);
+    this.todaysAppointments =
+      data.todaysAppointmentsCount.todays_appointments_count;
+    this.appointmentRequests =
+      data.pendingAppointmentsCount.pending_appointments_count;
+    this.upComingAppointments =
+      data.upComingAppointmentsCount.up_coming_appointments_count;
   },
   methods: {
     jumptoAcceptedRequest() {
@@ -271,7 +159,6 @@ export default {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
- 
 }
 .container_child {
   width: 20%;

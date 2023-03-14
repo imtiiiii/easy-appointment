@@ -2,7 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import DashboardAdminService from './DashboardAdminService';
 
-export default class DashboarAdminsController {
+export default class DashboardAdminsController {
     private dashboardAdminService: DashboardAdminService ;
     constructor() { 
         this.dashboardAdminService = new DashboardAdminService()
@@ -68,6 +68,16 @@ export default class DashboarAdminsController {
         }
         try {
             return  this.dashboardAdminService.teacherDashboardService(ctx.auth.user.id)
+        } catch (error) {
+            return error
+        }
+    }
+    public async studentDashboard(ctx: HttpContextContract) {
+        if(ctx.auth.user?.user_type !== "student"){
+            return ctx.response.status(422).json({ msg: "You are not authorized to access this page" })
+        }
+        try {
+            return  this.dashboardAdminService.studentDashboardService(ctx.auth.user.id)
         } catch (error) {
             return error
         }
