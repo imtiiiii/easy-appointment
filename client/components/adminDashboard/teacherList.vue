@@ -36,7 +36,11 @@
           <div class="card-label">Department:</div>
           <div class="card-value">{{ teacher.dept ?? "N/A" }}</div>
         </div>
-        <button href="#" class="card-button" v-on:click="timeSlot(teacher.id)">
+
+        <button v-if="$store.state.authUser.user_type==='admin'"  class="card-button" v-on:click="update(teacher.id)">
+          View Profile
+        </button>
+        <button v-else class="card-button" v-on:click="timeSlot(teacher.id)">
           View Profile & Time Slots
         </button>
       </div>
