@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
 import MeetingRoom from "./MeetingRoom";
+import User from "./User";
 
 export default class MeetingMember extends BaseModel {
   @column({ isPrimary: true })
@@ -22,4 +23,10 @@ export default class MeetingMember extends BaseModel {
     foreignKey: "meeting_id",
   })
   public meeting: BelongsTo<typeof MeetingRoom>;
+  @belongsTo(()=>User,{
+    localKey:'user_id',
+    foreignKey:'id'
+  })
+    public meeting_member:BelongsTo<typeof User>
+
 }

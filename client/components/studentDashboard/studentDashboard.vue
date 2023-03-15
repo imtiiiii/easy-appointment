@@ -42,7 +42,6 @@ export default {
   },
   async created() {
     const { data } = await this.callApi("get", "/dashboard/student");
-    console.log("🚀 ~ file: studentDashboard.vue:39 ~ data:", data);
     this.todaysAppointments =
       data.todaysAppointmentsCount.todays_appointments_count;
     this.appointmentRequests = data.allAppointmentsCount.all_appointments_count;

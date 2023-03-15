@@ -43,4 +43,7 @@ export default class MeetingService {
   async getMeetingListService({ userId }: { userId: number }) {
     return await this.meetingQuery.meetingListQuery({ userId: userId });
   }
+    async singleMeetingInfoService(payload: { meetingId: number }) {
+    return await this.meetingQuery.singleMeetingInfoQuery(payload);
+    }
 }

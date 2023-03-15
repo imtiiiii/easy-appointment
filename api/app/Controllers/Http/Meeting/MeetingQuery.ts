@@ -26,4 +26,10 @@ export default class MeetingQuery {
   async countMeetingsQuery(userId:number){
     return await MeetingMember.query().where("user_id", userId).countDistinct("meeting_id as total_meetings").first()
   }
+  async singleMeetingInfoQuery(payload: { meetingId: number }) {
+    return await MeetingRoom.query()
+        .where("id", payload.meetingId)
+        .preload("host")
+        .preload("meetingMembers",q=>q.groupBy("user_id") )
+  }
 }

@@ -14,7 +14,17 @@ export default class MeetingValidator {
         ),
     });
 
-   return await ctx.request.validate({
+    return await ctx.request.validate({
+      schema: meetingSchema,
+    });
+  }
+  async validateSingleMeetingInfo(ctx: HttpContextContract) {
+    const meetingSchema = schema.create({
+      meetingId: schema.number([
+        rules.exists({ table: "meeting_rooms", column: "id" }),
+      ]),
+    });
+    return await ctx.request.validate({
       schema: meetingSchema,
     });
   }

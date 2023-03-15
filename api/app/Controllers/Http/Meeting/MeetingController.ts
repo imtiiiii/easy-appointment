@@ -34,4 +34,13 @@ export default class MeetingController {
     }
     return this.meetingService.getMeetingListService({userId: ctx.auth.user.id})
   }
+   async singleMeetingInfo(ctx : HttpContextContract) {
+    try {
+        const payload = await this.meetingValidator.validateSingleMeetingInfo(ctx)
+        return await this.meetingService.singleMeetingInfoService(payload)
+        
+    } catch (error) {
+        
+    }
+   }
 }
