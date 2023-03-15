@@ -144,14 +144,14 @@
                 </template>
                 <div>
                   <MenuItem name="3-1">
-                    <span @click="jumpToStudentsAppointments"
+                    <span @click="teacherRoutes('/meetings')"
                       >View Meetings</span
                     >
                   </MenuItem>
                 </div>
                 <div>
                   <MenuItem name="3-2">
-                    <span @click="jumpToStudentsAppointments"
+                    <span @click="teacherRoutes('/teacher/meeting-create')"
                       >Create Meetings</span
                     >
                   </MenuItem>
@@ -178,7 +178,7 @@
       >
         <Layout>
           <Sider hide-trigger :style="{ background: '#fff' }">
-            <Menu theme="light" width="auto" :open-names="['1', '2']">
+            <Menu theme="light" width="auto" :open-names="['1', '2','3']">
               <Submenu name="1">
                 <template #title>
                   <Icon type="ios-navigate"></Icon>
@@ -201,6 +201,19 @@
                   <MenuItem name="2-1">
                     <span @click="jumpToStudentsAppointments"
                       >View Appointments</span
+                    >
+                  </MenuItem>
+                </div>
+              </Submenu>
+              <Submenu name="3">
+                <template #title>
+                  <Icon type="ios-navigate"></Icon>
+                  Meetings
+                </template>
+                <div>
+                  <MenuItem name="3-1">
+                    <span @click="teacherRoutes('/meetings')"
+                      >View Meetings</span
                     >
                   </MenuItem>
                 </div>
@@ -301,6 +314,9 @@ export default {
       this.$router.push("/student/teacher-list");
     },
     adminRoutes(route) {
+      this.$router.push(route);
+    },
+    teacherRoutes(route) {
       this.$router.push(route);
     },
   },

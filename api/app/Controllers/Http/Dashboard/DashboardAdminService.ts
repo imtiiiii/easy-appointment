@@ -50,11 +50,13 @@ export default class DashboardAdminService {
       await this.dashboardAdminQuery.studentsTodaysAppointmentsCountQuery(
         studentId
       );
+    const totalMeetings = await this.meetingQuery.countMeetingsQuery(studentId);
 
     return {
       allAppointmentsCount,
       pendingAppointmentsCount,
       todaysAppointmentsCount,
+      totalMeetings,
     };
   }
   async adminListService() {
