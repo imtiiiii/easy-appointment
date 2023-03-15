@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
-import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
+import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
+import MeetingRoom from "./MeetingRoom";
 
 export default class MeetingMember extends BaseModel {
   @column({ isPrimary: true })
@@ -8,10 +9,17 @@ export default class MeetingMember extends BaseModel {
   public meeting_id: number;
   @column()
   public user_id: number;
+  @column()
+  public total_meetings: number;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime;
+  @belongsTo(() => MeetingRoom, {
+    localKey: "id",
+    foreignKey: "meeting_id",
+  })
+  public meeting: BelongsTo<typeof MeetingRoom>;
 }

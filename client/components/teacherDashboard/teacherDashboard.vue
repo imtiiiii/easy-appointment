@@ -17,6 +17,9 @@
       <div class="container_child">
         <h3>Upcoming appointments : {{ upComingAppointments }}</h3>
       </div>
+      <div class="container_child">
+        <h3>Meetings : {{ totalMeeting }}</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -50,6 +53,7 @@ export default {
       todaysAppointments: 0,
       appointmentRequests: 0,
       upComingAppointments: 0,
+      totalMeeting: 0,
 
       ruleValidate: {
         startTime: [
@@ -89,6 +93,7 @@ export default {
       data.pendingAppointmentsCount.pending_appointments_count;
     this.upComingAppointments =
       data.upComingAppointmentsCount.up_coming_appointments_count;
+    this.totalMeeting = data.totalMeetings.total_meetings;
   },
   methods: {
     jumptoAcceptedRequest() {

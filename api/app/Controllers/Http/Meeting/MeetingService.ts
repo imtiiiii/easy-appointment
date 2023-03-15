@@ -40,4 +40,7 @@ export default class MeetingService {
     await meeting.related("meetingMembers").createMany(meetingMembers);
     return meeting;
   }
+  async getMeetingListService({ userId }: { userId: number }) {
+    return await this.meetingQuery.meetingListQuery({ userId: userId });
+  }
 }

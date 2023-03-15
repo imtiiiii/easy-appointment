@@ -137,6 +137,26 @@
                   </MenuItem>
                 </div>
               </Submenu>
+              <Submenu name="3">
+                <template #title>
+                  <Icon type="ios-navigate"></Icon>
+                  Meetings
+                </template>
+                <div>
+                  <MenuItem name="3-1">
+                    <span @click="jumpToStudentsAppointments"
+                      >View Meetings</span
+                    >
+                  </MenuItem>
+                </div>
+                <div>
+                  <MenuItem name="3-2">
+                    <span @click="jumpToStudentsAppointments"
+                      >Create Meetings</span
+                    >
+                  </MenuItem>
+                </div>
+              </Submenu>
             </Menu>
           </Sider>
           <Content

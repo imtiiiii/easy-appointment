@@ -26,4 +26,12 @@ export default class MeetingController {
         return ctx.response.status(422).send(error)
     }
   }
+  async getMeetingList(ctx : HttpContextContract) {
+    if(!ctx.auth.user) {
+      return ctx.response.status(403).send({
+        error: 'User is not logged in'
+      })
+    }
+    return this.meetingService.getMeetingListService({userId: ctx.auth.user.id})
+  }
 }

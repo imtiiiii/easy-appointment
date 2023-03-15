@@ -1,9 +1,12 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import MeetingQuery from "../Meeting/MeetingQuery";
 import DashboardAdminQuery from "./DashboardAdminQuery";
 export default class DashboardAdminService {
   private dashboardAdminQuery: DashboardAdminQuery;
+  private meetingQuery: MeetingQuery;
   constructor() {
     this.dashboardAdminQuery = new DashboardAdminQuery();
+    this.meetingQuery = new MeetingQuery();
   }
   public async adminDashboardService() {
     const allUsersCount = await this.dashboardAdminQuery.allUsersCountQuery();
@@ -27,11 +30,13 @@ export default class DashboardAdminService {
       await this.dashboardAdminQuery.todaysAppointmentsCountQuery(teacherId);
     const upComingAppointmentsCount =
       await this.dashboardAdminQuery.upComingAppointmentsCountQuery(teacherId);
+    const totalMeetings = await this.meetingQuery.countMeetingsQuery(teacherId);
     return {
       allAppointmentsCount,
       pendingAppointmentsCount,
       todaysAppointmentsCount,
       upComingAppointmentsCount,
+      totalMeetings,
     };
   }
   public async studentDashboardService(studentId: number) {
