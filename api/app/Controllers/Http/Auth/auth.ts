@@ -5,9 +5,7 @@ Route.group(() => {
     Route.post('/login', 'Auth/AuthController.login')
     Route.get('/getUser', 'Auth/AuthController.getUser')
     Route.get('/logout', 'Auth/AuthController.logout')
-
-    
-
     Route.delete("/delete", "Auth/AuthController.delete")
+    Route.get("get-user-list", "Auth/AuthController.getUserList").middleware("auth")
 
 }).prefix('auth')

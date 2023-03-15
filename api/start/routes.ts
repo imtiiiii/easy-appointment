@@ -25,6 +25,7 @@ import 'App/Controllers/Http/Dashboard/dashboard'
 import 'App/Controllers/Http/Profile/profile'
 import 'App/Controllers/Http/TimeSlots/timeSlots'
 import 'App/Controllers/Http/Appointment/appointment'
+import 'App/Controllers/Http/Meeting/meeting'
 Route.get('/', () => {
     return { message: 'You have landed in empty ocean!' }
 })

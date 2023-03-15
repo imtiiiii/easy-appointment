@@ -45,7 +45,7 @@ export default class AuthController {
    */
   async logout(ctx: HttpContextContract) {
     // return auth.logout()
-    await ctx.auth.use('web').logout();
+    await ctx.auth.use("web").logout();
     return ctx.response.status(200).send({
       status: "OK",
       message: "User is logged out successfully!!",
@@ -70,5 +70,21 @@ export default class AuthController {
     const data = ctx.request.all();
     const user = await User.findOrFail(data.id);
     user.delete();
+  }
+  async getUserList(ctx: HttpContextContract) {
+    const str = ctx.request.qs().search;
+    const query = User.query()
+    
+      .where("status", "1")
+      .where("user_type", "!=", "admin");
+
+    if (str) {
+      query
+        .where("first_name", "like", `%${str}%`)
+        .orWhere("last_name", "like", `%${str}%`)
+        .orWhere("email", "like", `%${str}%`);
+    }
+    query.select("id", "first_name", "last_name", "email", "user_type", "status")
+    return await query.limit(2);
   }
 }
