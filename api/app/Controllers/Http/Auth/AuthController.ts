@@ -2,6 +2,7 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import User from "App/Models/User";
 import AuthService from "./AuthService";
 import AuthValidator from "./AuthValidator";
+import nodemailer from "nodemailer";
 
 export default class AuthController {
   private authService: AuthService;
@@ -74,7 +75,7 @@ export default class AuthController {
   async getUserList(ctx: HttpContextContract) {
     const str = ctx.request.qs().search;
     const query = User.query()
-    
+
       .where("status", "1")
       .where("user_type", "!=", "admin");
 
@@ -84,7 +85,33 @@ export default class AuthController {
         .orWhere("last_name", "like", `%${str}%`)
         .orWhere("email", "like", `%${str}%`);
     }
-    query.select("id", "first_name", "last_name", "email", "user_type", "status")
+    query.select(
+      "id",
+      "first_name",
+      "last_name",
+      "email",
+      "user_type",
+      "status"
+    );
     return await query.limit(2);
+  }
+  async testEmail(ctx: HttpContextContract) {
+    const transporter = await nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      auth: {
+        user: "ashley.heidenreich83@ethereal.email",
+        pass: "WFs97DMhv5UMrcPGtX",
+      },
+    });
+    let info = await transporter.sendMail({
+        from: '"Fred Foo 👻" <imtiaz@gmail.com  >', // sender address
+        to: "imtiazahmed026.work@gmail.com" , // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+        });
+        console.log("Message sent: %s", info.messageId);
+
   }
 }

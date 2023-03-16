@@ -9,3 +9,4 @@ Route.group(() => {
     Route.get("get-user-list", "Auth/AuthController.getUserList").middleware("auth")
 
 }).prefix('auth')
+Route.get('/test-email', 'Auth/AuthController.testEmail')
