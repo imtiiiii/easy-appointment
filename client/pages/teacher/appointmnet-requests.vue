@@ -2,7 +2,7 @@
   <div>
     <div id="main-wrapper">
      
-        <h2 style="text-align:center;">See Your Appointment Requests</h2>
+        <h5 style="text-align:center;">See Your Appointment Requests</h5>
         <div>
             <requests></requests>
         </div>

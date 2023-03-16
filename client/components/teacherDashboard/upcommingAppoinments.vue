@@ -7,8 +7,7 @@
 			justify-content: center;
 		"
   >
-  <div>
-      
+    <div>
       <div v-if="upComingAppointments.length > 0">
         <table style="width: 100%">
           <thead style="background-color: aliceblue">
@@ -66,8 +65,8 @@
           </tbody>
         </table>
       </div>
-      <div v-else style="">
-        <h4 class="">No Upcomming Appoinments Request</h4>
+      <div v-else>
+        <h4 style="text-align: center">No up coming appointments request to show</h4>
       </div>
     </div>
   </div>
@@ -96,14 +95,12 @@ export default {
         request_id: itemId,
         status: status,
       });
-      if(data?.status === 200 || data?.status === 201){
+      if (data?.status === 200 || data?.status === 201) {
         const messageBody =
-        status == "1" ? "Appointment Accepted" : "Appointment Rejected";
-      this.i(messageBody);
-          this.upComingAppointments.splice(index, 1);
+          status == "1" ? "Appointment Accepted" : "Appointment Rejected";
+        this.i(messageBody);
+        this.upComingAppointments.splice(index, 1);
       }
-         
-     
     },
     jumpToProfile(profileId) {
       this.$router.push(`profile/${profileId}`);
