@@ -92,7 +92,7 @@
       </Content>
     </Layout>
     <!-- * teacher layout -->
-    <Layout v-if="$store.state.authUser.user_type === 'teacher'">
+    <Layout  v-if="$store.state.authUser.user_type === 'teacher'">
       <Breadcrumb> </Breadcrumb>
       <Content
         :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
@@ -102,7 +102,7 @@
             <Menu theme="light" width="auto" :open-names="['1', '2', '3']">
               <Submenu name="1">
                 <template #title>
-                  <Icon type="ios-navigate"></Icon>
+                  <Icon type="ios-clock" />
                   Manage Slots
                 </template>
                 <div>
@@ -121,7 +121,7 @@
 
               <Submenu name="2">
                 <template #title>
-                  <Icon type="ios-keypad"></Icon>
+                  <Icon type="ios-contacts" />
                   Appointments
                 </template>
                 <div>
@@ -139,7 +139,7 @@
               </Submenu>
               <Submenu name="3">
                 <template #title>
-                  <Icon type="ios-navigate"></Icon>
+                    <Icon type="md-globe" />
                   Meetings
                 </template>
                 <div>
@@ -178,7 +178,7 @@
       >
         <Layout>
           <Sider hide-trigger :style="{ background: '#fff' }">
-            <Menu theme="light" width="auto" :open-names="['1', '2','3']">
+            <Menu theme="light" width="auto" :open-names="['1', '2', '3']">
               <Submenu name="1">
                 <template #title>
                   <Icon type="ios-navigate"></Icon>
