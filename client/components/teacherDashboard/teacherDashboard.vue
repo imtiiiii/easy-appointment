@@ -4,13 +4,16 @@
       <div class="card-header">Today's Appointment</div>
       <div class="card-body">{{ todaysAppointments }}</div>
     </div>
-   
+    <div class="dashboard-card">
+      <div class="card-header">Up coming appointments</div>
+      <div class="card-body">{{ upComingAppointments }}</div>
+    </div>
     <div class="dashboard-card">
       <div class="card-header">Appointment Requests</div>
       <div class="card-body">{{ appointmentRequests }}</div>
     </div>
     <div class="dashboard-card">
-      <div class="card-header">Meetings</div>
+      <div class="card-header">Meetings Count</div>
       <div class="card-body">{{ totalMeeting }}</div>
     </div>
   </div>
