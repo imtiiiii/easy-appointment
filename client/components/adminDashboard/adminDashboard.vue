@@ -1,55 +1,4 @@
 <!-- <template>
-	<div>
-		<div class="dashboard-menu">
-			<button
-				style="marging: 30px 20px"
-				class="_log_btn _2menu_long"
-				type="button"
-				v-on:click="$router.push('/admin/join-requests')"
-			>
-				Pending Requests
-			</button>
-			<button
-				style="marging: 30px 20px"
-				class="_log_btn _2menu_long"
-				type="button"
-				v-on:click="seeStudentList()"
-			>
-				Student's list
-			</button>
-			<button
-				style="marging: 30px 20px"
-				class="_log_btn _2menu_long"
-				type="button"
-				v-on:click="seeTeacherList()"
-			>
-				Teacher's list
-			</button>
-			<button
-				style="marging: 30px 20px"
-				class="_log_btn _2menu_long"
-				type="button"
-				v-on:click="addUsers()"
-			>
-				Add user
-			</button>
-		</div>
-		<div v-if="pendingReq === true">
-			<pending-request></pending-request>
-		</div>
-		<div v-if="studentList === true">
-			<student-list></student-list>
-		</div>
-		<div v-if="teacherList === true">
-			<teacher-list></teacher-list>
-		</div>
-		<div v-if="addUser === true">
-			<register></register>
-		</div>
-	</div>
-</template> -->
-
-<template>
   <div class="container_admin">
     <div class="container_child">
       <h3>All users: {{ allUsersCount }}</h3>
@@ -62,6 +11,26 @@
     </div>
     <div class="container_child">
       <h3>Join requests: {{ joinRequests }}</h3>
+    </div>
+  </div>
+</template> -->
+<template>
+  <div class="teacher-dashboard">
+    <div class="dashboard-card">
+      <div class="card-header">All users</div>
+      <div class="card-body">{{ allUsersCount }}</div>
+    </div>
+    <div class="dashboard-card">
+      <div class="card-header">Teachers</div>
+      <div class="card-body">{{ teachersCount }}</div>
+    </div>
+    <div class="dashboard-card">
+      <div class="card-header">Students</div>
+      <div class="card-body">{{ studentsCount }}</div>
+    </div>
+    <div class="dashboard-card">
+      <div class="card-header">Join requests</div>
+      <div class="card-body">{{ joinRequests }}</div>
     </div>
   </div>
 </template>
@@ -128,20 +97,34 @@ export default {
 </script>
 
 <style scoped>
-.container_admin {
+.teacher-dashboard {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
 }
-.container_child {
-  width: 20%;
-  height: 100px;
-  background-color: #f1f1f1;
-  border: 1px solid black;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.dashboard-card {
+  width: 23%;
+  margin-bottom: 2%;
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dashboard-card:hover {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 1rem;
+  font-size: 2rem;
+  text-align: center;
 }
 </style>

@@ -2,9 +2,9 @@
   <div>
     <div id="main-wrapper">
       <div style="margin: 50px 0px">
-        <h2 style="text-align:center">
+        <h5 style="text-align:center">
           Teacher List
-        </h2>
+        </h5>
         <div>
           <teacher_list></teacher_list>
         </div>

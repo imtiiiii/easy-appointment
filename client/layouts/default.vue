@@ -26,7 +26,7 @@
             <Menu theme="light" width="auto" :open-names="['1', '2', '3']">
               <Submenu name="1">
                 <template #title>
-                  <Icon type="ios-navigate"></Icon>
+                  <Icon type="ios-people" />
                   USERS MANAGEMENT
                 </template>
 
@@ -48,7 +48,7 @@
               </Submenu>
               <Submenu name="2">
                 <template #title>
-                  <Icon type="ios-keypad"></Icon>
+                  <Icon type="md-git-pull-request" />
                   JOIN REQUESTS
                 </template>
                 <MenuItem name="2-1"
@@ -64,7 +64,7 @@
               </Submenu>
               <Submenu name="3">
                 <template #title>
-                  <Icon type="ios-analytics"></Icon>
+                  <Icon type="md-person-add" />
                   ADD USERS
                 </template>
 
@@ -92,7 +92,7 @@
       </Content>
     </Layout>
     <!-- * teacher layout -->
-    <Layout  v-if="$store.state.authUser.user_type === 'teacher'">
+    <Layout v-if="$store.state.authUser.user_type === 'teacher'">
       <Breadcrumb> </Breadcrumb>
       <Content
         :style="{ padding: '24px 0', minHeight: '280px', background: '#fff' }"
@@ -139,7 +139,7 @@
               </Submenu>
               <Submenu name="3">
                 <template #title>
-                    <Icon type="md-globe" />
+                  <Icon type="md-globe" />
                   Meetings
                 </template>
                 <div>
@@ -181,7 +181,7 @@
             <Menu theme="light" width="auto" :open-names="['1', '2', '3']">
               <Submenu name="1">
                 <template #title>
-                  <Icon type="ios-navigate"></Icon>
+                  <Icon type="md-people" />
                   Teacher list
                 </template>
                 <div>
@@ -194,7 +194,7 @@
               </Submenu>
               <Submenu name="2">
                 <template #title>
-                  <Icon type="ios-navigate"></Icon>
+                  <Icon type="ios-contacts" />
                   Appointments
                 </template>
                 <div>
@@ -207,7 +207,7 @@
               </Submenu>
               <Submenu name="3">
                 <template #title>
-                  <Icon type="ios-navigate"></Icon>
+                  <Icon type="md-globe" />
                   Meetings
                 </template>
                 <div>

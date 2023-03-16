@@ -1,10 +1,8 @@
 <template>
   <div>
     <div id="main-wrapper">
-      <div style="margin: 100px 0px">
-        <h2 style="text-align:center; text-decoration:underline">
-          Appointments history
-        </h2>
+      <div>
+        <h6 style="text-align: center">Appointments history</h6>
         <div>
           <history type="history"></history>
         </div>

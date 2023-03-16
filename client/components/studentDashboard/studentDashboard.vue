@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <div
       v-if="$store.state.authUser.user_type === 'student'"
       class="container_admin"
@@ -11,11 +11,29 @@
         <h3>Today's appointments : {{ todaysAppointments ?? 0 }}</h3>
       </div>
       <div class="container_child">
-        <h3>Pending appointments : {{ pendingRequests ?? 0 }}</h3>
+        <h3>Pending appointment requests : {{ pendingRequests ?? 0 }}</h3>
       </div>
       <div class="container_child">
         <h3>Meetings : {{ totalMeeting ?? 0 }}</h3>
       </div>
+    </div>
+  </div> -->
+  <div
+    v-if="$store.state.authUser.user_type === 'student'"
+    class="teacher-dashboard"
+  >
+    <div class="dashboard-card">
+      <div class="card-header">All appointments</div>
+      <div class="card-body">{{ appointmentRequests }}</div>
+    </div>
+    <div class="dashboard-card">
+      <div class="card-header">Pending appointment requests</div>
+      <div class="card-body">{{ pendingRequests }}</div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-header">Meetings Count</div>
+      <div class="card-body">{{ totalMeeting }}</div>
     </div>
   </div>
 </template>
@@ -73,20 +91,34 @@ export default {
 </script>
 
 <style scoped>
-.container_admin {
+.teacher-dashboard {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-.container_child {
-  width: 20%;
-  height: 100px;
-  background-color: #f1f1f1;
-  border: 1px solid black;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.dashboard-card {
+  width: 23%;
+  margin-bottom: 2%;
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dashboard-card:hover {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 1rem;
+  font-size: 2rem;
+  text-align: center;
 }
 </style>

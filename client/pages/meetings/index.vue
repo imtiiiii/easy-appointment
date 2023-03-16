@@ -1,15 +1,23 @@
 <template>
   <div>
-    <div style="margin: 30px 0">
-      <h5 style="text-align: center">Your meetings</h5>
-    </div>
-    <Row v-if="meetings.length > 0" :gutter="16" type="flex" justify="center">
-      <Col :span="20" :offset="2">
-        <Table :data="meetings" :columns="columns" border></Table>
-      </Col>
-    </Row>
-    <div v-else style="text-align: center">
-      <h5>No meetings found</h5>
+    <div id="main-wrapper">
+      <div style="margin: 30px 0px">
+        <h5 style="text-align: center">Your meetings</h5>
+      </div>
+      <Row
+        class="meeting-list-table"
+        v-if="meetings.length > 0"
+        :gutter="16"
+        type="flex"
+        justify="center"
+      >
+        <Col class="list-col" :span="20" :offset="2">
+          <Table :data="meetings" :columns="columns" border></Table>
+        </Col>
+      </Row>
+      <div v-else style="text-align: center">
+        <h5>No meetings found</h5>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +39,10 @@ export default {
           title: "Date",
           key: "date",
           render: (h, params) => {
-            return h("p", moment(params.row.meeting.datetime).format("llll"));
+            return h(
+              "p",
+              moment(params.row.meeting.datetime).format("DD-MM-YY hh:mm a")
+            );
           },
         },
         {
@@ -97,3 +108,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.meeting-list-table {
+  margin: 0 auto;
+}
+.list-col {
+  margin: 0 auto;
+  width: 100%;
+}
+</style>
