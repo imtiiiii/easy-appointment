@@ -9,10 +9,8 @@ export default class AuthQuery {
   }
 
   async register(data) {
-    const user = await User.create(data);
-    if (user) {
-      return user
-    }
+    return  await User.create(data);
+    
 
   }
 

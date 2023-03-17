@@ -3,6 +3,7 @@ import User from "App/Models/User";
 import AuthService from "./AuthService";
 import AuthValidator from "./AuthValidator";
 import nodemailer from "nodemailer";
+import Env from "@ioc:Adonis/Core/Env";
 
 export default class AuthController {
   private authService: AuthService;
@@ -26,7 +27,7 @@ export default class AuthController {
       });
     }
 
-    return this.authService.register(ctx);
+    return await this.authService.register(ctx);
   }
 
   async getUser(ctx: HttpContextContract) {
@@ -97,21 +98,65 @@ export default class AuthController {
   }
   async testEmail(ctx: HttpContextContract) {
     const transporter = await nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
+      service: "gmail",
       auth: {
-        user: "ashley.heidenreich83@ethereal.email",
-        pass: "WFs97DMhv5UMrcPGtX",
+        user: Env.get("SMTP_USERNAME"),
+        pass: Env.get("SMTP_PASSWORD"),
       },
     });
     let info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <imtiaz@gmail.com  >', // sender address
-        to: "imtiazahmed026.work@gmail.com" , // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
-        });
-        console.log("Message sent: %s", info.messageId);
+      from: '"Easy Appointment" <easyappointment@gmail.com>', // sender address
+      to: "imtiazahmed026.work@gmail.com", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "Thank you for your support", // plain text body
+      html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>New Signup Request</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            color: #333;
+          }
+          table {
+            border-collapse: collapse;
+            margin: 20px 0;
+          }
+          th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+          }
+          th {
+            background-color: #eee;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>New Signup Request</h1>
+        <p>A new user has signed up and is awaiting approval. The following are the details:</p>
+        <table>
+          <tr>
+            <th>Full Name</th>
+            <td>[Full name of the user]</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>[Email address of the user]</td>
+          </tr>
+          <tr>
+            <th>Company</th>
+            <td>[Name of the user's company (if applicable)]</td>
+          </tr>
+          </table>
+          </body>
+      
 
+      `,
+
+    });
+    console.log("Message sent: %s", info);
   }
 }
