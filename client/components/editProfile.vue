@@ -23,16 +23,6 @@
             v-model="userInfo.last_name"
           ></Input>
         </div>
-        <!-- User Can not change him/her email address  -->
-        <!-- <div class="_log_input_group">
-					<Label>Email:</Label>
-					<Input
-						v-model="userInfo.email"
-						placeholder="Email"
-						size="large"
-						type="text"
-					></Input>
-				</div> -->
         <div
           class="_log_input_group"
           v-if="
@@ -92,7 +82,7 @@
             size="large"
             long
             :loading="isLoading"
-            :disabled="loading"
+            :disabled="isLoading"
             >{{ isLoading ? "Please wait..." : "Update" }}</Button
           >
         </div>
@@ -107,7 +97,8 @@ export default {
   data() {
     return {
       // userInfo:this.$store.state.authUser,
-      userInfo: {},
+        userInfo: {},
+        isLoading: false,
     };
   },
   async created() {
@@ -149,5 +140,4 @@ export default {
   margin: 20px auto;
   max-width: 600px;
 }
-
 </style>

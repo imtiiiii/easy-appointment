@@ -8,9 +8,9 @@
 			justify-content: center;
 		"
     >
-      <h5 style="text-align: center;margin: 20px;">Your appointments</h5>
+      <h5 style="text-align: center; margin: 20px">Your appointments</h5>
 
-      <div>
+      <div v-if="data.length">
         <table style="width: 100%">
           <thead style="background-color: aliceblue">
             <tr>
@@ -25,9 +25,7 @@
           <tbody>
             <tr v-for="(item, index) in data" :key="index">
               <th style="padding: 0px 40px">
-                <h6 style="width: 100%">
-                  {{ formatDate(item.date) }}
-                </h6>
+                {{ formatDate(item.date) }}
               </th>
               <th>
                 {{ item.forWhichTimeSlot.start_time }} -
@@ -52,9 +50,9 @@
           </tbody>
         </table>
       </div>
-      <!-- <div v-else style="">
-        <h4 class="">No Upcomming Appoinments Request</h4>
-      </div> -->
+      <div v-else style="">
+        <h6 style="text-align: center">No upcoming appointment Request</h6>
+      </div>
     </div>
   </div>
 </template>

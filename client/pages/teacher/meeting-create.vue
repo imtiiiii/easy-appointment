@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h5 style="text-align:center;margin: 20px 0;" >Create a meeting</h5>
     <Row class="centered">
       <i-col span="12">
         <Card>

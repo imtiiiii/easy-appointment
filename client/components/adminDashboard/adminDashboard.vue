@@ -1,19 +1,4 @@
-<!-- <template>
-  <div class="container_admin">
-    <div class="container_child">
-      <h3>All users: {{ allUsersCount }}</h3>
-    </div>
-    <div class="container_child">
-      <h3>Teachers: {{ teachersCount }}</h3>
-    </div>
-    <div class="container_child">
-      <h3>Students: {{ studentsCount }}</h3>
-    </div>
-    <div class="container_child">
-      <h3>Join requests: {{ joinRequests }}</h3>
-    </div>
-  </div>
-</template> -->
+
 <template>
   <div class="teacher-dashboard">
     <div class="dashboard-card">
