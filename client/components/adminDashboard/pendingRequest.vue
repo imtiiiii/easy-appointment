@@ -1,7 +1,8 @@
 <template>
   <div style="margin: 30px auto; width: 50%">
     <div v-if="requests === null || requests.length < 1">
-      <h5>Nothing to show....</h5>
+        <h5 style="text-align:center;">
+        Nothing to show....</h5>
     </div>
     <div
       v-for="(request, index) of requests"
@@ -48,7 +49,8 @@
 export default {
   data() {
     return {
-      requests: [],
+        requests: [],
+        isLoading: false,
     };
   },
   async created() {
@@ -56,7 +58,6 @@ export default {
     if (res.status === 200) {
       this.requests = res.data;
     }
-    // console.log("requests=>", this.requests);
   },
   methods: {
     async accept(id, index) {
@@ -66,7 +67,6 @@ export default {
         status: "1",
       });
       this.isLoading = false;
-      // console.log("accept is = ", accept.status);
       if (accept.status === 200) {
         this.requests.splice(index, 1);
         this.s("Request accepted successfully");

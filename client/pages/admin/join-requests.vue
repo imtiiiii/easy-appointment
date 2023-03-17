@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="main-wrapper">
-      <div style="margin: 100px 0px">
+      <div>
         <h5 style="text-align:center;">
           Join Requests
         </h5>

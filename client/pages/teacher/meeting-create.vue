@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 style="text-align:center;margin: 20px 0;" >Create a meeting</h5>
+    <h5 style="text-align: center; margin: 20px 0">Create a meeting</h5>
     <Row class="centered">
       <i-col span="12">
         <Card>
@@ -30,6 +30,7 @@
                 v-model="meeting.datetime"
                 type="datetime"
                 placeholder="Select datetime"
+                :options="options"
               />
             </FormItem>
             <FormItem label="Invitees" prop="invitees">
@@ -80,6 +81,12 @@ export default {
       },
       loadingUsers: false,
       users: [],
+      options: {
+        disabledDate(date) {
+          // Disable dates before today
+          return date && date.getTime() < Date.now() - 86400000;
+        },
+      },
       meetingRules: {
         agenda: [
           {
@@ -134,8 +141,12 @@ export default {
         if (valid) {
           console.log(this.meeting, "this.meeting");
           // Call API to create meeting room with this.meeting object
-          const req = await this.callApi("post", "/meeting/create", this.meeting);
-          console.log("🚀 ~ file: meeting-create.vue:137 ~ req:", req)
+          const req = await this.callApi(
+            "post",
+            "/meeting/create",
+            this.meeting
+          );
+          console.log("🚀 ~ file: meeting-create.vue:137 ~ req:", req);
           if (req.status === 200) {
             this.$Message.success("Meeting room created successfully");
             this.$router.push("/teacher/meeting-list");
@@ -155,6 +166,10 @@ export default {
       }
       this.loadingUsers = false;
     },
+    // disabledDate(date) {
+    //   // Disable dates before today
+    //   return true
+    // },
   },
 };
 </script>

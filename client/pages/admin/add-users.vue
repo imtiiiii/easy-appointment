@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="main-wrapper">
-      <div style="margin: 100px 0px">
+      <div>
         <h5 style="text-align: center">Add Users from Admin</h5>
         <div>
             <register></register>

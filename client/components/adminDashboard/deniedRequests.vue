@@ -1,17 +1,14 @@
 <template>
-  <div style="margin:30px auto;width:50%">
+  <div style="margin: 30px auto; width: 50%">
     <div v-if="rejectedSignup === null || rejectedSignup.length < 1">
-      <h5>Nothing to show....</h5>
+      <h5 style="text-align: center">Nothing to show....</h5>
     </div>
     <div
       v-for="(request, index) of rejectedSignup"
       :key="index"
-      style="margin: 30px 20px;display: flex;"
+      style="margin: 30px 20px; display: flex"
     >
-      <div
-      
-        class="card"
-      >
+      <div class="card">
         <h4>name: {{ request.first_name + " " + request.last_name }}</h4>
         <hr />
         <h4>email:{{ request.email }}</h4>
@@ -26,29 +23,12 @@
           <button
             v-on:click.once="accept(request.id, index)"
             class="accept"
-            style="
-							background-color: #42cc8c;
-							width: 100px;
-							padding: 15px 0px;
-						"
+            style="background-color: #42cc8c; width: 100px; padding: 15px 0px"
             :loading="isLoading"
             :disabled="isLoading"
           >
             Accept
           </button>
-          <!-- <button
-            v-on:click.once="reject(request.id, index)"
-            class="reject"
-            style="
-							background-color: #ff531d;
-							width: 100px;
-							padding: 15px 0px;
-						"
-            :loading="isLoading"
-            :disabled="isLoading"
-          >
-            Reject
-          </button> -->
         </div>
       </div>
     </div>
@@ -60,6 +40,7 @@ export default {
   data() {
     return {
       rejectedSignup: [],
+      isLoading: false,
     };
   },
   async created() {
@@ -67,34 +48,20 @@ export default {
     if (res.status === 200) {
       this.rejectedSignup = res.data;
     }
-    // console.log("rejectedSignup=>", this.rejectedSignup);
   },
   methods: {
     async accept(id, index) {
+      console.log("accept called");
       this.isLoading = true;
       const accept = await this.callApi("put", "dashboard/update/status", {
         id: id,
         status: "1",
       });
+      console.log("🚀 ~ file: deniedRequests.vue:60 ~ accept:", accept);
       this.isLoading = false;
-      // console.log("accept is = ", accept.status);
       if (accept.status === 200) {
         this.rejectedSignup.splice(index, 1);
         this.s("Request accepted successfully");
-      } else {
-        this.e("Try again");
-      }
-    },
-    async reject(id, index) {
-      this.isLoading = true;
-      const reject = await this.callApi("put", "dashboard/update/status", {
-        id: id,
-        status: "2",
-      });
-      this.isLoading = false;
-      if (reject.status === 200) {
-        this.rejectedSignup.splice(index, 1);
-        this.s("Rejected");
       } else {
         this.e("Try again");
       }
