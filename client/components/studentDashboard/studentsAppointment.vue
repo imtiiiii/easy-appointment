@@ -121,7 +121,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;

@@ -10,26 +10,30 @@
       <Option value="6">saturday</Option>
     </Select>
     <hr />
-    <div class="main-content" v-if="createdSlots.length">
+    <div v-if="createdSlots.length">
       <table>
-        <tr>
-          <th>Start Time</th>
-          <th>End Time</th>
-          <th>Options</th>
-        </tr>
-        <tr v-for="(item, index) in createdSlots" :key="index">
-          <td v-if="editFor !== item.id">
-            {{ timeConvert(item.start_time) }}
-          </td>
+        <thead style="background-color: aliceblue">
+          <tr >
+            <th style="width:50%"  >Start Time</th>
+            <th  style="width:50%">End Time</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in createdSlots" :key="index">
+            <th  v-if="editFor !== item.id">
+              {{ timeConvert(item.start_time) }}
+            </th>
 
-          <td v-if="editFor !== item.id">
-            {{ timeConvert(item.end_time) }}
-          </td>
+            <th v-if="editFor !== item.id">
+              {{ timeConvert(item.end_time) }}
+            </th>
 
-          <td style="width: 100%">
-            <Button type="error"> Delete </Button>
-          </td>
-        </tr>
+            <th style="width: 100%">
+              <Button type="error"> Delete </Button>
+            </th>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div v-else>
@@ -67,7 +71,6 @@ export default {
       } catch (error) {
         this.swr();
       }
-     
     },
   },
   methods: {
@@ -106,23 +109,7 @@ export default {
 };
 </script>
 <style scoped>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  padding: 100px;
-}
 
-th {
-  border: 1px solid black;
-  padding: 20px 30px;
-}
-td {
-  padding: 20px 30px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
 .created-slot-partent {
   width: 50%;
   margin: 50px auto;
@@ -131,6 +118,5 @@ tr:nth-child(even) {
   display: flex;
   justify-content: center;
   align-content: center;
-  width: 50%;
 }
 </style>

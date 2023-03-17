@@ -112,7 +112,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -127,9 +127,9 @@ td {
   padding: 20px 30px;
 }
 
-tr:nth-child(even) {
+/* tr:nth-child(even) {
   background-color: #dddddd;
-}
+} */
 button#link {
   background: none !important;
   border: none;

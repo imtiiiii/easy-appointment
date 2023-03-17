@@ -1,10 +1,10 @@
 <template>
   <div>
     <div id="main-wrapper">
-      <div style="margin: 100px 0px">
-        <h2 style="text-align:center; text-decoration:underline">
+      <div>
+        <h5 style="text-align:center;">
           See Created Slots
-        </h2>
+        </h5>
         <div>
           <created_slots></created_slots>
         </div>
