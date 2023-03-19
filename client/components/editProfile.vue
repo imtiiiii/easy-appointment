@@ -121,7 +121,9 @@ export default {
         );
         this.isLoading = false;
         if (resData.status === 200) {
-          this.s("Profile updated successfully");
+            this.s("Profile updated successfully");
+          //reload the page 
+            this.$router.go();
         }
       } catch (error) {
         this.isLoading = false;
