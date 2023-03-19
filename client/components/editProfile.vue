@@ -117,10 +117,19 @@ export default {
         const resData = await this.callApi(
           "put",
           "/profile/update",
-          this.userInfo
+            {
+                first_name: this.userInfo.first_name,
+                last_name: this.userInfo.last_name,
+                status: this.userInfo.status,
+                dept: this.userInfo.dept ?? "",
+                course: this.userInfo.course ?? null,
+                student_id :this.userInfo.student_id ?? null
+          }
         );
-        this.isLoading = false;
-        if (resData.status === 200) {
+          this.isLoading = false;
+          console.log("up", resData)
+       
+        if (resData?.status === 200) {
             this.s("Profile updated successfully");
           //reload the page 
             this.$router.go();
