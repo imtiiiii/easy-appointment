@@ -79,22 +79,22 @@ export default {
             );
           },
         },
-        {
-          title: "View Meeting",
-          key: "view_meeting",
-          render: (h, params) => {
-            console.log("p", params);
-            return h(
-              "a",
-              {
-                attrs: {
-                  href: `/meetings/${params.row.meeting_id}`,
-                },
-              },
-              "View"
-            );
-          },
-        },
+        // {
+        //   title: "View Meeting",
+        //   key: "view_meeting",
+        //   render: (h, params) => {
+        //     console.log("p", params);
+        //     return h(
+        //       "a",
+        //       {
+        //         attrs: {
+        //           href: `/meetings/${params.row.meeting_id}`,
+        //         },
+        //       },
+        //       "View"
+        //     );
+        //   },
+        // },
       ],
     };
   },
