@@ -149,7 +149,7 @@ export default {
           console.log("🚀 ~ file: meeting-create.vue:137 ~ req:", req);
           if (req.status === 200) {
             this.$Message.success("Meeting room created successfully");
-            this.$router.push("/teacher/meeting-list");
+            this.$router.push("/meetings");
           }
         }
       });
