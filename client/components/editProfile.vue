@@ -128,6 +128,7 @@ export default {
         );
           this.isLoading = false;
           console.log("up", resData)
+          return;
        
         if (resData?.status === 200) {
             this.s("Profile updated successfully");
