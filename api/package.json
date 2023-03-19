@@ -26,6 +26,7 @@
     "@adonisjs/shield": "^7.0.6",
     "@adonisjs/view": "^6.1.0",
     "@types/socket.io": "^3.0.2",
+    "adonis5-scheduler": "^2.0.2",
     "bcrypt": "^5.0.1",
     "luxon": "^2.0.2",
     "moment": "^2.29.3",

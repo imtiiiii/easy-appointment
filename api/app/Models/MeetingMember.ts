@@ -23,10 +23,9 @@ export default class MeetingMember extends BaseModel {
     foreignKey: "meeting_id",
   })
   public meeting: BelongsTo<typeof MeetingRoom>;
-  @belongsTo(()=>User,{
-    localKey:'user_id',
-    foreignKey:'id'
+  @belongsTo(() => User, {
+    localKey: "id",
+    foreignKey: "user_id",
   })
-    public meeting_member:BelongsTo<typeof User>
-
+  public meeting_member: BelongsTo<typeof User>;
 }

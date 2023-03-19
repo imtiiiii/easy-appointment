@@ -3,6 +3,7 @@ import MeetingQuery from "./MeetingQuery";
 import { DateTime } from "luxon";
 import nodemailer from "nodemailer";
 import Env from "@ioc:Adonis/Core/Env";
+import MeetingRoom from "../../../Models/MeetingRoom";
 export default class MeetingService {
   private meetingQuery: MeetingQuery;
   constructor() {
@@ -83,5 +84,43 @@ export default class MeetingService {
   }
   async singleMeetingInfoService(payload: { meetingId: number }) {
     return await this.meetingQuery.singleMeetingInfoQuery(payload);
+  }
+  async getTodaysMeetingsService() {
+    const temp = await MeetingRoom.query()
+      .whereRaw("DATE(datetime) = CURDATE()")
+      .select("id", "datetime", "link")
+      .preload("meetingMembers", (q) =>
+        q
+          .groupBy("user_id")
+          .preload("meeting_member", (q2) => q2.select("id", "email"))
+      );
+    const emails: any = [];
+    if (temp.length > 0) {
+      temp.forEach((item) => {
+        item.meetingMembers.forEach((member) => {
+          emails.push(member.meeting_member.email);
+        });
+      });
+      const transporter = await nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: Env.get("SMTP_USERNAME"),
+          pass: Env.get("SMTP_PASSWORD"),
+        },
+      });
+      // Reminder email
+      let info = await transporter.sendMail({
+        from: '"Easy Appointment" <easyappointment@gmail.com>', // sender address
+        to: emails, // list of receivers
+        subject: "Reminder !!!!!", // Subject line
+        html: `
+            <h1>Meeting Room</h1>
+            <p> This is a reminder email for your meeting room.  </p>
+            <p>Today you have a meeting room at ${temp[0].datetime}.</p>
+            <p>Meeting Room Link: ${temp[0].link}</p>
+        `,
+      });
+      console.log("Message sent: %s", JSON.stringify(info));
+    }
   }
 }
