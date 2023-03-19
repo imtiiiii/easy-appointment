@@ -49,7 +49,7 @@
                 <Option
                   v-for="(user, index) in users"
                   :key="index"
-                  :value="user.id"
+                  :value="user"
                   >{{ user.first_name + " " + user.last_name }} ({{
                     user.email
                   }})</Option

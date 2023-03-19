@@ -24,7 +24,7 @@ export default class AuthService {
     return newUser;
   }
   async newSignupNotificationToAdmin(newUser: User) {
-     console.log('newSignupNotificationToAdmin called')
+   
     const transporter = await nodemailer.createTransport({
       service: "gmail",
       auth: {

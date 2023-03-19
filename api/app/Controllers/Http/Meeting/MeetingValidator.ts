@@ -7,11 +7,7 @@ export default class MeetingValidator {
       link: schema.string(),
       description: schema.string(),
       datetime: schema.date(),
-      invitees: schema
-        .array()
-        .members(
-          schema.number([rules.exists({ table: "users", column: "id" })])
-        ),
+      invitees: schema.array().members(schema.object().anyMembers()),
     });
 
     return await ctx.request.validate({
