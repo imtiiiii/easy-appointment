@@ -23,8 +23,9 @@ export default class ProfileController {
   }
 
   async updateProfile(ctx: HttpContextContract) {
-    const userId = ctx.auth.user?.$attributes.id;
+    const userId =  ctx.request.all().id ?? ctx.auth.user?.$attributes.id;
     const payload = ctx.request.all();
+    
     try {
       return await this.profileService.updateProfileService(userId, payload);
     } catch (error) {

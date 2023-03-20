@@ -104,7 +104,7 @@ export default {
   async created() {
     // console.log("edit profile props=", this.userId);
     const user = await this.callApi("get", `profile/${this.userId}`);
-    // console.log("user=", user);
+    console.log("user=", user);
     if (user.status === 200) {
       this.userInfo = user.data;
       // console.log("user info ", this.userInfo);
@@ -123,12 +123,13 @@ export default {
                 status: this.userInfo.status,
                 dept: this.userInfo.dept ?? "",
                 course: this.userInfo.course ?? null,
-                student_id :this.userInfo.student_id ?? null
+                student_id: this.userInfo.student_id ?? null,
+                id: this.userInfo.id
           }
         );
           this.isLoading = false;
           console.log("up", resData)
-          return;
+    
        
         if (resData?.status === 200) {
             this.s("Profile updated successfully");
